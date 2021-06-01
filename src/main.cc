@@ -1,0 +1,108 @@
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <iostream>
+#include <cmath>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+#include "init.hh"
+#include "shader.hh"
+
+#include "window.hh"
+#include "camera.hh"
+#include "object.hh"
+#include "init_obj.hh"
+
+#define WIDTH 800
+#define HEIGHT 600
+
+// camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+// timing
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+void processInput(Window& window) {
+    if (window.key_press(GLFW_KEY_ESCAPE) || window.key_press(GLFW_KEY_SPACE))
+        window.set_close();
+
+    if (window.key_press(GLFW_KEY_W))
+        camera.process_keyboard(FORWARD, deltaTime);
+    if (window.key_press(GLFW_KEY_S))
+        camera.process_keyboard(BACKWARD, deltaTime);
+    if (window.key_press(GLFW_KEY_A))
+        camera.process_keyboard(LEFT, deltaTime);
+    if (window.key_press(GLFW_KEY_D))
+        camera.process_keyboard(RIGHT, deltaTime);
+}
+
+int main()
+{
+    // Init glfw / window / glew
+    init_glfw();
+    Window window = init_window(WIDTH, HEIGHT, "Window's title");
+    init_glew();
+
+    // Enable z-buffer
+    glEnable(GL_DEPTH_TEST);
+
+    Shader shader("shaders/test.vs", "shaders/test.fs");
+    Shader plane_shader("shaders/plane.vs", "shaders/plane.fs");
+
+    Object plane = create_plane();
+    Object cube = create_cube();
+
+    // Render loop
+    while (!window.should_close()) {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        // input
+        processInput(window);
+
+        // render
+        // ------
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        shader.use();
+
+        glm::mat4 model = glm::mat4(1.0f);
+        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        shader.set_mat4("model", model);
+        // pass projection matrix to shader (note that in this case it could change every frame)
+        glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), window.get_ratio(), 0.1f, 100.0f);
+        shader.set_mat4("projection", projection);
+
+        // camera/view transformation
+        glm::mat4 view = camera.get_matrix_view();
+        shader.set_mat4("view", view);
+
+        shader.set_float("iTime", glfwGetTime());
+        shader.set_float("width", WIDTH);
+        shader.set_float("height", HEIGHT);
+
+        cube.draw();
+
+        plane_shader.use();
+        plane_shader.set_mat4("projection", projection);
+        plane_shader.set_mat4("view", view);
+        plane_shader.set_mat4("model", model);
+
+        plane.draw();
+
+        window.swap_buffers();
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
+
+    return 0;
+}
