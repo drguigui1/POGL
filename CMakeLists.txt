@@ -3,14 +3,14 @@ set(WARNING_FLAGS, "-Wall -Wextra")
 
 set(
     SRC_OPENGL
-    src/shader/shader.cc
+    src/camera/camera.cc
     src/init/init.cc
+    src/init/init_obj.cc
+    src/object/object.cc
+    src/shader/shader.cc
+    src/texture/texture.cc
     src/window/window.cc
     src/window/window_cb.cc
-    src/camera/camera.cc
-    src/object/object.cc
-    src/init/init_obj.cc
-    src/texture/texture.cc
 )
 
 include_directories(

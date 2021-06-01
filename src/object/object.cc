@@ -4,8 +4,8 @@
 
 #include "object.hh"
 
-Object::Object(std::vector<float>& vertices, unsigned int nb, bool color, bool normal, bool tex)
-    : nb_vertices(nb), has_EBO(false)
+Object::Object(std::vector<float>& vertices, bool color, bool normal, bool tex)
+    : has_EBO(false)
 {
     // Compute VAO, VBO
     glGenVertexArrays(1, &VAO);
@@ -21,7 +21,7 @@ Object::Object(std::vector<float>& vertices, unsigned int nb, bool color, bool n
     // Determine the nb of float per line
     // 3DCoord + Color + Normal + TextureCoord
     unsigned int size = 3 + (color ? 3 : 0) + (normal ? 3 : 0) + (tex ? 2 : 0);
-    assert(nb_vertices == vertices.size() / size);
+    nb_vertices = vertices.size() / size;
 
     // VAO init
     this->init_VAO(size, color, normal, tex);
@@ -31,8 +31,8 @@ Object::Object(std::vector<float>& vertices, unsigned int nb, bool color, bool n
 }
 
 Object::Object(std::vector<float>& vertices, std::vector<float>& indices,
-        unsigned int nb, bool color, bool normal, bool tex)
-    : nb_vertices(nb), has_EBO(true)
+        bool color, bool normal, bool tex)
+    : has_EBO(true)
 {
     // Compute VAO, VBO, EBO
     glGenVertexArrays(1, &VAO);
@@ -53,7 +53,7 @@ Object::Object(std::vector<float>& vertices, std::vector<float>& indices,
     // Determine the nb of float per line
     // 3DCoord + Color + Normal + TextureCoord
     unsigned int size = 3 + (color ? 3 : 0) + (normal ? 3 : 0) + (tex ? 2 : 0);
-    assert(nb_vertices == vertices.size() / size);
+    nb_vertices = vertices.size() / size;
 
     // VAO init
     this->init_VAO(size, color, normal, tex);

@@ -15,11 +15,12 @@ Object create_plane() {
 
     };
 
-    return Object(plane_vertices, 6, true, false, false);
+    return Object(plane_vertices, true, false, false);
 }
 
 Object create_cube() {
     std::vector<float> cube_vertices = {
+        // position         // colors          // texture
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
          0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
          0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
@@ -63,5 +64,5 @@ Object create_cube() {
         -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
     };
 
-    return Object(cube_vertices, 36, true, false, true);
+    return Object(cube_vertices, true, false, true);
 }

@@ -17,25 +17,29 @@
 #include "init_obj.hh"
 #include "texture.hh"
 
-// camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-// timing
-float deltaTime = 0.0f;
-float lastFrame = 0.0f;
-
-void processInput(Window& window) {
+void processInput(Window& window, float time) {
+    // Close window
     if (window.key_press(GLFW_KEY_ESCAPE) || window.key_press(GLFW_KEY_SPACE))
         window.set_close();
 
+    // Camera movement
     if (window.key_press(GLFW_KEY_W))
-        camera.process_keyboard(FORWARD, deltaTime);
+        camera.process_keyboard(FORWARD, time);
     if (window.key_press(GLFW_KEY_S))
-        camera.process_keyboard(BACKWARD, deltaTime);
+        camera.process_keyboard(BACKWARD, time);
     if (window.key_press(GLFW_KEY_A))
-        camera.process_keyboard(LEFT, deltaTime);
+        camera.process_keyboard(LEFT, time);
     if (window.key_press(GLFW_KEY_D))
-        camera.process_keyboard(RIGHT, deltaTime);
+        camera.process_keyboard(RIGHT, time);
+
+    // Wireframe mode
+    if (window.key_press(GLFW_KEY_N))
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    if (window.key_press(GLFW_KEY_M))
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 }
 
 int main(int argc, char** argv) {
@@ -58,46 +62,48 @@ int main(int argc, char** argv) {
 
     Texture texture("data/container.jpg");
 
-    Shader shader("shaders/test.vs", "shaders/test.fs");
+    // Shaders
+    Shader glob_shader("shaders/global.vs", "shaders/global.fs");
     Shader plane_shader("shaders/plane.vs", "shaders/plane.fs");
     Shader cube2_shader("shaders/cube_tex.vs", "shaders/cube_tex.fs");
 
     Object plane = create_plane();
     Object cube = create_cube();
 
+    // timing
+    float prev_frame = 0.0f;
+
     // Render loop
     while (!window.should_close()) {
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        float curr_frame = glfwGetTime();
 
         // input
-        processInput(window);
+        processInput(window, curr_frame - prev_frame);
+        prev_frame = curr_frame;
 
         // render
         // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.use();
-
         glm::mat4 model = glm::mat4(1.0f);
-        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        shader.set_mat4("model", model);
-        // pass projection matrix to shader (note that in this case it could change every frame)
         glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), window.get_ratio(), 0.1f, 100.0f);
-        shader.set_mat4("projection", projection);
-
-        // camera/view transformation
         glm::mat4 view = camera.get_matrix_view();
-        shader.set_mat4("view", view);
 
-        shader.set_float("iTime", glfwGetTime());
-        shader.set_float("width", width);
-        shader.set_float("height", height);
+        glob_shader.use();
+
+        // Glob cube
+        glob_shader.set_mat4("projection", projection);
+        glob_shader.set_mat4("model", model);
+        glob_shader.set_mat4("view", view);
+
+        glob_shader.set_float("iTime", glfwGetTime());
+        glob_shader.set_float("width", width);
+        glob_shader.set_float("height", height);
 
         cube.draw();
 
+        // Plane
         plane_shader.use();
         plane_shader.set_mat4("projection", projection);
         plane_shader.set_mat4("view", view);
@@ -109,7 +115,7 @@ int main(int argc, char** argv) {
         texture.use();
         cube2_shader.use();
 
-        model = glm::translate(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        model = glm::translate(model, glm::vec3(2.0f, 1.0f, 0.0f));
         cube2_shader.set_mat4("projection", projection);
         cube2_shader.set_mat4("view", view);
         cube2_shader.set_mat4("model", model);

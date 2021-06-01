@@ -7,9 +7,9 @@
 
 class Object {
 public:
-    Object(std::vector<float>& vertices, unsigned int nb, bool color, bool normal, bool tex);
+    Object(std::vector<float>& vertices, bool color, bool normal, bool tex);
     Object(std::vector<float>& vertices, std::vector<float>& indices,
-        unsigned int nb, bool color, bool normal, bool tex);
+        bool color, bool normal, bool tex);
 
     ~Object();
 
@@ -23,7 +23,6 @@ private:
 
     /* Attributes */
     std::string id;
-    float* vertices;
     unsigned int nb_vertices;
 
     // texture
