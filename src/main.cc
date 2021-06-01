@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <string>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -17,9 +18,6 @@
 #include "camera.hh"
 #include "object.hh"
 #include "init_obj.hh"
-
-#define WIDTH 800
-#define HEIGHT 600
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -42,11 +40,19 @@ void processInput(Window& window) {
         camera.process_keyboard(RIGHT, deltaTime);
 }
 
-int main()
-{
+int main(int argc, char** argv) {
+    unsigned int width, height;
+    if (argc != 3) {
+        width = 800;
+        height = 600;
+    } else {
+        width = std::stoi(std::string(argv[1]));
+        height = std::stoi(std::string(argv[2]));
+    }
+
     // Init glfw / window / glew
     init_glfw();
-    Window window = init_window(WIDTH, HEIGHT, "Window's title");
+    Window window = init_window(width, height, "Title");
     init_glew();
 
     // Enable z-buffer
@@ -86,8 +92,8 @@ int main()
         shader.set_mat4("view", view);
 
         shader.set_float("iTime", glfwGetTime());
-        shader.set_float("width", WIDTH);
-        shader.set_float("height", HEIGHT);
+        shader.set_float("width", width);
+        shader.set_float("height", height);
 
         cube.draw();
 
