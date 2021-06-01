@@ -24,7 +24,7 @@ project(OpenGL)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LIB_FLAGS} ${WARNING_FLAGS} -lglfw -lGL -lGLEW")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${OPT_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3")
 
@@ -32,3 +32,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 add_executable(opengl)
 target_sources(opengl PRIVATE "src/main.cc" ${SRC_OPENGL})
+
+find_package(GLEW REQUIRED)
+find_package(glfw3 REQUIRED)
+
+target_link_libraries(opengl GL GLEW glfw)
