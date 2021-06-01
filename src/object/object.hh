@@ -26,6 +26,12 @@ private:
     float* vertices;
     unsigned int nb_vertices;
 
+    // texture
+    unsigned char* tex_data;
+    int tex_width;
+    int tex_height;
+    unsigned int tex_id;
+
     unsigned int VAO;
     unsigned int VBO;
     unsigned int EBO;

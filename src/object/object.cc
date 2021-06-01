@@ -19,6 +19,7 @@ Object::Object(std::vector<float>& vertices, unsigned int nb, bool color, bool n
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
     // Determine the nb of float per line
+    // 3DCoord + Color + Normal + TextureCoord
     unsigned int size = 3 + (color ? 3 : 0) + (normal ? 3 : 0) + (tex ? 2 : 0);
     assert(nb_vertices == vertices.size() / size);
 
@@ -50,6 +51,7 @@ Object::Object(std::vector<float>& vertices, std::vector<float>& indices,
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices), &indices[0], GL_STATIC_DRAW);
 
     // Determine the nb of float per line
+    // 3DCoord + Color + Normal + TextureCoord
     unsigned int size = 3 + (color ? 3 : 0) + (normal ? 3 : 0) + (tex ? 2 : 0);
     assert(nb_vertices == vertices.size() / size);
 
@@ -71,9 +73,14 @@ void Object::init_VAO(unsigned int size, bool color, bool normal, bool tex) {
     int i = 0;
     int cum_size = 0;
 
+    // 3D Coordinates
     add_vertex_attrib(i, 3, size, cum_size);
+
     if (color) add_vertex_attrib(i, 3, size, cum_size);
+
     if (normal) add_vertex_attrib(i, 3, size, cum_size);
+
+    // texture coordinates
     if (tex) add_vertex_attrib(i, 2, size, cum_size);
 }
 

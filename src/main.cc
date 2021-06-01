@@ -8,9 +8,6 @@
 #include <cmath>
 #include <string>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 #include "init.hh"
 #include "shader.hh"
 
@@ -18,6 +15,7 @@
 #include "camera.hh"
 #include "object.hh"
 #include "init_obj.hh"
+#include "texture.hh"
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -58,8 +56,11 @@ int main(int argc, char** argv) {
     // Enable z-buffer
     glEnable(GL_DEPTH_TEST);
 
+    Texture texture("data/container.jpg");
+
     Shader shader("shaders/test.vs", "shaders/test.fs");
     Shader plane_shader("shaders/plane.vs", "shaders/plane.fs");
+    Shader cube2_shader("shaders/cube_tex.vs", "shaders/cube_tex.fs");
 
     Object plane = create_plane();
     Object cube = create_cube();
@@ -103,6 +104,17 @@ int main(int argc, char** argv) {
         plane_shader.set_mat4("model", model);
 
         plane.draw();
+
+        // draw another cube
+        texture.use();
+        cube2_shader.use();
+
+        model = glm::translate(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        cube2_shader.set_mat4("projection", projection);
+        cube2_shader.set_mat4("view", view);
+        cube2_shader.set_mat4("model", model);
+
+        cube.draw();
 
         window.swap_buffers();
         glfwPollEvents();
