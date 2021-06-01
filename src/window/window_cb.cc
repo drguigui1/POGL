@@ -23,7 +23,7 @@ static void mouse_callback(GLFWwindow* window, double x, double y) {
         return;
     }
 
-    camera.process_mouse_movement(x - prev_x, y - prev_y);
+    camera.process_mouse_movement(x - prev_x, prev_y - y);
 
     prev_x = x;
     prev_y = y;
