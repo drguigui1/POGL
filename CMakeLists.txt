@@ -3,13 +3,13 @@ set(WARNING_FLAGS, "-Wall -Wextra")
 
 set(
     SRC_OPENGL
-    src/shader.cc
-    src/init.cc
+    src/shader/shader.cc
+    src/init/init.cc
     src/window/window.cc
     src/window/window_cb.cc
-    src/camera.cc
+    src/camera/camera.cc
     src/object/object.cc
-    src/init_obj.cc
+    src/init/init_obj.cc
 )
 
 include_directories(
@@ -17,6 +17,10 @@ include_directories(
     src/window
     src/tools
     src/object
+    src/init
+    src/camera
+    src/shader
+    src/image
 )
 
 cmake_minimum_required(VERSION 3.12)
