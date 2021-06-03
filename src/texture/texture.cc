@@ -10,7 +10,7 @@ Texture::Texture(const char* texPath) {
     int width, height, nb_channels;
 
     // load the image
-    std::cout << texPath << '\n';
+    std::cout << "Load texture: " << texPath << '\n';
     data = stbi_load(texPath, &width, &height, &nb_channels, 0);
     if (!data) {
         std::cout << "FAILURE to load the texture: " << texPath << '\n';
