@@ -34,6 +34,7 @@ public:
     float get_zoom() const { return zoom; }
     float get_yaw() const { return yaw; }
     float get_pitch() const { return pitch; }
+    glm::vec3 get_position() const { return position; }
 
 private:
     void update();

@@ -124,6 +124,7 @@ int main(int argc, char** argv) {
         cube2_shader.set_mat4("model", model);
         cube2_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
         cube2_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        cube2_shader.set_vec3("userPos", camera.get_position());
 
         cube.draw();
 
