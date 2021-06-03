@@ -6,6 +6,7 @@ set(
     src/camera/camera.cc
     src/init/init.cc
     src/init/init_obj.cc
+    src/noise/noise.cc
     src/object/object.cc
     src/shader/shader.cc
     src/texture/texture.cc
@@ -23,6 +24,7 @@ include_directories(
     src/shader
     src/image
     src/texture
+    src/noise
 )
 
 cmake_minimum_required(VERSION 3.12)

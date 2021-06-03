@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <ctime>
 
 #include "init.hh"
 #include "shader.hh"
@@ -43,6 +44,8 @@ void processInput(Window& window, float time) {
 }
 
 int main(int argc, char** argv) {
+    std::srand(std::time(nullptr));
+
     unsigned int width, height;
     if (argc != 3) {
         width = 800;
@@ -67,7 +70,7 @@ int main(int argc, char** argv) {
     Shader plane_shader("shaders/plane.vs", "shaders/plane.fs");
     Shader cube2_shader("shaders/cube_tex.vs", "shaders/cube_tex.fs");
 
-    Object plane = create_plane();
+    Object plane = create_plane2(0, 0, 20, 20, 0.1, 0.1);
     Object cube = create_cube();
 
     // timing

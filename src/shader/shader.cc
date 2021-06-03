@@ -55,8 +55,8 @@ static unsigned int create_shader(GLenum shader_type, const char* shader_code, S
 }
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath) {
-    std::string vertexCode = get_file_content(vertexPath);
-    std::string fragmentCode = get_file_content(fragmentPath);
+    std::string vertexCode = file::get_file_content(vertexPath);
+    std::string fragmentCode = file::get_file_content(fragmentPath);
 
     const char* vertex_shader_code = vertexCode.c_str();
     const char * fragment_shader_code = fragmentCode.c_str();
