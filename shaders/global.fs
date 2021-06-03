@@ -5,6 +5,7 @@
 out vec4 FragColor;
 
 in vec3 outColor;
+in vec3 outNormal;
 in vec2 TexCoord;
 
 uniform float iTime;
