@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
         texture.use();
         cube2_shader.use();
 
-        model = glm::translate(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
         cube2_shader.set_mat4("projection", projection);
         cube2_shader.set_mat4("view", view);
         cube2_shader.set_mat4("model", model);
