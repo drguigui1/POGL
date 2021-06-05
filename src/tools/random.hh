@@ -4,6 +4,10 @@
 
 namespace randm {
 
+inline int random_int() {
+    return std::rand();
+}
+
 inline int random_int(int min, int max) {
     return min + std::rand() % (max - min);
 }

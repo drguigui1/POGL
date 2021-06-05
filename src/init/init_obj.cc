@@ -3,8 +3,10 @@
 
 #include "init_obj.hh"
 #include "variadic.hh"
-
+#include "save.hh"
 #include "noise.hh"
+#include "noise2.hh"
+#include "random.hh"
 
 Object create_plane() {
     std::vector<float> plane_vertices {
@@ -71,11 +73,21 @@ Object create_cube() {
     return Object(cube_vertices, true, true, true);
 }
 
-Object create_plane2(float center_x, float center_y, int width, int height, float step_w, float step_h) {
-    Noise noise(5, NOISE);
-    std::vector<float> vertices = std::vector<float>();
-    std::vector<float> vertices_colors = std::vector<float>();
+static void add_quad(std::vector<float>& vec, const glm::vec3& p0, const glm::vec3& p1,
+        const glm::vec3& p2, const glm::vec3& p3) {
+    variadic::push_all(vec, 3, p0.x, p0.y, p0.z);
+    variadic::push_all(vec, 3, p1.x, p1.y, p1.z);
+    variadic::push_all(vec, 3, p3.x, p3.y, p3.z);
 
+    variadic::push_all(vec, 3, p3.x, p3.y, p3.z);
+    variadic::push_all(vec, 3, p2.x, p2.y, p2.z);
+    variadic::push_all(vec, 3, p0.x, p0.y, p0.z);
+}
+
+Object create_plane2(float center_x, float center_y, int width, int height, float step_w, float step_h, const Noise& noise) {
+    std::vector<float> vertices = std::vector<float>();
+    float y_max = 0;
+    float y_min = 0;
     for (float i = center_x - width / 2.0; i < width / 2.0 + center_x; i += step_w) {
         for (float j = center_y - height / 2.0; j < height / 2.0 + center_y; j += step_h) {
             // x0 --- x1
@@ -91,27 +103,51 @@ Object create_plane2(float center_x, float center_y, int width, int height, floa
             p2.y = noise.compute(p2.x, 0, p2.z) - 1.0f;
             p3.y = noise.compute(p3.x, 0, p3.z) - 1.0f;
 
-            variadic::push_all(vertices, 3, p0.x, p0.y, p0.z);
-            variadic::push_all(vertices, 3, p1.x, p1.y, p1.z);
-            variadic::push_all(vertices, 3, p3.x, p3.y, p3.z);
-
-            variadic::push_all(vertices, 3, p3.x, p3.y, p3.z);
-            variadic::push_all(vertices, 3, p2.x, p2.y, p2.z);
-            variadic::push_all(vertices, 3, p0.x, p0.y, p0.z);
+            add_quad(vertices, p0, p1, p2, p3);
+            variadic::min(y_min, 4, p0.y, p1.y, p2.y, p3.y);
+            variadic::max(y_max, 4, p0.y, p1.y, p2.y, p3.y);
         }
     }
 
-    for (size_t i = 0; i < vertices.size(); i += 3) {
-        variadic::push_all(vertices_colors, 3, vertices[i], vertices[i + 1], vertices[i + 2]);
+    Object obj(vertices, false, false, false);
+    obj.set_y_max(y_max);
+    obj.set_y_min(y_min);
+    return obj;
+}
 
-        float h = vertices[i + 1] + 1.0f;
-        if (h <= 0)
-            variadic::push_all(vertices_colors, 3, 0.2f, 0.7f, 1.0f);
-        else if (h >= 1.5)
-            //variadic::push_all(vertices_colors, 3, 0.2f * h, 0.7f * h, 0.0f * h);
-            variadic::push_all(vertices_colors, 3, 1.0f, 1.0f, 1.0f);
-        else
-            variadic::push_all(vertices_colors, 3, 0.1f * h, 0.9f * h, 0.05f * h);
+Object create_plane_from_heightmap(const char* path, float center_x, float center_y, float step_w, float step_h) {
+    Image height_map_img = file::ppm_to_image(path);
+
+    std::vector<float> vertices = std::vector<float>();
+    for (float i = 0, x = center_x - height_map_img.get_width() / 2 * step_w; i < height_map_img.get_width() - 1; ++i, x += step_w) {
+        for (float j = 0, z = center_y - height_map_img.get_height() / 2 * step_h; j < height_map_img.get_height() - 1; ++j, z += step_h) {
+
+            glm::vec3 p0(x,          height_map_img.get_pixel_at(i,     j    ), z);
+            glm::vec3 p1(x + step_w, height_map_img.get_pixel_at(i + 1, j    ), z);
+            glm::vec3 p2(x,          height_map_img.get_pixel_at(i,     j + 1), z + step_h);
+            glm::vec3 p3(x + step_w, height_map_img.get_pixel_at(i + 1, j + 1), z + step_h);
+
+            add_quad(vertices, p0, p1, p2, p3);
+        }
+    }
+
+    // TODO: refacto - remove it if useless (use a shader which does not need this attribute color)
+    std::vector<float> vertices_colors = std::vector<float>();
+    for (size_t i = 0; i < vertices.size(); i += 3) {
+        // Image contains values between 0 and 255
+        variadic::push_all(vertices_colors, 3, vertices[i], vertices[i + 1] / 64.f - 1.0f, vertices[i + 2]);
+
+        float h = vertices[i + 1];
+        if (h == 0)
+            variadic::push_all(vertices_colors, 3, 0.0f, 0.0f, 0.6f);
+        else {
+            float h_scale = h / 255.0f * 2.0f - 1e-10;
+            h = std::floor(h_scale);
+            float r = 0.1 * h_scale + 0.4 * (1 - h_scale);
+            float g = 0.3 * h_scale + 0.8 * (1 - h_scale);
+            float b = 0.1 * h_scale + 0.4 * (1 - h_scale);
+            variadic::push_all(vertices_colors, 3, r, g, b);
+        }
     }
 
     return Object(vertices_colors, true, false, false);

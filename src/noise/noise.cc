@@ -11,7 +11,7 @@ Noise::Noise(float s, NoiseType t)
 void Noise::init_noise_arrays() {
     glm::vec3 tmp(0.0);
 
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < size; ++i) {
         tmp.x = randm::random_float(0, 10);
         tmp.y = randm::random_float(0, 6);
         tmp.z = randm::random_float(0, 2);
@@ -19,10 +19,10 @@ void Noise::init_noise_arrays() {
         random_vect[i] = tmp;
     }
 
-    for (int i = 0; i < count * 3; ++i)
+    for (int i = 0; i < size * 3; ++i)
         permutation[i] = i / 3;
 
-    randm::shuffle(permutation, count * 3);
+    randm::shuffle(permutation, size * 3);
 }
 
 float Noise::compute(float x, float y, float z, int octaves) const {
@@ -64,7 +64,7 @@ static float interpolate(const glm::vec3 c[2][2][2], float x, float y, float z) 
                 dot += (v - j) * c[i][j][k].y;
                 dot += (w - k) * c[i][j][k].z;
 
-                res += f(i, uu) * f(j, vv) * f(k, w) * dot;
+                res += f(i, uu) * f(j, vv) * f(k, ww) * dot;
             }
         }
     }

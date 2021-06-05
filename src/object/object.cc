@@ -5,7 +5,7 @@
 #include "object.hh"
 
 Object::Object(std::vector<float>& vertices, bool color, bool normal, bool tex)
-    : has_EBO(false)
+    : has_EBO(false), y_max(0), y_min(0)
 {
     // Compute VAO, VBO
     glGenVertexArrays(1, &VAO);
@@ -32,7 +32,7 @@ Object::Object(std::vector<float>& vertices, bool color, bool normal, bool tex)
 
 Object::Object(std::vector<float>& vertices, std::vector<float>& indices,
         bool color, bool normal, bool tex)
-    : has_EBO(true)
+    : has_EBO(true), y_max(0), y_min(0)
 {
     // Compute VAO, VBO, EBO
     glGenVertexArrays(1, &VAO);

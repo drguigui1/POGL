@@ -1,5 +1,4 @@
 set(OPT_FLAGS, "-Ofast")
-set(WARNING_FLAGS, "-Wall -Wextra")
 
 set(
     SRC_OPENGL
@@ -7,11 +6,13 @@ set(
     src/init/init.cc
     src/init/init_obj.cc
     src/noise/noise.cc
+    src/noise/noise2.cc
     src/object/object.cc
     src/shader/shader.cc
     src/texture/texture.cc
     src/window/window.cc
     src/window/window_cb.cc
+    src/image/image.cc
 )
 
 include_directories(
@@ -32,7 +33,8 @@ project(OpenGL)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS}")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${OPT_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3")
 
@@ -45,3 +47,4 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 
 target_link_libraries(opengl GL GLEW glfw)
+target_compile_options(opengl PRIVATE -Wall -Wextra)

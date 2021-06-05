@@ -3,7 +3,7 @@
 
 #include "camera.hh"
 
-#include "tools.hh"
+#include "value.hh"
 
 Camera::Camera(glm::vec3 pos, glm::vec3 up) {
     position = pos;
@@ -43,13 +43,13 @@ void Camera::process_keyboard(CameraMovement direction, float delta) {
 
 void Camera::process_mouse_movement(float x, float y) {
     yaw = yaw + x * sensitivity;
-    pitch = clamp(-89.0f, 89.0f, pitch + y * sensitivity);
+    pitch = value::clamp(-89.0f, 89.0f, pitch + y * sensitivity);
 
     update();
 }
 
 void Camera::process_mouse_scroll(float y) {
-    zoom = clamp(1.0, 45.0, zoom - y);
+    zoom = value::clamp(1.0, 45.0, zoom - y);
 }
 
 void Camera::update() {

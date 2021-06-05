@@ -7,7 +7,7 @@ float prev_y = 0;
 
 bool mouse_cb_called = false;
 
-static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+static void framebuffer_size_callback(GLFWwindow*, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
@@ -15,7 +15,7 @@ void Window::set_framebuffer_size_cb() {
     glfwSetFramebufferSizeCallback(this->window, framebuffer_size_callback);
 }
 
-static void mouse_callback(GLFWwindow* window, double x, double y) {
+static void mouse_callback(GLFWwindow*, double x, double y) {
     if (!mouse_cb_called) {
         prev_x = x;
         prev_y = y;
@@ -34,7 +34,7 @@ void Window::set_mouse_cb() {
     glfwSetCursorPosCallback(this->window, mouse_callback);
 }
 
-static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+static void scroll_callback(GLFWwindow*, double, double yoffset) {
     camera.process_mouse_scroll(yoffset);
 }
 

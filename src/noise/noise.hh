@@ -2,9 +2,6 @@
 
 #include <glm/glm.hpp>
 
-static const int count = 256;
-static const int mask = 255;
-
 enum NoiseType {
     NOISE,
     TURBULENCE,
@@ -16,7 +13,11 @@ public:
     Noise(float s=1, NoiseType t=NOISE);
 
     /* Methods */
-    float compute(float x, float y, float z, int octaves=7) const;
+    virtual float compute(float x, float y, float z, int octaves=7) const;
+
+protected:
+    static const int size = 256;
+    static const int mask = 255;
 
 private:
     void init_noise_arrays();
@@ -28,6 +29,6 @@ private:
     float scale;
     NoiseType type;
 
-    glm::vec3 random_vect[count];
-    int permutation[count * 3];
+    glm::vec3 random_vect[size];
+    int permutation[size * 3];
 };

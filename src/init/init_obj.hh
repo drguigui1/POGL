@@ -1,8 +1,12 @@
 #pragma once
 
+#include <vector>
+
+#include "noise.hh"
 #include "object.hh"
 
 Object create_plane();
-Object create_plane2(float center_x=0, float center_y=0, int width=5, int height=5, float step_w=1, float step_h=1);
+Object create_plane2(float center_x, float center_y, int width, int height, float step_w, float step_h, const Noise& noise);
+Object create_plane_from_heightmap(const char* path, float center_x, float center_y, float step_w, float step_h);
 
 Object create_cube();

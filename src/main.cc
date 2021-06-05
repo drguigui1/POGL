@@ -17,6 +17,11 @@
 #include "object.hh"
 #include "init_obj.hh"
 #include "texture.hh"
+#include "height_map.hh"
+#include "save.hh"
+
+#include "noise.hh"
+#include "noise2.hh"
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
@@ -67,10 +72,19 @@ int main(int argc, char** argv) {
 
     // Shaders
     Shader glob_shader("shaders/global.vs", "shaders/global.fs");
-    Shader plane_shader("shaders/plane.vs", "shaders/plane.fs");
+    Shader plane_shader("shaders/plane_grad.vs", "shaders/plane_grad.fs");
     Shader cube2_shader("shaders/cube_tex.vs", "shaders/cube_tex.fs");
 
-    Object plane = create_plane2(0, 0, 20, 20, 0.1, 0.1);
+    //std::vector<float> height_map = generate_height_map(200, 200);
+    //save::save_to_ppm_grayscale("height_map.ppm", height_map, 200, 200);
+
+    // Create plane from height map
+    //Object plane = create_plane_from_heightmap("height_map.ppm", 0, 0, 0.1, 0.1);
+
+    Object plane = create_plane2(0, 0, 20, 20, 0.1, 0.1, Noise(5, NOISE));
+    //plane.set_y_max(plane.get_y_max() / 2.0f);
+
+    //Object plane = create_plane2(0, 0, 20, 20, 0.1, 0.1, ImprovedNoise());
     Object cube = create_cube();
 
     // timing
@@ -111,6 +125,7 @@ int main(int argc, char** argv) {
         plane_shader.set_mat4("projection", projection);
         plane_shader.set_mat4("view", view);
         plane_shader.set_mat4("model", model);
+        plane_shader.set_float("height", plane.get_y_max());
 
         plane.draw();
 

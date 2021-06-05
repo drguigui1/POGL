@@ -16,6 +16,14 @@ public:
     /* Methods */
     void draw(GLenum type=GL_TRIANGLES);
 
+    /* Getters */
+    float get_y_max() const { return y_max; }
+    float get_y_min() const { return y_min; }
+
+    /* Setters */
+    void set_y_max(float x) { y_max = x; }
+    void set_y_min(float x) { y_min = x; }
+
 private:
     /* Methods */
     void init_VAO(unsigned int size, bool color, bool normal, bool tex);
@@ -36,6 +44,9 @@ private:
     unsigned int EBO;
 
     bool has_EBO;
+
+    float y_max;
+    float y_min;
 };
 
 #endif /* !SRC/OBJECTS/OBJECT_HH_ */
