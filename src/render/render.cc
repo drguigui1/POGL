@@ -15,11 +15,14 @@
 #include "texture.hh"
 #include "height_map.hh"
 #include "save.hh"
+#include "skybox.hh"
 
 #include "noise.hh"
 #include "noise2.hh"
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+unsigned int loadCubemap(std::vector<std::string> faces);
 
 static void processInput(Window& window, float time) {
     // Close window
@@ -74,7 +77,6 @@ void render(Window& window, unsigned int width, unsigned int height) {
         prev_frame = curr_frame;
 
         // render
-        // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -117,6 +119,74 @@ void render(Window& window, unsigned int width, unsigned int height) {
         cube2_shader.set_vec3("userPos", camera.get_position());
 
         cube.draw();
+
+        window.swap_buffers();
+        glfwPollEvents();
+    }
+}
+
+void render2(Window& window, unsigned int, unsigned int) {
+    // Shaders
+    Shader plane_shader("shaders/plane_terrain.vs", "shaders/plane_terrain.fs");
+    Shader cube2_shader("shaders/cube_tex.vs", "shaders/cube_tex.fs");
+    Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
+
+    // Objects
+    Object plane = create_plane(5);
+    Object cube = create_cube();
+    Skybox skybox("data/skybox/forest");
+    //Skybox skybox("data/skybox/hornstulls");
+
+    // Texture
+    Texture texture("data/container.jpg");
+
+    // timing
+    float prev_frame = 0.0f;
+    while (!window.should_close()) {
+        float curr_frame = glfwGetTime();
+
+        // input
+        processInput(window, curr_frame - prev_frame);
+        prev_frame = curr_frame;
+
+        // render
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), window.get_ratio(), 0.1f, 100.0f);
+        glm::mat4 view = camera.get_matrix_view();
+
+        // Plane
+        plane_shader.use();
+        plane_shader.set_mat4("projection", projection);
+        plane_shader.set_mat4("view", view);
+        plane_shader.set_mat4("model", model);
+        plane_shader.set_float("iTime", curr_frame);
+
+        plane.draw();
+
+        // draw another cube
+        texture.use();
+        cube2_shader.use();
+
+        model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
+        cube2_shader.set_mat4("projection", projection);
+        cube2_shader.set_mat4("view", view);
+        cube2_shader.set_mat4("model", model);
+        cube2_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+        cube2_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        cube2_shader.set_vec3("userPos", camera.get_position());
+
+        cube.draw();
+
+        // Skybox
+        skybox_shader.use();
+        view = glm::mat4(glm::mat3(camera.get_matrix_view()));
+        skybox_shader.set_mat4("view", view);
+        skybox_shader.set_mat4("projection", projection);
+
+        skybox.draw();
 
         window.swap_buffers();
         glfwPollEvents();

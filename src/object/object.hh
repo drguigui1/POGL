@@ -7,6 +7,7 @@
 
 class Object {
 public:
+    Object() = default;
     Object(std::vector<float>& vertices, bool color, bool normal, bool tex);
     Object(std::vector<float>& vertices, std::vector<float>& indices,
         bool color, bool normal, bool tex);

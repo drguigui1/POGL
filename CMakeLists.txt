@@ -14,6 +14,7 @@ set(
     src/window/window_cb.cc
     src/image/image.cc
     src/render/render.cc
+    src/skybox/skybox.cc
 )
 
 include_directories(
@@ -26,6 +27,7 @@ include_directories(
     src/shader
     src/image
     src/texture
+    src/skybox
     src/noise
     src/render
 )
