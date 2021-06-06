@@ -13,6 +13,7 @@ set(
     src/window/window.cc
     src/window/window_cb.cc
     src/image/image.cc
+    src/render/render.cc
 )
 
 include_directories(
@@ -26,6 +27,7 @@ include_directories(
     src/image
     src/texture
     src/noise
+    src/render
 )
 
 cmake_minimum_required(VERSION 3.12)
