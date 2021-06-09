@@ -17,6 +17,7 @@ set(
     src/skybox/skybox.cc
     src/loader/model.cc
     src/loader/mesh.cc
+    src/loader/material_texture.cc
 )
 
 include_directories(

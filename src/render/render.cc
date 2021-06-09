@@ -132,6 +132,7 @@ void render2(Window& window, unsigned int, unsigned int) {
     Shader plane_shader("shaders/plane_terrain.vs", "shaders/plane_terrain.fs");
     Shader cube2_shader("shaders/cube_tex.vs", "shaders/cube_tex.fs");
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
+    Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
 
     // Objects
     Object plane = create_plane(5);
@@ -142,8 +143,8 @@ void render2(Window& window, unsigned int, unsigned int) {
     // Texture
     Texture texture("data/container.jpg");
 
-    const std::string path = "data/models/backpack.obj";
-    auto m = Model(path);
+    const std::string path = "data/models/soccer_ball/football_ball_OBJ.obj";
+    auto ball = Model(path);
 
     // timing
     float prev_frame = 0.0f;
@@ -183,9 +184,16 @@ void render2(Window& window, unsigned int, unsigned int) {
         cube2_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
         cube2_shader.set_vec3("userPos", camera.get_position());
 
-        cube.draw();
+        //cube.draw();
 
-        m.draw();
+        ball.draw(obj_shader);
+        obj_shader.set_mat4("projection", projection);
+        obj_shader.set_mat4("view", view);
+        obj_shader.set_mat4("model", model);
+
+        obj_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        obj_shader.set_vec3("userPos", camera.get_position());
 
         // Skybox
         skybox_shader.use();
