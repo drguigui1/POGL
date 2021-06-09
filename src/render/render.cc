@@ -20,6 +20,8 @@
 #include "noise.hh"
 #include "noise2.hh"
 
+#include "model.hh"
+
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 unsigned int loadCubemap(std::vector<std::string> faces);
@@ -140,6 +142,9 @@ void render2(Window& window, unsigned int, unsigned int) {
     // Texture
     Texture texture("data/container.jpg");
 
+    const std::string path = "data/models/backpack.obj";
+    auto m = Model(path);
+
     // timing
     float prev_frame = 0.0f;
     while (!window.should_close()) {
@@ -164,7 +169,7 @@ void render2(Window& window, unsigned int, unsigned int) {
         plane_shader.set_mat4("model", model);
         plane_shader.set_float("iTime", curr_frame);
 
-        plane.draw();
+        //plane.draw();
 
         // draw another cube
         texture.use();
@@ -179,6 +184,8 @@ void render2(Window& window, unsigned int, unsigned int) {
         cube2_shader.set_vec3("userPos", camera.get_position());
 
         cube.draw();
+
+        m.draw();
 
         // Skybox
         skybox_shader.use();

@@ -15,6 +15,8 @@ set(
     src/image/image.cc
     src/render/render.cc
     src/skybox/skybox.cc
+    src/loader/model.cc
+    src/loader/mesh.cc
 )
 
 include_directories(
@@ -30,6 +32,7 @@ include_directories(
     src/skybox
     src/noise
     src/render
+    src/loader
 )
 
 cmake_minimum_required(VERSION 3.12)
@@ -49,6 +52,7 @@ target_sources(opengl PRIVATE "src/main.cc" ${SRC_OPENGL})
 
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
+find_package(ASSIMP REQUIRED)
 
-target_link_libraries(opengl GL GLEW glfw)
+target_link_libraries(opengl GL GLEW glfw assimp)
 target_compile_options(opengl PRIVATE -Wall -Wextra)
