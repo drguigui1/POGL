@@ -63,7 +63,7 @@ void Model::load_mesh(aiNode* root, const aiScene* scene) {
         material->Get(AI_MATKEY_COLOR_SPECULAR, color);
         auto ks = aiColor3D_to_glmVec4(color);
 
-        MaterialTexture mat(ka, kd, ks);
+        Material mat(ka, kd, ks);
         materials.push_back(mat);
     }
 

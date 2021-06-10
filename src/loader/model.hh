@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "material_texture.hh"
+#include "material.hh"
 #include "mesh.hh"
 #include "shader.hh"
 
@@ -21,7 +21,7 @@ class Model {
         void load_mesh(aiNode* root, const aiScene* scene);
 
         std::vector<Mesh> meshes;
-        std::vector<MaterialTexture> materials;
+        std::vector<Material> materials;
 };
 
 #endif

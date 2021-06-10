@@ -10,6 +10,7 @@ set(
     src/object/object.cc
     src/shader/shader.cc
     src/texture/texture.cc
+    src/material/material.cc
     src/window/window.cc
     src/window/window_cb.cc
     src/image/image.cc
@@ -17,7 +18,6 @@ set(
     src/skybox/skybox.cc
     src/loader/model.cc
     src/loader/mesh.cc
-    src/loader/material_texture.cc
 )
 
 include_directories(
@@ -30,6 +30,7 @@ include_directories(
     src/shader
     src/image
     src/texture
+    src/material
     src/skybox
     src/noise
     src/render

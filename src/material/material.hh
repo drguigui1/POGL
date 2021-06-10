@@ -1,12 +1,13 @@
-#pragma once
+#ifndef MATERIAL_HH
+#define MATERIAL_HH
 
 #include <glm/glm.hpp>
 
-class MaterialTexture {
+class Material {
 
 public:
-    MaterialTexture() = default;
-    MaterialTexture(const glm::vec4&, const glm::vec4&, const glm::vec4&);
+    Material() = default;
+    Material(const glm::vec4&, const glm::vec4&, const glm::vec4&);
 
     /* Getters */
     glm::vec3 get_ka() const { return ka; }
@@ -24,3 +25,5 @@ private:
     glm::vec3 kd; // diffuse
     glm::vec3 ks; // specular
 };
+
+#endif

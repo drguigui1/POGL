@@ -170,7 +170,7 @@ void render2(Window& window, unsigned int, unsigned int) {
         plane_shader.set_mat4("model", model);
         plane_shader.set_float("iTime", curr_frame);
 
-        //plane.draw();
+        plane.draw();
 
         // draw another cube
         texture.use();
