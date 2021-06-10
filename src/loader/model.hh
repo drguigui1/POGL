@@ -22,6 +22,8 @@ class Model {
 
         std::vector<Mesh> meshes;
         std::vector<Material> materials;
+
+        std::string directory;
 };
 
 #endif

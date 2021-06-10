@@ -5,7 +5,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Texture::Texture(const char* texPath) {
+Texture::Texture(const char* texPath, TextureType t) {
     unsigned char* data;
     int width, height, nb_channels;
 
@@ -22,10 +22,9 @@ Texture::Texture(const char* texPath) {
     glBindTexture(GL_TEXTURE_2D, tex_id);
 
     // set parameters
-    // TODO maybe change to be a bit more generic
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
@@ -35,6 +34,9 @@ Texture::Texture(const char* texPath) {
 
     // free the loaded image by stbi
     stbi_image_free(data);
+
+    // set the type of the texture
+    type = t;
 }
 
 Texture::~Texture() {
