@@ -6,6 +6,7 @@
 #include <assimp/postprocess.h>
 
 #include <string>
+#include <unordered_map>
 
 #include "material.hh"
 #include "mesh.hh"
@@ -19,9 +20,12 @@ class Model {
 
     private:
         void load_mesh(aiNode* root, const aiScene* scene);
+        Mesh from_ai_mesh(const aiMesh* ai_mesh, const aiMaterial* material);
+        std::vector<Texture> load_textures(const aiMaterial* mat);
 
         std::vector<Mesh> meshes;
         std::vector<Material> materials;
+        std::unordered_map<std::string, Texture> textures_loaded;
 
         std::string directory;
 };

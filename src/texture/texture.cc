@@ -42,7 +42,7 @@ Texture::Texture(const char* texPath, TextureType t) {
 Texture::~Texture() {
 }
 
-void Texture::use() {
-    glActiveTexture(GL_TEXTURE0);
+void Texture::use(int idx) const {
+    glActiveTexture(GL_TEXTURE0 + idx);
     glBindTexture(GL_TEXTURE_2D, this->tex_id);
 }

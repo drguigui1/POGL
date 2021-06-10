@@ -26,23 +26,40 @@ Mesh::Mesh(std::vector<Vertex> v, std::vector<unsigned int> i, std::vector<Textu
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
     // bind normal
-    glEnableVertexAttribArray(1);	
+    glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(glm::vec3));
 
     // bind texture coord
-    glEnableVertexAttribArray(2);	
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) 2 * sizeof(glm::vec3));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) (2 * sizeof(glm::vec3)));
 }
 
 #include <iostream>
 
-void Mesh::draw() const {
-    // TODO manage texture
+static std::string TextureType_to_string(TextureType type) {
+    switch (type) {
+    case DIFFUSE:
+        return "diffuse";
+    case SPECULAR:
+        return "specular";
+    case NORMAL:
+        return "normal";
+    case HEIGHT:
+        return "height";
+    default:
+        return "other";
+    }
+}
 
+void Mesh::draw(Shader& shader) const {
     // activate and bind all textures before drawing
     for (unsigned int i = 0; i < textures.size(); ++i) {
-        glActiveTexture(GL_TEXTURE0 + i + 1);
-        glBindTexture(GL_TEXTURE_2D, textures[i].tex_id);
+        glActiveTexture(GL_TEXTURE0 + i);
+
+        std::string name = TextureType_to_string(textures[i].get_type());
+        //shader.set_int(name + "_map", i + 1);
+        glUniform1i(glGetUniformLocation(shader.get_id(), name.c_str()), i);
+        glBindTexture(GL_TEXTURE_2D, textures[i].get_id());
     }
 
     glBindVertexArray(vao);

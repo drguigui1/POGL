@@ -5,12 +5,14 @@
 
 #include "vertex.hh"
 #include "texture.hh"
+#include "shader.hh"
 
 class Mesh {
     public:
         Mesh(std::vector<Vertex> v, std::vector<unsigned int> i, std::vector<Texture> t);
 
-        void draw() const;
+        void draw(Shader& shader) const;
+
     private:
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;

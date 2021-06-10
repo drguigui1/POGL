@@ -1,6 +1,7 @@
 #include "model.hh"
 
 #include <iostream>
+#include <optional>
 
 Model::Model(const std::string& path) {
     Assimp::Importer loader;
@@ -11,11 +12,12 @@ Model::Model(const std::string& path) {
         return;
     }
 
-    std::cout << scene->mNumMaterials << std::endl;
+    std::cout << scene->mNumMeshes << std::endl;
+
+    directory = path.substr(0, path.find_last_of('/')) + '/';
+    textures_loaded = std::unordered_map<std::string, Texture>();
 
     load_mesh(scene->mRootNode, scene);
-
-    directory = path.substr(0, path.find_last_of('/'));
 }
 
 static glm::vec3 aiVector3t_to_glmVec3(const aiVector3t<float>& vec) {
@@ -26,23 +28,48 @@ static glm::vec2 aiVector3t_to_glmVec2(const aiVector3t<float>& vec) {
     return glm::vec2(vec.x, vec.y);
 }
 
-void Model::load_textures(aiMaterial *mat) {
-    // TODO
+static std::string get_texture_path(const aiMaterial* mat, const std::string& directory, aiTextureType type) {
+    aiString str;
+    mat->GetTexture(type, 0, &str);
 
-    // load first diffuse
-    aiString str_diffuse;
-    mat->GetTexture(aiTextureType_DIFFUSE, 0, &str_diffuse;
-
-    // load first specular
-    aiString str_specular;
-    mat->GetTexture(aiTextureType_SPECULAR, 0, &str_specular);
-
-    // load first specular
-    aiString str_normal;
-    mat->GetTexture(aiTextureType_HEIGHT, 0, &str_normal);
+    std::string c_str = str.C_Str();
+    if (c_str.empty())
+        return "";
+    return directory + str.C_Str();
 }
 
-static Mesh from_ai_mesh(const aiMesh* ai_mesh) {
+std::vector<Texture> Model::load_textures(const aiMaterial* mat) {
+    std::vector<Texture> textures;
+
+    // load first diffuse
+    std::string str_diffuse = get_texture_path(mat, directory, aiTextureType_DIFFUSE);
+    if (!str_diffuse.empty()) {
+        if (textures_loaded.find(str_diffuse) == textures_loaded.end())
+            textures_loaded[str_diffuse] = Texture(str_diffuse.c_str(), DIFFUSE);
+
+        textures.push_back(textures_loaded[str_diffuse]);
+    }
+
+    // load first specular
+    std::string str_specular = get_texture_path(mat, directory, aiTextureType_SPECULAR);
+    if (!str_specular.empty()) {
+        if (textures_loaded.find(str_specular) == textures_loaded.end())
+            textures_loaded[str_specular] = Texture(str_specular.c_str(), SPECULAR);
+        textures.push_back(textures_loaded[str_specular]);
+    }
+
+    // load first specular
+    std::string str_normal = get_texture_path(mat, directory, aiTextureType_HEIGHT);
+    if (!str_normal.empty()) {
+        if (textures_loaded.find(str_normal) == textures_loaded.end())
+            textures_loaded[str_normal] = Texture(str_normal.c_str(), NORMAL);
+        textures.push_back(textures_loaded[str_normal]);
+    }
+
+    return textures;
+}
+
+Mesh Model::from_ai_mesh(const aiMesh* ai_mesh, const aiMaterial* material) {
     std::vector<Vertex> vertices;
     for (unsigned int i = 0; i < ai_mesh->mNumVertices; ++i) {
         Vertex vertex;
@@ -51,7 +78,7 @@ static Mesh from_ai_mesh(const aiMesh* ai_mesh) {
         if (ai_mesh->HasNormals())
             vertex.set_normal(aiVector3t_to_glmVec3(ai_mesh->mNormals[i]));
 
-        if (ai_mesh->HasTextureCoords())
+        if (ai_mesh->HasTextureCoords(0))
             vertex.set_tex_coord(aiVector3t_to_glmVec2(ai_mesh->mTextureCoords[0][i]));
 
         vertices.push_back(vertex);
@@ -64,9 +91,9 @@ static Mesh from_ai_mesh(const aiMesh* ai_mesh) {
     }
 
     // load textures
-    std::vector<Texture> textures = load_textures();
+    std::vector<Texture> textures = load_textures(material);
 
-    return Mesh(vertices, indices);
+    return Mesh(vertices, indices, textures);
 }
 
 static glm::vec4 aiColor3D_to_glmVec4(const aiColor3D& vec) {
@@ -94,7 +121,7 @@ void Model::load_mesh(aiNode* root, const aiScene* scene) {
         aiMesh* ai_mesh = scene->mMeshes[root->mMeshes[i]];
 
         aiMaterial* material = scene->mMaterials[ai_mesh->mMaterialIndex];
-        const Mesh mesh = from_ai_mesh(ai_mesh);
+        const Mesh mesh = from_ai_mesh(ai_mesh, material);
         meshes.push_back(mesh);
 
         materials.push_back(load_material(material));
@@ -114,6 +141,6 @@ void Model::draw(Shader& shader) const {
         shader.set_vec3("diffuse", material.get_kd());
         shader.set_vec3("specular", material.get_ks());
 
-        meshes[i].draw();
+        meshes[i].draw(shader);
     }
 }
