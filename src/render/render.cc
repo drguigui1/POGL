@@ -173,17 +173,18 @@ void render2(Window& window, unsigned int, unsigned int) {
 
         plane.draw();
 
-        // draw another cube
-        texture.use();
-        cube2_shader.use();
 
-        model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
-        cube2_shader.set_mat4("projection", projection);
-        cube2_shader.set_mat4("view", view);
-        cube2_shader.set_mat4("model", model);
-        cube2_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
-        cube2_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
-        cube2_shader.set_vec3("userPos", camera.get_position());
+        // draw another cube
+        //texture.use();
+        //cube2_shader.use();
+
+        //model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
+        //cube2_shader.set_mat4("projection", projection);
+        //cube2_shader.set_mat4("view", view);
+        //cube2_shader.set_mat4("model", model);
+        //cube2_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+        //cube2_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        //cube2_shader.set_vec3("userPos", camera.get_position());
 
         //cube.draw();
 
@@ -198,7 +199,7 @@ void render2(Window& window, unsigned int, unsigned int) {
 
         // Skybox
         skybox_shader.use();
-        //view = glm::mat4(glm::mat3(camera.get_matrix_view()));
+        view = glm::mat4(glm::mat3(camera.get_matrix_view()));
         model = glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 50.0f));
         skybox_shader.set_mat4("view", view);
         skybox_shader.set_mat4("model", model);
