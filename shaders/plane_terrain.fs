@@ -148,7 +148,7 @@ float thunderbolt(vec2 x,vec2 tgt)
 
 void main()
 {
-	vec2 uv = 2.* texCoord.xy;
+	/*vec2 uv = 2.* texCoord.xy;
     uv*=20.;
     uv.y=40.-uv.y;
 
@@ -156,7 +156,8 @@ void main()
     float c = thunderbolt(uv+1.*fbm2(uv),vec2(10.));
     c+=thunderbolt(uv+1.*fbm2(uv),vec2(20.));
     c+=thunderbolt(uv+1.*fbm2(uv),vec2(50.,10.));
-    col+=clamp(1.7*vec3(0.8,.7,.9)*c,0.,1.);
+    col+=clamp(1.7*vec3(0.8,.7,.9)*c,0.,1.);*/
 
-	FragColor = vec4(col,1.0);
+	/*FragColor = vec4(col,1.0);*/
+    FragColor = vec4(0.8, 0.5, 0.3, 1.0);
 }
