@@ -98,7 +98,12 @@ void Object::add_vertex_attrib(int& i, int nb, unsigned int size, int& cum_size)
     i += 1;
 }
 
+void Object::draw(Shader&, GLenum type) {
+    this->draw(type);
+}
+
 void Object::draw(GLenum type) {
+
     glBindVertexArray(VAO);
     if (this->has_EBO)
         glDrawElements(type, this->nb_vertices, GL_UNSIGNED_INT, 0);

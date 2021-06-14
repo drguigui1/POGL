@@ -21,6 +21,7 @@
 #include "noise2.hh"
 
 #include "model.hh"
+#include "particules.hh"
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
@@ -134,6 +135,7 @@ void render2(Window& window, unsigned int, unsigned int) {
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
     Shader obj_shader_map("shaders/obj_maps.vs", "shaders/obj_maps.fs");
     Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
+    Shader particules_shader("shaders/particules.vs", "shaders/particules.fs");
 
     // Objects
     Object plane = create_plane(5);
@@ -144,11 +146,18 @@ void render2(Window& window, unsigned int, unsigned int) {
     // Texture
     Texture texture("data/container.jpg");
 
-    const std::string path = "data/models/backpack/backpack.obj";
+    //const std::string path = "data/models/backpack/backpack.obj";
     //const std::string path = "data/models/soccer_ball/football_ball_OBJ.obj";
     const std::string cuctus1_path = "data/models/cuctus/1/cuctus1.obj";
     //auto backpack = Model(path);
     auto cuctus1 = Model(cuctus1_path);
+
+    const std::string ball_path = "data/models/soccer_ball/football_ball_OBJ.obj";
+    Model ball(ball_path);
+
+    Particules particules;
+    particules.set_obj(std::make_shared<Model>(ball));
+    particules.generate_particules(50);
 
     // timing
     float prev_frame = 0.0f;
@@ -157,7 +166,6 @@ void render2(Window& window, unsigned int, unsigned int) {
 
         // input
         processInput(window, curr_frame - prev_frame);
-        prev_frame = curr_frame;
 
         // render
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -168,28 +176,24 @@ void render2(Window& window, unsigned int, unsigned int) {
         glm::mat4 view = camera.get_matrix_view();
 
         // Plane
-        plane_shader.use();
-        plane_shader.set_mat4("projection", projection);
-        plane_shader.set_mat4("view", view);
-        plane_shader.set_mat4("model", model);
-        plane_shader.set_float("iTime", curr_frame);
+        //plane_shader.use();
+        //plane_shader.set_mat4("projection", projection);
+        //plane_shader.set_mat4("view", view);
+        //plane_shader.set_mat4("model", model);
+        //plane_shader.set_float("iTime", curr_frame);
 
-        plane.draw();
+        //plane.draw();
 
 
         // draw another cube
-        //texture.use();
+
+        //particules_shader.use();
+        //particules_shader.set_mat4("projection", projection);
+        //particules_shader.set_mat4("view", view);
+        //particules_shader.set_mat4("model", model);
+        //particules.draw(particules_shader);
+
         //cube2_shader.use();
-
-        //model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
-        //cube2_shader.set_mat4("projection", projection);
-        //cube2_shader.set_mat4("view", view);
-        //cube2_shader.set_mat4("model", model);
-        //cube2_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
-        //cube2_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
-        //cube2_shader.set_vec3("userPos", camera.get_position());
-
-        //cube.draw();
 
         // backpack
         /*backpack.draw(obj_shader_map);
@@ -213,17 +217,32 @@ void render2(Window& window, unsigned int, unsigned int) {
         obj_shader.set_vec3("lightPos", 10.0f, 5.0f, 0.0f);
         obj_shader.set_vec3("userPos", camera.get_position());
 
+        //ball.draw(obj_shader);
+        //obj_shader.set_mat4("projection", projection);
+        //obj_shader.set_mat4("view", view);
+        //obj_shader.set_mat4("model", model);
+
+        //obj_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+        //obj_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        //obj_shader.set_vec3("userPos", camera.get_position());
+
+        //obj_shader.use();
+        particules_shader.use();
+        particules.draw(particules_shader, projection, view, 0.15);
+
         // Skybox
-        skybox_shader.use();
-        view = glm::mat4(glm::mat3(camera.get_matrix_view()));
-        model = glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 50.0f));
-        skybox_shader.set_mat4("view", view);
-        skybox_shader.set_mat4("model", model);
-        skybox_shader.set_mat4("projection", projection);
-        skybox_shader.set_vec3("userPos", camera.get_position());
+        //skybox_shader.use();
+        //view = glm::mat4(glm::mat3(camera.get_matrix_view()));
+        //model = glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 50.0f));
+        //skybox_shader.set_mat4("view", view);
+        //skybox_shader.set_mat4("model", model);
+        //skybox_shader.set_mat4("projection", projection);
+        //skybox_shader.set_vec3("userPos", camera.get_position());
 
-        skybox.draw();
+        //skybox.draw();
 
+        particules.update(curr_frame - prev_frame);
+        prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
     }

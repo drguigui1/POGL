@@ -11,12 +11,13 @@
 #include "material.hh"
 #include "mesh.hh"
 #include "shader.hh"
+#include "object.hh"
 
-class Model {
+class Model : public Object {
     public:
         Model(const std::string& path);
 
-        void draw(Shader& shader) const;
+        virtual void draw(Shader& shader, GLenum type=GL_TRIANGLES);
 
     private:
         void load_mesh(aiNode* root, const aiScene* scene);
