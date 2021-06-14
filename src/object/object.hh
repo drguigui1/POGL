@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "shader.hh"
+
 class Object {
 public:
     Object() = default;
@@ -15,7 +17,8 @@ public:
     ~Object();
 
     /* Methods */
-    void draw(GLenum type=GL_TRIANGLES);
+    virtual void draw(GLenum type=GL_TRIANGLES);
+    virtual void draw(Shader& shader, GLenum type=GL_TRIANGLES);
 
     /* Getters */
     float get_y_max() const { return y_max; }

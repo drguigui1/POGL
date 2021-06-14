@@ -1,7 +1,6 @@
 #include "model.hh"
 
 #include <iostream>
-#include <optional>
 
 Model::Model(const std::string& path) {
     Assimp::Importer loader;
@@ -132,7 +131,8 @@ void Model::load_mesh(aiNode* root, const aiScene* scene) {
 }
 
 
-void Model::draw(Shader& shader) const {
+void Model::draw(Shader& shader, GLenum) {
+    std::cout << "Model draw" << std::endl;
     for (unsigned int i = 0; i < meshes.size(); ++i) {
         shader.use();
 

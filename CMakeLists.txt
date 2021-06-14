@@ -18,6 +18,9 @@ set(
     src/skybox/skybox.cc
     src/loader/model.cc
     src/loader/mesh.cc
+
+    src/particules/particule.cc
+    src/particules/particules.cc
 )
 
 include_directories(
@@ -35,6 +38,7 @@ include_directories(
     src/noise
     src/render
     src/loader
+    src/particules
 )
 
 cmake_minimum_required(VERSION 3.12)
