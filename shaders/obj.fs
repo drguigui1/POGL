@@ -24,7 +24,7 @@ void main()
     vec3 ambiant = ambiantStrength * lightColor * ambient.rgb;
 
     // compute diffuse
-    vec3 diffuse = max(dot(norm, lightDir), 0.0) * lightColor * diffuse.rgb;
+    vec3 diff = max(dot(norm, lightDir), 0.0) * lightColor * diffuse.rgb;
 
     // compute specular
     float specularS = 0;
@@ -33,7 +33,7 @@ void main()
     vec3 reflectDir = reflect(lightDir, norm);
     vec3 spec = specularS * pow(max(dot(userDir, reflectDir), 0.0), shininess) * lightColor * specular;
 
-    vec4 res = vec4((ambiant + diffuse + spec), 1.0);
+    vec4 res = vec4((ambiant + diff + spec), 1.0);
     FragColor = res;
 
 }

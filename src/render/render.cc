@@ -132,7 +132,8 @@ void render2(Window& window, unsigned int, unsigned int) {
     Shader plane_shader("shaders/plane_terrain.vs", "shaders/plane_terrain.fs");
     Shader cube2_shader("shaders/cube_tex.vs", "shaders/cube_tex.fs");
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
-    Shader obj_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
+    Shader obj_shader_map("shaders/obj_maps.vs", "shaders/obj_maps.fs");
+    Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
 
     // Objects
     Object plane = create_plane(5);
@@ -145,7 +146,9 @@ void render2(Window& window, unsigned int, unsigned int) {
 
     const std::string path = "data/models/backpack/backpack.obj";
     //const std::string path = "data/models/soccer_ball/football_ball_OBJ.obj";
-    auto ball = Model(path);
+    const std::string cuctus1_path = "data/models/cuctus/1/cuctus1.obj";
+    //auto backpack = Model(path);
+    auto cuctus1 = Model(cuctus1_path);
 
     // timing
     float prev_frame = 0.0f;
@@ -188,13 +191,26 @@ void render2(Window& window, unsigned int, unsigned int) {
 
         //cube.draw();
 
-        ball.draw(obj_shader);
+        // backpack
+        /*backpack.draw(obj_shader_map);
+        obj_shader_map.set_mat4("projection", projection);
+        obj_shader_map.set_mat4("view", view);
+        obj_shader_map.set_mat4("model", model);
+
+        obj_shader_map.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader_map.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        obj_shader_map.set_vec3("userPos", camera.get_position());*/
+
+        // cuctus
+        cuctus1.draw(obj_shader);
+        auto model_cuctus = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+        model_cuctus = glm::scale(model_cuctus, glm::vec3(0.6f, 0.6f, 0.6f));
         obj_shader.set_mat4("projection", projection);
         obj_shader.set_mat4("view", view);
-        obj_shader.set_mat4("model", model);
+        obj_shader.set_mat4("model", model_cuctus);
 
         obj_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
-        obj_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        obj_shader.set_vec3("lightPos", 10.0f, 5.0f, 0.0f);
         obj_shader.set_vec3("userPos", camera.get_position());
 
         // Skybox
