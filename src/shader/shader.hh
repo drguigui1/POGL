@@ -12,6 +12,7 @@ public:
 
     /* Methods */
     void use();
+    void set_projection_view_model(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model);
 
     /* Setters */
     void set_bool(const std::string& name, bool value) const;

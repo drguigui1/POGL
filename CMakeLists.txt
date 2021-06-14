@@ -18,6 +18,7 @@ set(
     src/skybox/skybox.cc
     src/loader/model.cc
     src/loader/mesh.cc
+    src/render/render_utils.cc
 
     src/particules/particule.cc
     src/particules/particules.cc

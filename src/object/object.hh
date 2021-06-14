@@ -1,9 +1,9 @@
-#ifndef OBJECT_HH_
-#define OBJECT_HH_
+#pragma once
 
 #include <GL/glew.h>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "shader.hh"
 
@@ -53,4 +53,4 @@ private:
     float y_min;
 };
 
-#endif /* !SRC/OBJECTS/OBJECT_HH_ */
+using shared_obj = std::shared_ptr<Object>;

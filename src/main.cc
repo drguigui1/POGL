@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     glEnable(GL_DEPTH_TEST);
 
     // Render loop
-    render2(window, width, height);
+    render2(window);
 
     glfwTerminate();
     return 0;
