@@ -1,13 +1,20 @@
 # version 460 core
 
+struct PointLight {
+    vec3 pos;
+    float kc; // constant
+    float kl; // linear
+    float kq; // quadratic
+    vec3 lightColor;
+};
+
 out vec4 FragColor;
 
 in vec3 normal;
 in vec2 texCoord;
 in vec3 fragPos;
 
-uniform vec3 lightColor;
-uniform vec3 lightPos;
+uniform PointLight pointLight;
 uniform vec3 userPos;
 
 uniform vec3 ambient;
@@ -16,8 +23,19 @@ uniform vec3 specular;
 
 void main()
 {
+    // compute the light distance
+    float distance = length(pointLight.pos - fragPos);
+
+    // compute light attenuation
+    float den = (pointLight.kc + pointLight.kl * distance + pointLight.kq * (distance * distance));
+    float lightAttenuation = 1.0 / den;
+
+    // get light dir
     vec3 norm = normalize(normal);
-    vec3 lightDir = normalize(lightPos - fragPos);
+    vec3 lightDir = normalize(pointLight.pos - fragPos);
+
+    // Get light color
+    vec3 lightColor = lightAttenuation * pointLight.lightColor;
 
     // compute ambiant
     float ambiantStrength = 0.1;
@@ -35,5 +53,4 @@ void main()
 
     vec4 res = vec4((ambiant + diff + spec), 1.0);
     FragColor = res;
-
 }

@@ -213,8 +213,11 @@ void render2(Window& window, unsigned int, unsigned int) {
         obj_shader.set_mat4("view", view);
         obj_shader.set_mat4("model", model_cuctus);
 
-        obj_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
-        obj_shader.set_vec3("lightPos", 10.0f, 5.0f, 0.0f);
+        obj_shader.set_vec3("pointLight.lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("pointLight.pos", 1.0f, 20.0f, 0.0f);
+        obj_shader.set_float("pointLight.kc", 1.0f);
+        obj_shader.set_float("pointLight.kl", 0.09f);
+        obj_shader.set_float("pointLight.kq", 0.032f);
         obj_shader.set_vec3("userPos", camera.get_position());
 
         //particules_shader.use();
@@ -236,8 +239,8 @@ void render2(Window& window, unsigned int, unsigned int) {
         //obj_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
         //obj_shader.set_vec3("userPos", camera.get_position());
 
-        particules_shader.use();
-        particules.draw(particules_shader, projection, view, 0.15);
+        //particules_shader.use();
+        //particules.draw(particules_shader, projection, view, 0.15);
 
         //ball.draw(obj_shader);
         //obj_shader.set_mat4("projection", projection);
@@ -249,21 +252,21 @@ void render2(Window& window, unsigned int, unsigned int) {
         //obj_shader.set_vec3("userPos", camera.get_position());
 
         //obj_shader.use();
-        particules_shader.use();
-        particules.draw(particules_shader, projection, view, 0.15);
+        //particules_shader.use();
+        //particules.draw(particules_shader, projection, view, 0.15);
 
         // Skybox
-        //skybox_shader.use();
-        //view = glm::mat4(glm::mat3(camera.get_matrix_view()));
-        //model = glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 50.0f));
-        //skybox_shader.set_mat4("view", view);
-        //skybox_shader.set_mat4("model", model);
-        //skybox_shader.set_mat4("projection", projection);
-        //skybox_shader.set_vec3("userPos", camera.get_position());
+        skybox_shader.use();
+        view = glm::mat4(glm::mat3(camera.get_matrix_view()));
+        model = glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 50.0f));
+        skybox_shader.set_mat4("view", view);
+        skybox_shader.set_mat4("model", model);
+        skybox_shader.set_mat4("projection", projection);
+        skybox_shader.set_vec3("userPos", camera.get_position());
 
-        //skybox.draw();
+        skybox.draw();
 
-        particules.update(curr_frame - prev_frame);
+        //particules.update(curr_frame - prev_frame);
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
