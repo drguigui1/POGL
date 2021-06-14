@@ -18,6 +18,8 @@ set(
     src/skybox/skybox.cc
     src/loader/model.cc
     src/loader/mesh.cc
+    src/light/light.cc
+    src/light/lights.cc
 
     src/particules/particule.cc
     src/particules/particules.cc
@@ -39,6 +41,7 @@ include_directories(
     src/render
     src/loader
     src/particules
+    src/light
 )
 
 cmake_minimum_required(VERSION 3.12)

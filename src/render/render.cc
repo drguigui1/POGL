@@ -7,7 +7,7 @@
 
 #include "render.hh"
 
-#include "shader.hh"
+//#include "shader.hh"
 
 #include "camera.hh"
 #include "object.hh"
@@ -22,6 +22,8 @@
 
 #include "model.hh"
 #include "particules.hh"
+
+#include "lights.hh"
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
@@ -143,6 +145,18 @@ void render2(Window& window, unsigned int, unsigned int) {
     Skybox skybox("data/skybox/forest");
     //Skybox skybox("data/skybox/hornstulls");
 
+    // Lights
+    Lights lights;
+    glm::vec3 l_color(1.0, 1.0, 1.0);
+    DirectionalLight dir_light(glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(-5.0f, -5.0f, -5.0f));
+    PointLight p_light1(l_color, glm::vec3(3.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light2(l_color, glm::vec3(-3.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light3(l_color, glm::vec3(0.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
+    lights.add_directional_light(dir_light);
+    lights.add_point_light(p_light1);
+    lights.add_point_light(p_light2);
+    lights.add_point_light(p_light3);
+
     // Texture
     Texture texture("data/container.jpg");
 
@@ -213,24 +227,9 @@ void render2(Window& window, unsigned int, unsigned int) {
         obj_shader.set_mat4("view", view);
         obj_shader.set_mat4("model", model_cuctus);
 
-        // point light 1
-        obj_shader.set_vec3("pointLights[0].lightColor", 1.0f, 1.0f, 1.0f);
-        obj_shader.set_vec3("pointLights[0].pos", 3.0f, 3.0f, 0.0f);
-        obj_shader.set_float("pointLights[0].kc", 1.0f);
-        obj_shader.set_float("pointLights[0].kl", 0.09f);
-        obj_shader.set_float("pointLights[0].kq", 0.032f);
-        // point light 2
-        obj_shader.set_vec3("pointLights[1].lightColor", 1.0f, 1.0f, 1.0f);
-        obj_shader.set_vec3("pointLights[1].pos", -3.0f, 3.0f, 0.0f);
-        obj_shader.set_float("pointLights[1].kc", 1.0f);
-        obj_shader.set_float("pointLights[1].kl", 0.09f);
-        obj_shader.set_float("pointLights[1].kq", 0.032f);
+        lights.send_data_to_shader(obj_shader);
 
-        obj_shader.set_vec3("dirLight.lightColor", 1.0f, 1.0f, 1.0f);
-        obj_shader.set_vec3("dirLight.dir", -5.0f, -5.0f, -5.0f);
         obj_shader.set_vec3("userPos", camera.get_position());
-
-        obj_shader.set_int("nbLights", 2);
 
         //particules_shader.use();
         //particules_shader.set_mat4("projection", projection);
