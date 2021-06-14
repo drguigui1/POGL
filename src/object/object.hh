@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "shader.hh"
+#include "texture.hh"
 
 class Object {
 public:
@@ -27,6 +28,7 @@ public:
     /* Setters */
     void set_y_max(float x) { y_max = x; }
     void set_y_min(float x) { y_min = x; }
+    void set_texture(shared_texture t) { texture = t; }
 
 private:
     /* Methods */
@@ -37,12 +39,6 @@ private:
     std::string id;
     unsigned int nb_vertices;
 
-    // texture
-    unsigned char* tex_data;
-    int tex_width;
-    int tex_height;
-    unsigned int tex_id;
-
     unsigned int VAO;
     unsigned int VBO;
     unsigned int EBO;
@@ -51,6 +47,8 @@ private:
 
     float y_max;
     float y_min;
+
+    shared_texture texture;
 };
 
 using shared_obj = std::shared_ptr<Object>;

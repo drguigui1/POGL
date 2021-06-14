@@ -159,5 +159,5 @@ void main()
     col+=clamp(1.7*vec3(0.8,.7,.9)*c,0.,1.);
 
     FragColor = vec4(col,1.0);
-    FragColor = vec4(0.8, 0.5, 0.3, 1.0);
+    FragColor = vec4(0.5f, 0.3, 0.0,1.0);
 }

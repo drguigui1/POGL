@@ -19,11 +19,15 @@ public:
     void update(float delta);
 
     /* Setters */
+    void set_center(const glm::vec3& c) { center = c; }
+    void set_radius_min(const glm::vec3& r) { radius_min = r; }
+    void set_radius_max(const glm::vec3& r) { radius_max = r; }
     void set_obj(std::shared_ptr<Object> o) { obj = o; }
 
 private:
     /* Methods */
     void add_new_particule(const glm::vec3& offset);
+    void set_new_particule_at(const glm::vec3& offset, unsigned int idx);
 
     /* Attributes */
     std::vector<shared_particule> particules;

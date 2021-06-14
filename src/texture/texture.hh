@@ -1,7 +1,7 @@
-#ifndef TEXTURE_HH
-#define TEXTURE_HH
+#pragma once
 
 #include <iostream>
+#include <memory>
 
 enum TextureType {
     DIFFUSE,
@@ -29,4 +29,4 @@ private:
     TextureType type;
 };
 
-#endif /* !SRC/TEXTURE/TEXTURE_HH_ */
+using shared_texture = std::shared_ptr<Texture>;

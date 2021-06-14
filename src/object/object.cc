@@ -103,6 +103,8 @@ void Object::draw(Shader&, GLenum type) {
 }
 
 void Object::draw(GLenum type) {
+    if (this->texture)
+        this->texture->use();
 
     glBindVertexArray(VAO);
     if (this->has_EBO)
