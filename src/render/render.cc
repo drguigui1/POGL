@@ -139,6 +139,9 @@ void render2(Window& window) {
         // render
         gl_clear_update();
 
+        glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), window_ratio, 0.1f, 100.0f);
+        glm::mat4 view = camera.get_matrix_view();
+
         // Plane
         render_plane(plane_shader, window_ratio, plane);
 
@@ -146,26 +149,35 @@ void render2(Window& window) {
         //render_backpack(obj_shader_map, window_ratio, backpack);
 
         // cuctus
-        //cuctus1.draw(obj_shader);
-        //auto model_cuctus = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.5f, 0.0f));
-        //model_cuctus = glm::scale(model_cuctus, glm::vec3(0.6f, 0.6f, 0.6f));
+        cuctus1.draw(obj_shader);
+        auto model_cuctus = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.5f, 0.0f));
+        model_cuctus = glm::scale(model_cuctus, glm::vec3(0.6f, 0.6f, 0.6f));
+        obj_shader.set_projection_view_model(projection, view, model_cuctus);
 
-        //obj_shader.set_projection_view_model(projection, view, model_cuctus);
+        // point light 1
+        obj_shader.set_vec3("pointLights[0].lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("pointLights[0].pos", 3.0f, 3.0f, 0.0f);
+        obj_shader.set_float("pointLights[0].kc", 1.0f);
+        obj_shader.set_float("pointLights[0].kl", 0.09f);
+        obj_shader.set_float("pointLights[0].kq", 0.032f);
+        // point light 2
+        obj_shader.set_vec3("pointLights[1].lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("pointLights[1].pos", -3.0f, 3.0f, 0.0f);
+        obj_shader.set_float("pointLights[1].kc", 1.0f);
+        obj_shader.set_float("pointLights[1].kl", 0.09f);
+        obj_shader.set_float("pointLights[1].kq", 0.032f);
 
-        //obj_shader.set_vec3("pointLight.lightColor", 1.0f, 1.0f, 1.0f);
-        //obj_shader.set_vec3("pointLight.pos", 1.0f, 20.0f, 0.0f);
-        //obj_shader.set_float("pointLight.kc", 1.0f);
-        //obj_shader.set_float("pointLight.kl", 0.09f);
-        //obj_shader.set_float("pointLight.kq", 0.032f);
-        //obj_shader.set_vec3("dirLight.lightColor", 1.0f, 1.0f, 1.0f);
-        //obj_shader.set_vec3("dirLight.dir", -5.0f, -5.0f, -5.0f);
-        //obj_shader.set_vec3("userPos", camera.get_position());
+        obj_shader.set_vec3("dirLight.lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("dirLight.dir", -5.0f, -5.0f, -5.0f);
+        obj_shader.set_vec3("userPos", camera.get_position());
 
-        //cube2_shader.use();
+        obj_shader.set_int("nbLights", 2);
 
-        render_particules(particules_shader, window_ratio, particules, curr_frame - prev_frame);
+        // Particles
+        //render_particules(particules_shader, window_ratio, particules, curr_frame - prev_frame);
 
-        render_ball(obj_shader, window_ratio, ball);
+        // Ball
+        //render_ball(obj_shader, window_ratio, ball);
 
         // Skybox
         render_skybox(skybox_shader, window_ratio, skybox);
