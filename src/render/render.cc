@@ -218,6 +218,8 @@ void render2(Window& window, unsigned int, unsigned int) {
         obj_shader.set_float("pointLight.kc", 1.0f);
         obj_shader.set_float("pointLight.kl", 0.09f);
         obj_shader.set_float("pointLight.kq", 0.032f);
+        obj_shader.set_vec3("dirLight.lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("dirLight.dir", -5.0f, -5.0f, -5.0f);
         obj_shader.set_vec3("userPos", camera.get_position());
 
         //particules_shader.use();
