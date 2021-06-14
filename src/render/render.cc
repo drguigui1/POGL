@@ -217,6 +217,28 @@ void render2(Window& window, unsigned int, unsigned int) {
         obj_shader.set_vec3("lightPos", 10.0f, 5.0f, 0.0f);
         obj_shader.set_vec3("userPos", camera.get_position());
 
+        //particules_shader.use();
+        //particules_shader.set_mat4("projection", projection);
+        //particules_shader.set_mat4("view", view);
+        //particules_shader.set_mat4("model", model);
+        //particules.draw(particules_shader);
+
+        //cube2_shader.use();
+
+        //particules_shader.use();
+
+        //ball.draw(obj_shader);
+        //obj_shader.set_mat4("projection", projection);
+        //obj_shader.set_mat4("view", view);
+        //obj_shader.set_mat4("model", model);
+
+        //obj_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+        //obj_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+        //obj_shader.set_vec3("userPos", camera.get_position());
+
+        particules_shader.use();
+        particules.draw(particules_shader, projection, view, 0.15);
+
         //ball.draw(obj_shader);
         //obj_shader.set_mat4("projection", projection);
         //obj_shader.set_mat4("view", view);
