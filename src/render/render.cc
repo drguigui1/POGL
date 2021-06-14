@@ -213,14 +213,24 @@ void render2(Window& window, unsigned int, unsigned int) {
         obj_shader.set_mat4("view", view);
         obj_shader.set_mat4("model", model_cuctus);
 
-        obj_shader.set_vec3("pointLight.lightColor", 1.0f, 1.0f, 1.0f);
-        obj_shader.set_vec3("pointLight.pos", 1.0f, 20.0f, 0.0f);
-        obj_shader.set_float("pointLight.kc", 1.0f);
-        obj_shader.set_float("pointLight.kl", 0.09f);
-        obj_shader.set_float("pointLight.kq", 0.032f);
+        // point light 1
+        obj_shader.set_vec3("pointLights[0].lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("pointLights[0].pos", 3.0f, 3.0f, 0.0f);
+        obj_shader.set_float("pointLights[0].kc", 1.0f);
+        obj_shader.set_float("pointLights[0].kl", 0.09f);
+        obj_shader.set_float("pointLights[0].kq", 0.032f);
+        // point light 2
+        obj_shader.set_vec3("pointLights[1].lightColor", 1.0f, 1.0f, 1.0f);
+        obj_shader.set_vec3("pointLights[1].pos", -3.0f, 3.0f, 0.0f);
+        obj_shader.set_float("pointLights[1].kc", 1.0f);
+        obj_shader.set_float("pointLights[1].kl", 0.09f);
+        obj_shader.set_float("pointLights[1].kq", 0.032f);
+
         obj_shader.set_vec3("dirLight.lightColor", 1.0f, 1.0f, 1.0f);
         obj_shader.set_vec3("dirLight.dir", -5.0f, -5.0f, -5.0f);
         obj_shader.set_vec3("userPos", camera.get_position());
+
+        obj_shader.set_int("nbLights", 2);
 
         //particules_shader.use();
         //particules_shader.set_mat4("projection", projection);

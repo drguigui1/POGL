@@ -20,8 +20,10 @@ in vec2 texCoord;
 in vec3 fragPos;
 
 // lights
+#define MAX_LIGHTS 128
+uniform int nbLights;
 uniform DirectionalLight dirLight;
-uniform PointLight pointLight;
+uniform PointLight pointLights[MAX_LIGHTS];
 
 // position of the user
 uniform vec3 userPos;
@@ -88,7 +90,9 @@ vec3 computePLightContribution(PointLight light, vec3 normal, vec3 userPos, vec3
 
 void main()
 {
-    vec3 lightRes = computePLightContribution(pointLight, normal, userPos, fragPos);
-    lightRes += computeDirLightContribution(dirLight, normal, userPos, fragPos);
+    vec3 lightRes = computeDirLightContribution(dirLight, normal, userPos, fragPos);
+    for (int i = 0; i < nbLights && i < MAX_LIGHTS; ++i) {
+        lightRes += computePLightContribution(pointLights[i], normal, userPos, fragPos);
+    }
     FragColor = vec4(lightRes, 1.0);
 }
