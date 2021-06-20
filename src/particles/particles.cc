@@ -1,12 +1,26 @@
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "particules.hh"
+#include "particles.hh"
 
 #include "random.hh"
 #include "camera.hh"
 
-Particules::Particules(const glm::vec3& c, const glm::vec3& rad_min, const glm::vec3& rad_max)
-    : center(c), radius_min(rad_min), radius_max(rad_max)
+Particles::Particles()
+    : center(glm::vec3(0.0f)),
+    radius_min(glm::vec3(0.0f)),
+    radius_max(glm::vec3(1.0f)),
+    velocity_min(glm::vec3(0.0f, 0.5f, 0.0f)),
+    velocity_max(glm::vec3(0.0f, 0.5f, 0.0f)),
+    rotation({})
+{}
+
+Particles::Particles(const glm::vec3& c, const glm::vec3& rad_min, const glm::vec3& rad_max)
+    : center(c),
+    radius_min(rad_min),
+    radius_max(rad_max),
+    velocity_min(glm::vec3(0.0f, 0.5f, 0.0f)),
+    velocity_max(glm::vec3(0.0f, 0.5f, 0.0f)),
+    rotation({})
 {
     std::vector<float> cube_vertices = {
         // position          // colors
@@ -60,17 +74,34 @@ static float get_random_sign() {
     return randm::random_bool() ? 1 : -1;
 }
 
-void Particules::draw(Shader& shader, const glm::mat4& projection, const glm::mat4& view, float scale) {
+void Particles::generate_particles(unsigned int nb_particles) {
+    // Create random particles with random y position
+    for (unsigned int i = 0; i < nb_particles; ++i) {
+        float y = randm::random_float(this->radius_min.y, this->radius_max.y);
+        this->particles.push_back(this->create_particle(y));
+    }
+}
+
+void Particles::add_particle(const Particle& particle) {
+    this->particles.push_back(std::make_shared<Particle>(particle));
+}
+
+void Particles::draw(Shader& shader, const glm::mat4& projection, const glm::mat4& view) {
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-    for (unsigned int i = 0; i < this->particules.size(); ++i) {
-        shared_particule particule = this->particules[i];
+    for (unsigned int i = 0; i < this->particles.size(); ++i) {
+        shared_particle particle = this->particles[i];
 
         // TODO: Use lifetime or position.y to determine if the obj is still alive
         // FIXME: condition on position.y depends on the plane
-        if (particule->get_lifetime() > 0 && particule->get_position().y > -0.5) {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), particule->get_position());
-            model = glm::scale(model, glm::vec3(scale));
+        if (particle->get_lifetime() > 0 && particle->get_position().y > -0.5) {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), particle->get_position());
+            model = glm::scale(model, glm::vec3(particle->get_scale()));
+            if (particle->get_rotation().has_value()) {
+                model = glm::rotate(model,
+                        particle->get_rotation().value().first,
+                        particle->get_rotation().value().second);
+            }
 
             shader.set_mat4("projection", projection);
             shader.set_mat4("view", view);
@@ -98,46 +129,46 @@ void Particules::draw(Shader& shader, const glm::mat4& projection, const glm::ma
 
             this->obj->draw(shader);
         } else {
-            float x = randm::random_float(this->radius_min.x, this->radius_max.x);
-            float y = this->radius_max.y + randm::random_float(0.0f, 0.5f);
-            float z = randm::random_float(this->radius_min.z, this->radius_max.z);
-            glm::vec3 offset(x * get_random_sign(), y * get_random_sign(), z * get_random_sign());
-            this->set_new_particule_at(offset, i);
+            this->set_new_particle_at(i);
         }
     }
 }
 
-void Particules::add_particule(const Particule& particule) {
-    this->particules.push_back(std::make_shared<Particule>(particule));
+void Particles::update(float delta) {
+    for (shared_particle& particle: this->particles)
+        particle->update(delta);
 }
 
-void Particules::set_new_particule_at(const glm::vec3& offset, unsigned int idx) {
-    Particule particule;
-    particule.set_position(this->center + offset);
+shared_particle Particles::create_particle(float y) const {
+    Particle particle;
 
-    this->particules[idx] = std::make_shared<Particule>(particule);
-}
+    // Position
+    float x = randm::random_float(this->radius_min.x, this->radius_max.x);
+    float z = randm::random_float(this->radius_min.z, this->radius_max.z);
+    glm::vec3 offset(x * get_random_sign(), y * get_random_sign(), z * get_random_sign());
+    particle.set_position(this->center + offset);
 
-void Particules::add_new_particule(const glm::vec3& offset) {
-    Particule particule;
-    particule.set_position(this->center + offset);
+    // Velocity
+    x = randm::random_float(this->velocity_min.x, this->velocity_max.x);
+    y = randm::random_float(this->velocity_min.y, this->velocity_max.y);
+    z = randm::random_float(this->velocity_min.z, this->velocity_max.z);
+    particle.set_velocity(glm::vec3(x, y, z));
 
-    this->particules.push_back(std::make_shared<Particule>(particule));
-}
-
-void Particules::generate_particules(unsigned int nb_particules) {
-    // create this->amount default particle instances
-    for (unsigned int i = 0; i < nb_particules; ++i) {
-        float x = randm::random_float(this->radius_min.x, this->radius_max.x);
-        float y = randm::random_float(this->radius_min.y, this->radius_max.y);
-        float z = randm::random_float(this->radius_min.z, this->radius_max.z);
-        glm::vec3 offset(x * get_random_sign(), y * get_random_sign(), z * get_random_sign());
-        this->add_new_particule(offset);
+    // Rotation
+    if (this->rotation.has_value()) {
+        float radians = this->rotation.value().first + randm::random_float(-10.0f, 10.0f);
+        glm::vec3 axis = this->rotation.value().second + randm::random_vec3(-0.5f, 0.5f);
+        particle.set_rotation(radians, axis);
     }
+
+    // Scale
+    particle.set_scale(randm::random_float(this->scale_min, this->scale_max));
+
+    return std::make_shared<Particle>(particle);
 }
 
-void Particules::update(float delta) {
-    for (shared_particule& particule: this->particules) {
-        particule->update(delta);
-    }
+void Particles::set_new_particle_at(unsigned int& idx) {
+    // Create random particles with y on the top
+    float y = this->radius_max.y + randm::random_float(0.0f, 0.5f);
+    this->particles[idx] = this->create_particle(y);
 }

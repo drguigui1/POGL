@@ -2,7 +2,7 @@
 
 #include "shader.hh"
 
-#include "particules.hh"
+#include "particles.hh"
 #include "object.hh"
 #include "model.hh"
 #include "skybox.hh"
@@ -20,8 +20,8 @@ void render_global_cube(Shader& shader, const float& ratio, Object& cube);
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);
 
-/* Particules */
-void render_particules(Shader& shader, const float& ratio, Particules& particules, float delta);
+/* Particles */
+void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta);
 
 /* Skybox */
 void render_skybox(Shader& shader, const float& ratio, Skybox& skybox);

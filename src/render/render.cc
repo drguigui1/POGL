@@ -102,7 +102,7 @@ void render2(Window& window) {
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
     Shader obj_shader_map("shaders/obj_maps.vs", "shaders/obj_maps.fs");
     Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
-    Shader particules_shader("shaders/particules.vs", "shaders/particules.fs");
+    Shader particles_shader("shaders/particles.vs", "shaders/particles.fs");
 
     // Objects
     Object plane = create_plane(5);
@@ -113,22 +113,16 @@ void render2(Window& window) {
     // Texture
     Texture texture("data/images/container.jpg");
 
-    //const std::string path = "data/models/soccer_ball/football_ball_OBJ.obj";
-    const std::string cuctus1_path = "data/models/cuctus/1/cuctus1.obj";
-    auto cuctus1 = Model(cuctus1_path);
+    //const std::string cuctus1_path = "data/models/cuctus/1/cuctus1.obj";
+    //auto cuctus1 = Model(cuctus1_path);
 
     //const std::string backpack_path = "data/models/backpack/backpack.obj";
     //auto backpack = Model(backpack_path);
 
-    const std::string ball_path = "data/models/soccer_ball/football_ball_OBJ.obj";
-    Model ball(ball_path);
+    //const std::string ball_path = "data/models/soccer_ball/football_ball_OBJ.obj";
+    //Model ball(ball_path);
 
-    Particules particules;
-    particules.set_center(glm::vec3(0.0f));
-    particules.set_radius_min(glm::vec3(0.0f));
-    particules.set_radius_max(glm::vec3(2.5f));
-    particules.set_obj(std::make_shared<Model>(ball));
-    particules.generate_particules(500);
+    Particles snowflake_particles = create_snowflake_particles();
 
     const float window_ratio = window.get_ratio();
     // timing
@@ -177,7 +171,7 @@ void render2(Window& window) {
         //obj_shader.set_int("nbLights", 2);
 
         // Particles
-        render_particules(particules_shader, window_ratio, particules, curr_frame - prev_frame);
+        render_particles(particles_shader, window_ratio, snowflake_particles, curr_frame - prev_frame);
 
         // Ball
         //render_ball(obj_shader, window_ratio, ball);
