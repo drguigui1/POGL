@@ -20,9 +20,10 @@ set(
     src/loader/mesh.cc
     src/light/light.cc
     src/light/lights.cc
+    src/render/render_utils.cc
 
-    src/particules/particule.cc
-    src/particules/particules.cc
+    src/particles/particle.cc
+    src/particles/particles.cc
 )
 
 include_directories(
@@ -42,6 +43,7 @@ include_directories(
     src/loader
     src/particules
     src/light
+    src/particles
 )
 
 cmake_minimum_required(VERSION 3.12)

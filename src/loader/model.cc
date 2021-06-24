@@ -11,8 +11,6 @@ Model::Model(const std::string& path) {
         return;
     }
 
-    std::cout << scene->mNumMeshes << std::endl;
-
     directory = path.substr(0, path.find_last_of('/')) + '/';
     textures_loaded = std::unordered_map<std::string, Texture>();
 

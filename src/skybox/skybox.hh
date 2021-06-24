@@ -14,11 +14,10 @@ public:
 
 private:
     /* Methods */
-    void init_obj(const std::vector<float>& vertices);
     void load_map(const std::vector<std::string>& faces);
 
     /* Attributes */
-    //Object* obj;
+    shared_obj obj;
     unsigned int VAO;
     unsigned int VBO;
     unsigned int nb_vertices;

@@ -19,7 +19,7 @@ public:
     void process_mouse_movement(float x, float y);
     void process_mouse_scroll(float y);
 
-    glm::mat4 get_matrix_view();
+    glm::mat4 get_matrix_view() const;
 
     /* Setters */
     void set_speed(float v) { speed = v; }

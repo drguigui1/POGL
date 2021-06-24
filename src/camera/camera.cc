@@ -16,7 +16,7 @@ Camera::Camera(glm::vec3 pos, glm::vec3 up) {
     update();
 }
 
-glm::mat4 Camera::get_matrix_view() {
+glm::mat4 Camera::get_matrix_view() const {
     return glm::lookAt(position, position + front, cup);
 }
 
@@ -45,7 +45,7 @@ void Camera::process_mouse_movement(float x, float y) {
     yaw = yaw + x * sensitivity;
     pitch = value::clamp(-89.0f, 89.0f, pitch + y * sensitivity);
 
-    update();
+    this->update();
 }
 
 void Camera::process_mouse_scroll(float y) {

@@ -1,6 +1,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include "model.hh"
 #include "init_obj.hh"
 #include "variadic.hh"
 #include "save.hh"
@@ -161,4 +162,26 @@ Object create_plane_from_heightmap(const char* path, float center_x, float cente
     }
 
     return Object(vertices_colors, true, false, false);
+}
+
+Particles create_snowflake_particles() {
+    const std::string snowflake_path = "data/models/snowflake/snowflake.obj";
+    Model snowflake(snowflake_path);
+
+    Particles particles(std::make_shared<Model>(snowflake));
+
+    particles.set_position_min(glm::vec3(-2.0f, 0.0f, -1.5f));
+    particles.set_position_max(glm::vec3(2.0f, 2.0f, 1.5f));
+
+    particles.set_velocity_min(glm::vec3(-0.5f, 0.5f, 0.0f));
+    particles.set_velocity_max(glm::vec3(-0.25f, 0.8f, 0.0f));
+
+    particles.set_scale_min(0.015f);
+    particles.set_scale_max(0.05f);
+
+    particles.set_rotation(-55.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    particles.generate_particles(500);
+
+    return particles;
 }
