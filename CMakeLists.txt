@@ -18,6 +18,8 @@ set(
     src/skybox/skybox.cc
     src/loader/model.cc
     src/loader/mesh.cc
+    src/light/light.cc
+    src/light/lights.cc
     src/render/render_utils.cc
 
     src/particles/particle.cc
@@ -39,6 +41,8 @@ include_directories(
     src/noise
     src/render
     src/loader
+    src/particules
+    src/light
     src/particles
 )
 
