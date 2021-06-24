@@ -122,7 +122,8 @@ float perlin_noise(float x, float y, float z) {
 float fbm(vec3 p, int octaves, float freq, float amplitude) {
     float res = 0;
     for (int i = 0; i < octaves; i++) {
-        res = res * 2 + abs(perlin_noise(p.x * amplitude, p.y * amplitude, p.z * amplitude) * 2 - 1);
+        res += abs(perlin_noise(p.x * amplitude, p.y * amplitude, p.z * amplitude)) * freq;
+        amplitude *= 2;
         freq *= 0.5;
     }
     return res;
@@ -130,7 +131,7 @@ float fbm(vec3 p, int octaves, float freq, float amplitude) {
 
 
 float marble_eval(vec3 p, int scale, int depth, float freq, float amplitude) {
-    return 1 - sqrt(abs(sin(fbm(p, depth, freq, amplitude) * 2 * PI)));
+    return 0.3 + sqrt(abs(sin(scale * p.z + fbm(p, depth, freq, amplitude) / 2 + 0.5))) * 0.5;
 }
 
 vec3 computeDirLightContribution(DirectionalLight light, vec3 normal, vec3 userPos, vec3 fragPos)
@@ -190,13 +191,16 @@ vec3 computePLightContribution(PointLight light, vec3 normal, vec3 userPos, vec3
 
 void main()
 {
+    init_permutation_table();
     vec3 lightRes = computeDirLightContribution(dirLight, normal, userPos, fragPos);
     for (int i = 0; i < nbLights && i < MAX_LIGHTS; ++i) {
         lightRes += computePLightContribution(pointLights[i], normal, userPos, fragPos);
     }
     FragColor = vec4(lightRes, 1.0);
 
-    float eval = marble_eval(fragPos.xyz, 2, 2, 1, 2);
+    float eval = marble_eval(fragPos.xyz, 5, 5, 7, 3) * 0.7;
+    eval += marble_eval(fragPos.xyz, 2, 5, 10, 5) * 0.3;
+
     FragColor = vec4(mix(lightRes, vec3(1.0, 0.0, 0.0), eval), 1.0);
     FragColor = vec4(vec3(eval), 1.0);
 }
