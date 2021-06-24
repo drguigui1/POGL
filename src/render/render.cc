@@ -107,10 +107,11 @@ void render2(Window& window) {
     Shader obj_shader_map("shaders/obj_maps.vs", "shaders/obj_maps.fs");
     Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
     Shader particles_shader("shaders/particles.vs", "shaders/particles.fs");
+    Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
 
     // Objects
     Object plane = create_plane(5);
-    Object cube = create_cube();
+    ///Object cube = create_cube();
     Skybox skybox("data/skybox/forest");
     //Skybox skybox("data/skybox/hornstulls");
 
@@ -131,6 +132,9 @@ void render2(Window& window) {
 
     const std::string cuctus1_path = "data/models/cuctus/1/cuctus1.obj";
     auto cuctus1 = Model(cuctus1_path);
+
+    const std::string cube_path = "data/models/cube/cube.obj";
+    auto cube = Model(cube_path);
 
     //const std::string backpack_path = "data/models/backpack/backpack.obj";
     //auto backpack = Model(backpack_path);
@@ -172,6 +176,18 @@ void render2(Window& window) {
         lights.send_data_to_shader(obj_shader);
 
         obj_shader.set_vec3("userPos", camera.get_position());
+
+        // cube
+        cube.draw(marble_shader);
+        auto model_cube = glm::translate(glm::mat4(1), glm::vec3(1.5f, 0.0f, 0.0f));
+        model_cube = glm::scale(model_cube, glm::vec3(0.3f, 0.3f, 0.3f));
+        marble_shader.set_mat4("projection", projection);
+        marble_shader.set_mat4("view", view);
+        marble_shader.set_mat4("model", model_cube);
+
+        lights.send_data_to_shader(marble_shader);
+
+        marble_shader.set_vec3("userPos", camera.get_position());
 
         //particules_shader.use();
         //particules_shader.set_mat4("projection", projection);
