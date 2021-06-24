@@ -1,5 +1,7 @@
 # version 460 core
 
+#define PI 3.1415926538
+
 struct DirectionalLight {
     vec3 dir;
     vec3 lightColor;
@@ -33,7 +35,7 @@ uniform vec3 ambient;
 uniform vec3 diffuse;
 uniform vec3 specular;
 
-
+int mask = 255;
 int permutation[256] = { 151,160,137,91,90,15,
     131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
     190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
@@ -65,18 +67,27 @@ float grad(int hash, float x, float y, float z) {
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
-float perlin_noise() {
-    auto floor = [](float value, int mask) { return (int) std::floor(value) & mask; };
-    int x0 = floor(x, this->mask);
-    int y0 = floor(y, this->mask);
-    int z0 = floor(z, this->mask);
+float relative_pos(float x) {
+    return x - floor(x);
+}
 
-    auto relative_pos = [](float x) { return x - std::floor(x); };
+float fade(float t) {
+    return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
+float lerp(float t, float a, float b) {
+    return a + t * (b - a);
+}
+
+float perlin_noise(float x, float y, float z) {
+    int x0 = int(floor(x)) & mask;
+    int y0 = int(floor(y)) & mask;
+    int z0 = int(floor(z)) & mask;
+
     x = relative_pos(x);
     y = relative_pos(y);
     z = relative_pos(z);
 
-    auto fade = [](float t) { return t * t * t * (t * (t * 6 - 15) + 10); };
     float u = fade(x);
     float v = fade(y);
     float w = fade(z);
@@ -107,9 +118,20 @@ float perlin_noise() {
     return lerp(w, lerp(v, l1, l2), lerp(v, l3, l4));
 }
 
-//float marble_eval(float x, float y, float z) {
-   // TODO
-//}
+
+float fbm(vec3 p, int octaves, float freq, float amplitude) {
+    float res = 0;
+    for (int i = 0; i < octaves; i++) {
+        res = res * 2 + abs(perlin_noise(p.x * amplitude, p.y * amplitude, p.z * amplitude) * 2 - 1);
+        freq *= 0.5;
+    }
+    return res;
+}
+
+
+float marble_eval(vec3 p, int scale, int depth, float freq, float amplitude) {
+    return 1 - sqrt(abs(sin(fbm(p, depth, freq, amplitude) * 2 * PI)));
+}
 
 vec3 computeDirLightContribution(DirectionalLight light, vec3 normal, vec3 userPos, vec3 fragPos)
 {
@@ -173,4 +195,8 @@ void main()
         lightRes += computePLightContribution(pointLights[i], normal, userPos, fragPos);
     }
     FragColor = vec4(lightRes, 1.0);
+
+    float eval = marble_eval(fragPos.xyz, 2, 2, 1, 2);
+    FragColor = vec4(mix(lightRes, vec3(1.0, 0.0, 0.0), eval), 1.0);
+    FragColor = vec4(vec3(eval), 1.0);
 }
