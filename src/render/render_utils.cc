@@ -90,6 +90,19 @@ void render_ball(Shader& shader, const float& ratio, Model& ball) {
     shader.set_vec3("userPos", camera.get_position());
 }
 
+void render_cuctus(Shader& shader, const float& ratio, Model& cuctus) {
+    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+    glm::mat4 view = camera.get_matrix_view();
+    glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(0.0f, 0.5f, 0.0f));
+    model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+
+    cuctus.draw(shader);
+
+    shader.set_projection_view_model(projection, view, model);
+
+    shader.set_vec3("userPos", camera.get_position());
+}
+
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();

@@ -19,6 +19,7 @@ void render_global_cube(Shader& shader, const float& ratio, Object& cube);
 /* Models */
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);
+void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
 
 /* Particles */
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta);

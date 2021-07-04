@@ -165,17 +165,9 @@ void render2(Window& window) {
         // Backpack
         //render_backpack(obj_shader_map, window_ratio, backpack);
 
-        // cuctus
-        cuctus1.draw(obj_shader);
-        auto model_cuctus = glm::translate(glm::mat4(1), glm::vec3(0.0f, 0.5f, 0.0f));
-        model_cuctus = glm::scale(model_cuctus, glm::vec3(0.6f, 0.6f, 0.6f));
-        obj_shader.set_mat4("projection", projection);
-        obj_shader.set_mat4("view", view);
-        obj_shader.set_mat4("model", model_cuctus);
-
+        // Cuctus
+        render_cuctus(obj_shader, window_ratio, cuctus1);
         lights.send_data_to_shader(obj_shader);
-
-        obj_shader.set_vec3("userPos", camera.get_position());
 
         // cube
         cube.draw(marble_shader);
@@ -188,24 +180,6 @@ void render2(Window& window) {
         lights.send_data_to_shader(marble_shader);
 
         marble_shader.set_vec3("userPos", camera.get_position());
-
-        //particules_shader.use();
-        //particules_shader.set_mat4("projection", projection);
-        //particules_shader.set_mat4("view", view);
-        //particules_shader.set_mat4("model", model);
-        //particules.draw(particules_shader);
-
-        //cube2_shader.use();
-
-        //particules_shader.use();
-
-        //ball.draw(obj_shader);
-        //obj_shader.set_mat4("projection", projection);
-        //obj_shader.set_mat4("view", view);
-        //obj_shader.set_mat4("model", model);
-
-        //obj_shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
-        //obj_shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
 
         // Particles
         render_particles(particles_shader, window_ratio, snowflake_particles, curr_frame - prev_frame);
