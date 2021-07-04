@@ -73,11 +73,13 @@ void Object::init_VAO(unsigned int size, bool color, bool normal, bool tex) {
     int i = 0;
     int cum_size = 0;
 
-    // 3D Coordinates
+    // position
     add_vertex_attrib(i, 3, size, cum_size);
 
+    // color
     if (color) add_vertex_attrib(i, 3, size, cum_size);
 
+    // normal
     if (normal) add_vertex_attrib(i, 3, size, cum_size);
 
     // texture coordinates

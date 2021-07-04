@@ -57,6 +57,22 @@ void render_global_cube(Shader& shader, const float& ratio, Object& cube) {
     cube.draw();
 }
 
+void render_signal(Shader& shader, const float& ratio, Object& signal, const float& time) {
+    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+    glm::mat4 view = camera.get_matrix_view();
+    glm::mat4 model = glm::mat4(1);
+    model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+
+    shader.use();
+
+    shader.set_mat4("model", model);
+    shader.set_mat4("projection", projection);
+    shader.set_mat4("view", view);
+    shader.set_float("vTime", time);
+
+    signal.draw(GL_POINTS);
+}
+
 void render_backpack(Shader& shader, const float& ratio, Model& backpack) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();

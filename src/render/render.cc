@@ -56,7 +56,7 @@ void render(Window& window) {
     const float window_ratio = window.get_ratio();
 
     // Textures
-    Texture texture("data/images/container.jpg");
+    Texture texture("data/images/snowflake.JPEG");
 
     // Shaders
     Shader glob_shader("shaders/global.vs", "shaders/global.fs");
@@ -108,6 +108,7 @@ void render2(Window& window) {
     Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
     Shader particles_shader("shaders/particles.vs", "shaders/particles.fs");
     Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
+    Shader signal_shader("shaders/signal_shader.vs", "shaders/signal_shader.fs", "shaders/signal_shader.gs");
 
     // Objects
     Object plane = create_plane(5);
@@ -127,9 +128,6 @@ void render2(Window& window) {
     lights.add_point_light(p_light2);
     lights.add_point_light(p_light3);
 
-    // Texture
-    Texture texture("data/images/container.jpg");
-
     const std::string cuctus1_path = "data/models/cuctus/1/cuctus1.obj";
     auto cuctus1 = Model(cuctus1_path);
 
@@ -143,6 +141,8 @@ void render2(Window& window) {
     //Model ball(ball_path);
 
     Particles snowflake_particles = create_snowflake_particles();
+
+    Object signal = create_signal_geom();
 
     const float window_ratio = window.get_ratio();
     // timing
@@ -158,6 +158,9 @@ void render2(Window& window) {
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), window_ratio, 0.1f, 100.0f);
         glm::mat4 view = camera.get_matrix_view();
+
+        // Signal
+        render_signal(signal_shader, window_ratio, signal, curr_frame);
 
         // Plane
         render_plane(plane_shader, window_ratio, plane);

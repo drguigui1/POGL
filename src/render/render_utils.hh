@@ -16,6 +16,8 @@ void render_noised_plane(Shader& shader, const float& ratio, Object& plane);
 void render_container_cube(Shader& shader, const float& ratio, Object& cube, Texture& texture);
 void render_global_cube(Shader& shader, const float& ratio, Object& cube);
 
+void render_signal(Shader& shader, const float& ratio, Object& signal, const float& time);
+
 /* Models */
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);

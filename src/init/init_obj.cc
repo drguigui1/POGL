@@ -185,3 +185,15 @@ Particles create_snowflake_particles() {
 
     return particles;
 }
+
+Object create_signal_geom() {
+    std::vector<float> vertices = {
+        // position         // color
+        -0.50f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        -0.25f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+         0.00f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+         0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f
+    };
+
+    return Object(vertices, true, false, false);
+}
