@@ -13,6 +13,8 @@ Object create_plane2(float center_x, float center_y, int width, int height, floa
 Object create_plane_from_heightmap(const char* path, float center_x, float center_y, float step_w, float step_h);
 
 Object create_cube();
-Object create_signal_geom();
 
 Particles create_snowflake_particles();
+
+Object create_signal_geom();
+Object create_bubble_geom();

@@ -22,6 +22,10 @@ public:
     void set_mouse_cb();
     void set_scroll_cb();
 
+    /* Getters */
+    unsigned int get_width() const { return width; }
+    unsigned int get_height() const { return height; }
+
 private:
     /* Attributes */
     GLFWwindow* window;

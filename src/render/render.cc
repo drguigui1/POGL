@@ -108,13 +108,17 @@ void render2(Window& window) {
     Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
     Shader particles_shader("shaders/particles.vs", "shaders/particles.fs");
     Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
-    Shader signal_shader("shaders/signal_shader.vs", "shaders/signal_shader.fs", "shaders/signal_shader.gs");
+    //Shader signal_shader("shaders/signal_shader.vs", "shaders/signal_shader.fs", "shaders/signal_shader.gs");
+    Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh.fs", "shaders/bubble/bubble.gs");
+    //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/rising.fs", "shaders/bubble/bubble.gs");
 
     // Objects
     Object plane = create_plane(5);
     ///Object cube = create_cube();
     Skybox skybox("data/skybox/forest");
     //Skybox skybox("data/skybox/hornstulls");
+    //Object signal = create_signal_geom();
+    Object bubble = create_bubble_geom();
 
     // Lights
     Lights lights;
@@ -132,7 +136,7 @@ void render2(Window& window) {
     auto cuctus1 = Model(cuctus1_path);
 
     const std::string cube_path = "data/models/cube/cube.obj";
-    auto cube = Model(cube_path);
+    auto marble_cube = Model(cube_path);
 
     //const std::string backpack_path = "data/models/backpack/backpack.obj";
     //auto backpack = Model(backpack_path);
@@ -142,25 +146,19 @@ void render2(Window& window) {
 
     Particles snowflake_particles = create_snowflake_particles();
 
-    Object signal = create_signal_geom();
-
     const float window_ratio = window.get_ratio();
     // timing
     float prev_frame = 0.0f;
     while (!window.should_close()) {
         float curr_frame = glfwGetTime();
 
-        // input
         process_input(window, curr_frame - prev_frame);
-
-        // render
         gl_clear_update();
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), window_ratio, 0.1f, 100.0f);
-        glm::mat4 view = camera.get_matrix_view();
+        /* Render opaque objects */
 
         // Signal
-        render_signal(signal_shader, window_ratio, signal, curr_frame);
+        //render_signal(signal_shader, window_ratio, signal, curr_frame);
 
         // Plane
         render_plane(plane_shader, window_ratio, plane);
@@ -173,16 +171,8 @@ void render2(Window& window) {
         lights.send_data_to_shader(obj_shader);
 
         // cube
-        cube.draw(marble_shader);
-        auto model_cube = glm::translate(glm::mat4(1), glm::vec3(1.5f, 0.0f, 0.0f));
-        model_cube = glm::scale(model_cube, glm::vec3(0.3f, 0.3f, 0.3f));
-        marble_shader.set_mat4("projection", projection);
-        marble_shader.set_mat4("view", view);
-        marble_shader.set_mat4("model", model_cube);
-
+        render_marble_cube(marble_shader, window_ratio, marble_cube);
         lights.send_data_to_shader(marble_shader);
-
-        marble_shader.set_vec3("userPos", camera.get_position());
 
         // Particles
         render_particles(particles_shader, window_ratio, snowflake_particles, curr_frame - prev_frame);
@@ -192,6 +182,11 @@ void render2(Window& window) {
 
         // Skybox
         render_skybox(skybox_shader, window_ratio, skybox);
+
+        /* Render transparent objects */
+        glDepthMask(false); // disable z-testing
+        render_bubble(bubble_shader, window_ratio, bubble, curr_frame, window.get_width(), window.get_height());
+        glDepthMask(true); // enable z-testing
 
         prev_frame = curr_frame;
         window.swap_buffers();
