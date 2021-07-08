@@ -11,9 +11,8 @@ uniform float vTime;
 
 const float smooth_factor = 0.05;
 
-// Get random value
-float rand(vec2 co) {
-    return fract(sin(dot(co.xy , vec2(12.9898, 78.233))) * 43758.5453);
+float rand(vec2 p) {
+    return fract(sin(dot(p.xy , vec2(12.9898, 78.233))) * 43758.5453);
 }
 
 void main(void) {

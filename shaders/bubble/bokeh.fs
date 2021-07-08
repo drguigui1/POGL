@@ -12,8 +12,8 @@ uniform float vHeight;
 
 const float radius = 0.05;
 
-float random_float(vec2 co) {
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+float random_float(vec2 p) {
+    return fract(sin(dot(p.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 float compute_circle(vec2 uv, vec2 offset) {
