@@ -198,7 +198,7 @@ Object create_signal_geom() {
     return Object(vertices, true, false, false);
 }
 
-Object create_bubble_geom() {
+Object create_plane_geom() {
     std::vector<float> vertices = {
         // position         // color
          0.00f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,

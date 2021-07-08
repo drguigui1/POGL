@@ -73,8 +73,7 @@ void render_marble_cube(Shader& shader, const float& ratio, Object& cube) {
 void render_signal(Shader& shader, const float& ratio, Object& signal, const float& time) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
-    glm::mat4 model = glm::mat4(1);
-    model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+    glm::mat4 model = glm::scale(glm::mat4(1), glm::vec3(0.3f, 0.3f, 0.3f));
 
     shader.use();
 
@@ -89,8 +88,7 @@ void render_signal(Shader& shader, const float& ratio, Object& signal, const flo
 void render_bubble(Shader& shader, const float& ratio, Object& bubble, const float& time, const unsigned int& width, const unsigned int& height) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
-    glm::mat4 model = glm::mat4(1);
-    model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+    glm::mat4 model = glm::scale(glm::mat4(1), glm::vec3(0.3f, 0.3f, 0.3f));
 
     shader.use();
 
@@ -102,6 +100,23 @@ void render_bubble(Shader& shader, const float& ratio, Object& bubble, const flo
     shader.set_float("vHeight", height);
 
     bubble.draw(GL_POINTS);
+}
+
+void render_grid(Shader& shader, const float& ratio, Object& grid, const float& time, const unsigned int& width, const unsigned int& height) {
+    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+    glm::mat4 view = camera.get_matrix_view();
+    glm::mat4 model = glm::scale(glm::mat4(1), glm::vec3(0.3f, 0.3f, 0.3f));
+
+    shader.use();
+
+    shader.set_mat4("model", model);
+    shader.set_mat4("projection", projection);
+    shader.set_mat4("view", view);
+    shader.set_float("vTime", time);
+    shader.set_float("vWidth", width);
+    shader.set_float("vHeight", height);
+
+    grid.draw(GL_POINTS);
 }
 
 void render_backpack(Shader& shader, const float& ratio, Model& backpack) {

@@ -17,4 +17,4 @@ Object create_cube();
 Particles create_snowflake_particles();
 
 Object create_signal_geom();
-Object create_bubble_geom();
+Object create_plane_geom();

@@ -110,9 +110,10 @@ void render2(Window& window) {
     Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
     //Shader signal_shader("shaders/signal_shader.vs", "shaders/signal_shader.fs", "shaders/signal_shader.gs");
     //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh.fs", "shaders/bubble/bubble.gs");
-    Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh_rising.fs", "shaders/bubble/bubble.gs");
+    //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh_rising.fs", "shaders/bubble/bubble.gs");
     //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/shines.fs", "shaders/bubble/bubble.gs");
     //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/rising.fs", "shaders/bubble/bubble.gs");
+    Shader grid_shader("shaders/grid/grid.vs", "shaders/grid/grid.fs", "shaders/grid/grid.gs");
 
     // Objects
     Object plane = create_plane(5);
@@ -120,7 +121,8 @@ void render2(Window& window) {
     Skybox skybox("data/skybox/forest");
     //Skybox skybox("data/skybox/hornstulls");
     //Object signal = create_signal_geom();
-    Object bubble = create_bubble_geom();
+    //Object bubble = create_plane_geom();
+    Object grid = create_plane_geom();
 
     // Lights
     Lights lights;
@@ -187,7 +189,8 @@ void render2(Window& window) {
 
         /* Render transparent objects */
         glDepthMask(false); // disable z-testing
-        render_bubble(bubble_shader, window_ratio, bubble, curr_frame, window.get_width(), window.get_height());
+        //render_bubble(bubble_shader, window_ratio, bubble, curr_frame, window.get_width(), window.get_height());
+        render_grid(grid_shader, window_ratio, grid, curr_frame, window.get_width(), window.get_height());
         glDepthMask(true); // enable z-testing
 
         prev_frame = curr_frame;

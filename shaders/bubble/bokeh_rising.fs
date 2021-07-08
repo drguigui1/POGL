@@ -10,8 +10,8 @@ uniform float vTime;
 uniform float vWidth;
 uniform float vHeight;
 
-const vec4 color1 = vec4(1.0, 1.0, 0.0, 1.0);
-const vec4 color2 = vec4(1.0, 0.0, 1.0, 1.0);
+const vec4 color1 = vec4(0.3, 0.8, 0.5, 1.0);
+const vec4 color2 = vec4(0.0, 0.0, 1.0, 1.0);
 
 float random_float(vec2 p) {
     return fract(sin(dot(p.xy, vec2(12.9898, 78.233))) * 43758.5453);

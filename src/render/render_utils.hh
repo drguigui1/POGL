@@ -20,6 +20,7 @@ void render_marble_cube(Shader& shader, const float& ratio, Object& cube);
 /* For geometric shader */
 void render_signal(Shader& shader, const float& ratio, Object& signal, const float& time);
 void render_bubble(Shader& shader, const float& ratio, Object& bubble, const float& time, const unsigned int& width, const unsigned int& height);
+void render_grid(Shader& shader, const float& ratio, Object& grid, const float& time, const unsigned int& width, const unsigned int& height);
 
 /* Models */
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
