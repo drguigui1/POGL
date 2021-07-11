@@ -1,0 +1,21 @@
+
+newmtl pasted__pasted__blinn11SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd CHeesyGrass.jpg
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks CHeesyGrass.jpg
+
+newmtl pasted__pasted__fcSG1
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd OldroadSignColor.tga
+bump oldRoadSignNrml.tga
+Ni 1.00
+Ks 0.00 0.00 0.00
+map_Ks oldRoadSignSpec.tga

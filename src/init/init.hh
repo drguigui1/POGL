@@ -1,5 +1,4 @@
-#ifndef INIT_HH_
-#define INIT_HH_
+#pragma once
 
 #include "window.hh"
 #include "lights.hh"
@@ -11,5 +10,4 @@ Window init_window(unsigned int width, unsigned int height, const char* title);
 
 /* Lights */
 Lights init_lights();
-
-#endif /* !INIT_HH_ */
+Lights init_house_lights();

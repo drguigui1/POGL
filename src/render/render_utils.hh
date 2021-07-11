@@ -17,6 +17,7 @@ void render_container_cube(Shader& shader, const float& ratio, Object& cube, Tex
 void render_global_cube(Shader& shader, const float& ratio, Object& cube);
 void render_marble_cube(Shader& shader, const float& ratio, Object& cube);
 void render_heightmap_plane(Shader& shader, const float& ratio, Object& plane);
+void render_terrain(Shader& shader, const float& ratio, Object& terrain);
 
 /* For geometric shader */
 void render_signal(Shader& shader, const float& ratio, Object& signal, const float& time);
@@ -27,8 +28,9 @@ void render_grid(Shader& shader, const float& ratio, Object& grid, const float& 
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);
 void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
-void render_tree_1(Shader& shader, const float& ratio, Model& tree);
-void render_tree_2(Shader& shader, const float& ratio, Model& tree);
+void render_tree(Shader& shader, const float& ratio, Model& tree, const float& scale, const glm::vec3& translate);
+void render_road_sign(Shader& shader, const float& ratio, Model& road_sign);
+void render_house(Shader& shader, const float& ratio, Model& house);
 
 /* Particles */
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta);

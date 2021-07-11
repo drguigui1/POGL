@@ -1,6 +1,6 @@
 # Blender v2.93.0 OBJ File: 'tree.blend'
 # www.blender.org
-mtllib tree_2.mtl
+mtllib tree.mtl
 o Poplar_Cylinder.003
 v 2.915521 23.269127 -1.130150
 v 3.612741 22.722610 0.108079

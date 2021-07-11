@@ -34,8 +34,6 @@ Mesh::Mesh(std::vector<Vertex> v, std::vector<unsigned int> i, std::vector<Textu
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) (2 * sizeof(glm::vec3)));
 }
 
-#include <iostream>
-
 static std::string TextureType_to_string(TextureType type) {
     switch (type) {
     case DIFFUSE:

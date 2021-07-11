@@ -203,17 +203,24 @@ void render3(Window& window) {
     float prev_frame = 0.0f;
 
     // Shaders
-    Shader plane_shader("shaders/plane_terrain.vs", "shaders/plane_terrain.fs");
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
     Shader terrain_shader("shaders/terrain/terrain.vs", "shaders/terrain/terrain.fs");
     Shader tree_1_shader("shaders/obj.vs", "shaders/obj.fs");
     Shader tree_2_shader("shaders/obj.vs", "shaders/obj.fs");
+    Shader tree_3_shader("shaders/obj.vs", "shaders/obj.fs");
+    Shader tree_4_shader("shaders/obj.vs", "shaders/obj.fs");
+    Shader house_shader("shaders/obj.vs", "shaders/obj.fs");
+    Shader road_sign_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
 
     // Objects
-    Object plane = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
+    Object terrain = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
     Skybox skybox("data/skybox/forest");
-    Model tree_1("data/models/tree/1/tree_1.obj");
-    Model tree_2("data/models/tree/2/tree_2.obj");
+    Model tree_1("data/models/tree/1/tree.obj");
+    Model tree_2("data/models/tree/2/tree.obj");
+    Model tree_3("data/models/tree/3/tree.obj");
+    Model tree_4("data/models/tree/4/tree.obj");
+    Model road_sign("data/models/road_sign/WoodRoadSign.obj");
+    Model house("data/models/house/house.obj");
 
     // Textures
     Texture heightmap("data/images/heightmap.jpg");
@@ -225,7 +232,9 @@ void render3(Window& window) {
 
     // Lights
     Lights lights = init_lights();
+    Lights house_lights = init_house_lights();
 
+    // Set textures to shader
     terrain_shader.use();
     terrain_shader.set_int("heightmap", 0);
     terrain_shader.set_int("snow", 1);
@@ -234,17 +243,17 @@ void render3(Window& window) {
     terrain_shader.set_int("dirt", 4);
     terrain_shader.set_int("path", 5);
 
+    // Render loop
     while (!window.should_close()) {
         float curr_frame = glfwGetTime();
+        const glm::vec3 cam_pos = camera.get_position();
 
         process_input(window, curr_frame - prev_frame);
         gl_clear_update();
 
         /* Render opaque objects */
-        glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
-        glm::mat4 view = camera.get_matrix_view();
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
 
+        // Terrain
         heightmap.use(0);
         snow.use(1);
         rock.use(2);
@@ -252,21 +261,26 @@ void render3(Window& window) {
         dirt.use(4);
         path.use(5);
 
-        terrain_shader.use();
+        render_terrain(terrain_shader, ratio, terrain);
+        lights.send_data_to_shader(terrain_shader, camera.get_position());
 
-        terrain_shader.set_projection_view_model(projection, view, model);
-        terrain_shader.set_float("amplitude", 5);
+        // Trees
+        render_tree(tree_1_shader, ratio, tree_1, 0.3f, glm::vec3(8.0f, -15.0f, -15.0f));
+        lights.send_data_to_shader(tree_1_shader, cam_pos);
 
-        plane.draw();
+        render_tree(tree_2_shader, ratio, tree_2, 0.3f, glm::vec3(0.0f, -15.0f, -35.0f));
+        lights.send_data_to_shader(tree_2_shader, cam_pos);
 
-        render_tree_1(tree_1_shader, ratio, tree_1);
-        lights.send_data_to_shader(tree_1_shader, camera.get_position());
+        render_tree(tree_3_shader, ratio, tree_3, 0.3f, glm::vec3(-30.0f, -15.0f, -5.0f));
+        lights.send_data_to_shader(tree_3_shader, cam_pos);
 
-        render_tree_2(tree_2_shader, ratio, tree_2);
-        lights.send_data_to_shader(tree_2_shader, camera.get_position());
+        render_tree(tree_4_shader, ratio, tree_4, 0.35f, glm::vec3(-25.0f, -15.0f, -60.0f));
+        lights.send_data_to_shader(tree_4_shader, cam_pos);
 
-        // Plane
-        //render_plane(plane_shader, ratio, plane);
+        render_house(house_shader, ratio, house);
+        house_lights.send_data_to_shader(house_shader);
+
+        render_road_sign(road_sign_shader, ratio, road_sign);
 
         // Skybox
         render_skybox(skybox_shader, ratio, skybox);
@@ -278,5 +292,7 @@ void render3(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
+
+        //std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }

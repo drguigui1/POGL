@@ -1,6 +1,6 @@
-#include "model.hh"
-
 #include <iostream>
+
+#include "model.hh"
 
 Model::Model(const std::string& path) {
     Assimp::Importer loader;
@@ -14,6 +14,7 @@ Model::Model(const std::string& path) {
     directory = path.substr(0, path.find_last_of('/')) + '/';
     textures_loaded = std::unordered_map<std::string, Texture>();
 
+    std::cout << "Load model: " << path << std::endl;
     load_mesh(scene->mRootNode, scene);
 }
 

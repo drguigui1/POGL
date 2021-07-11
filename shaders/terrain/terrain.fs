@@ -19,7 +19,27 @@ const vec3 default_color3 = vec3(0.27, 0.22, 0.11);
 const vec3 default_color4 = vec3(0.41, 0.34, 0.24);
 const vec3 default_color5 = vec3(1.00, 1.00, 1.00);
 
-vec3 get_color() {
+// lights
+#define MAX_LIGHTS 128
+
+struct DirectionalLight {
+    vec3 dir;
+    vec3 lightColor;
+};
+
+struct PointLight {
+    vec3 pos;
+    float kc; // constant
+    float kl; // linear
+    float kq; // quadratic
+    vec3 lightColor;
+};
+
+uniform int nbLights;
+uniform DirectionalLight dirLight;
+uniform PointLight pointLights[MAX_LIGHTS];
+
+vec3 get_diffuse_color() {
     vec3 color0 = texture(path, fTexCoord).rgb;
     vec3 color1 = texture(dirt, fTexCoord).rgb;
     vec3 color2 = texture(grass, fTexCoord).rgb;
@@ -50,6 +70,44 @@ vec3 get_color() {
     return mix(color3, color4, 1 - (1.0 - fY) * 4);
 }
 
+vec3 computeDirLightContribution(DirectionalLight light, vec3 diffuse) {
+    vec3 norm = normalize(fNormal);
+
+    // reverse light dir
+    vec3 lightDir = normalize(-light.dir);
+
+    // compute diffuse
+    vec3 diff = max(dot(norm, lightDir), 0.0) * light.lightColor * diffuse.rgb;
+
+    return diff;
+}
+
+vec3 computePLightContribution(PointLight light, vec3 diffuse) {
+    vec3 norm = normalize(fNormal);
+    vec3 lightDir = normalize(light.pos - fFragPos);
+
+    // compute the light distance
+    float d = length(light.pos - fFragPos);
+
+    // compute light attenuation
+    float den = (light.kc + light.kl * d + light.kq * (d * d));
+    float lightAttenuation = 1.0 / den;
+
+    // Get light color
+    vec3 lColor = lightAttenuation * light.lightColor;
+
+    // compute diffuse
+    vec3 diff = max(dot(norm, lightDir), 0.0) * lColor * diffuse.rgb;
+
+    return diff;
+}
+
 void main() {
-    FragColor = vec4(get_color(), 1.0);
+    vec3 diffuse = get_diffuse_color();
+
+    vec3 lightRes = computeDirLightContribution(dirLight, diffuse);
+    for (int i = 0; i < nbLights && i < MAX_LIGHTS; ++i)
+        lightRes += computePLightContribution(pointLights[i], diffuse);
+
+    FragColor = vec4(lightRes, 1.0);
 }
