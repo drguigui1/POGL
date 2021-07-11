@@ -5,9 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "render.hh"
+#include "init.hh"
 
-//#include "shader.hh"
+#include "render.hh"
 #include "render_utils.hh"
 
 #include "camera.hh"
@@ -17,8 +17,6 @@
 
 #include "noise.hh"
 #include "noise2.hh"
-
-#include "lights.hh"
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
@@ -191,6 +189,90 @@ void render2(Window& window) {
         glDepthMask(false); // disable z-testing
         //render_bubble(bubble_shader, window_ratio, bubble, curr_frame, window.get_width(), window.get_height());
         render_grid(grid_shader, window_ratio, grid, curr_frame, window.get_width(), window.get_height());
+        glDepthMask(true); // enable z-testing
+
+        prev_frame = curr_frame;
+        window.swap_buffers();
+        glfwPollEvents();
+    }
+}
+
+void render3(Window& window) {
+    // Variables
+    const float ratio = window.get_ratio();
+    float prev_frame = 0.0f;
+
+    // Shaders
+    Shader plane_shader("shaders/plane_terrain.vs", "shaders/plane_terrain.fs");
+    Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
+    Shader terrain_shader("shaders/terrain/terrain.vs", "shaders/terrain/terrain.fs");
+    Shader tree_1_shader("shaders/obj.vs", "shaders/obj.fs");
+    Shader tree_2_shader("shaders/obj.vs", "shaders/obj.fs");
+
+    // Objects
+    Object plane = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
+    Skybox skybox("data/skybox/forest");
+    Model tree_1("data/models/tree/1/tree_1.obj");
+    Model tree_2("data/models/tree/2/tree_2.obj");
+
+    // Textures
+    Texture heightmap("data/images/heightmap.jpg");
+    Texture snow("data/images/snow.jpg");
+    Texture rock("data/images/rock.jpg");
+    Texture grass("data/images/grass2.jpg");
+    Texture dirt("data/images/dirt.jpg");
+    Texture path("data/images/path.jpg");
+
+    // Lights
+    Lights lights = init_lights();
+
+    terrain_shader.use();
+    terrain_shader.set_int("heightmap", 0);
+    terrain_shader.set_int("snow", 1);
+    terrain_shader.set_int("rock", 2);
+    terrain_shader.set_int("grass", 3);
+    terrain_shader.set_int("dirt", 4);
+    terrain_shader.set_int("path", 5);
+
+    while (!window.should_close()) {
+        float curr_frame = glfwGetTime();
+
+        process_input(window, curr_frame - prev_frame);
+        gl_clear_update();
+
+        /* Render opaque objects */
+        glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+        glm::mat4 view = camera.get_matrix_view();
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
+
+        heightmap.use(0);
+        snow.use(1);
+        rock.use(2);
+        grass.use(3);
+        dirt.use(4);
+        path.use(5);
+
+        terrain_shader.use();
+
+        terrain_shader.set_projection_view_model(projection, view, model);
+        terrain_shader.set_float("amplitude", 5);
+
+        plane.draw();
+
+        render_tree_1(tree_1_shader, ratio, tree_1);
+        lights.send_data_to_shader(tree_1_shader, camera.get_position());
+
+        render_tree_2(tree_2_shader, ratio, tree_2);
+        lights.send_data_to_shader(tree_2_shader, camera.get_position());
+
+        // Plane
+        //render_plane(plane_shader, ratio, plane);
+
+        // Skybox
+        render_skybox(skybox_shader, ratio, skybox);
+
+        /* Render transparent objects */
+        glDepthMask(false); // disable z-testing
         glDepthMask(true); // enable z-testing
 
         prev_frame = curr_frame;

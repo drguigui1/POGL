@@ -6,6 +6,8 @@
 
 #include "init.hh"
 
+#include "light.hh"
+
 void init_glfw() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -38,4 +40,21 @@ Window init_window(unsigned int width, unsigned int height, const char* title) {
     //window.set_input_mode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     return window;
+}
+
+Lights init_lights() {
+    glm::vec3 l_color(1.0, 1.0, 1.0);
+
+    DirectionalLight dir_light(glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(-5.0f, -5.0f, -5.0f));
+    PointLight p_light1(l_color, glm::vec3(3.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light2(l_color, glm::vec3(-3.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light3(l_color, glm::vec3(0.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
+
+    Lights lights;
+    lights.add_directional_light(dir_light);
+    lights.add_point_light(p_light1);
+    lights.add_point_light(p_light2);
+    lights.add_point_light(p_light3);
+
+    return lights;
 }

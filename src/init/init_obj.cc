@@ -9,6 +9,45 @@
 #include "noise2.hh"
 #include "random.hh"
 
+static void add_position_texture(std::vector<float>& vertices, const glm::vec3& pos, const glm::vec2& uv) {
+    variadic::push_all(vertices, 3, pos.x, pos.y, pos.z);
+    variadic::push_all(vertices, 2, uv.x, uv.y);
+}
+
+Object create_heightmap_plane(const glm::vec2& center, float width, float height, float step_w, float step_h) {
+    const float h_width = width / 2.0;
+    const float h_height = height / 2.0;
+
+    std::vector<float> vertices = std::vector<float>();
+    for (float i = center.x - h_width; i < center.x + h_width; i += step_w) {
+        for (float j = center.y - h_height; j < center.y + h_height; j += step_h) {
+            // x0 --- x1
+            // |      |
+            // x2 --- x3
+
+            glm::vec3 p0(i          , 0, j);
+            glm::vec3 p1(i + step_w , 0, j);
+            glm::vec3 p2(i          , 0, j + step_h);
+            glm::vec3 p3(i + step_w , 0, j + step_h);
+
+            glm::vec2 uv0((i + h_width) / width, (j + h_height) / height);
+            glm::vec2 uv1((i + step_w + h_width) / width, (j + h_height) / height);
+            glm::vec2 uv2((i + h_width) / width, (j + step_h + h_height) / height);
+            glm::vec2 uv3((i + step_w + h_width) / width, (j + step_h + h_height) / height);
+
+            add_position_texture(vertices, p0, uv0);
+            add_position_texture(vertices, p1, uv1);
+            add_position_texture(vertices, p3, uv3);
+
+            add_position_texture(vertices, p3, uv3);
+            add_position_texture(vertices, p2, uv2);
+            add_position_texture(vertices, p0, uv0);
+        }
+    }
+
+    return Object(vertices, false, false, true);
+}
+
 Object create_plane(float dist) {
     std::vector<float> plane_vertices {
         // position          // colors         //normal          // texture

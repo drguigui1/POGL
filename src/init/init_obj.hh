@@ -6,6 +6,7 @@
 #include "object.hh"
 #include "particles.hh"
 
+Object create_heightmap_plane(const glm::vec2& center, float width, float height, float step_w, float step_h);
 Object create_plane(float dist=15.0f);
 Object create_vertical_plane(float dist=15.0f);
 

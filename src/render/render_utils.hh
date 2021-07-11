@@ -16,6 +16,7 @@ void render_noised_plane(Shader& shader, const float& ratio, Object& plane);
 void render_container_cube(Shader& shader, const float& ratio, Object& cube, Texture& texture);
 void render_global_cube(Shader& shader, const float& ratio, Object& cube);
 void render_marble_cube(Shader& shader, const float& ratio, Object& cube);
+void render_heightmap_plane(Shader& shader, const float& ratio, Object& plane);
 
 /* For geometric shader */
 void render_signal(Shader& shader, const float& ratio, Object& signal, const float& time);
@@ -26,6 +27,8 @@ void render_grid(Shader& shader, const float& ratio, Object& grid, const float& 
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);
 void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
+void render_tree_1(Shader& shader, const float& ratio, Model& tree);
+void render_tree_2(Shader& shader, const float& ratio, Model& tree);
 
 /* Particles */
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta);

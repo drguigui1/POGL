@@ -119,6 +119,16 @@ void render_grid(Shader& shader, const float& ratio, Object& grid, const float& 
     grid.draw(GL_POINTS);
 }
 
+static void render_model(Shader& shader, const float& ratio, const glm::mat4& model, Model& obj) {
+    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+    glm::mat4 view = camera.get_matrix_view();
+
+    obj.draw(shader);
+
+    shader.set_projection_view_model(projection, view, model);
+    shader.set_vec3("userPos", camera.get_position());
+}
+
 void render_backpack(Shader& shader, const float& ratio, Model& backpack) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
@@ -163,6 +173,20 @@ void render_cuctus(Shader& shader, const float& ratio, Model& cuctus) {
     shader.set_projection_view_model(projection, view, model);
 
     shader.set_vec3("userPos", camera.get_position());
+}
+
+void render_tree_1(Shader& shader, const float& ratio, Model& tree) {
+    glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(0.3f));
+    model = glm::translate(model, glm::vec3(8.0f, -14.5f, -15.0f));
+
+    render_model(shader, ratio, model, tree);
+}
+
+void render_tree_2(Shader& shader, const float& ratio, Model& tree) {
+    glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(0.3f));
+    model = glm::translate(model, glm::vec3(0.0f, -15.0f, -35.0f));
+
+    render_model(shader, ratio, model, tree);
 }
 
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta) {

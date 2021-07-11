@@ -8,9 +8,9 @@
 class Lights {
 public:
     Lights() = default;
-    void add_directional_light(DirectionalLight light);
-    void add_point_light(PointLight light);
-    void send_data_to_shader(Shader& shader);
+    void add_directional_light(const DirectionalLight& light);
+    void add_point_light(const PointLight& light);
+    void send_data_to_shader(Shader& shader, const glm::vec3& offset = glm::vec3(0.0f));
 
 private:
     std::vector<PointLight> point_lights;
