@@ -305,13 +305,12 @@ void render4(Window& window) {
     // shaders
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
     Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
-    Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
-    Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
+    Shader obj_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
 
     // Objects
     Object plane = create_plane(5);
     Skybox skybox("data/skybox/forest");
-    Model statue("data/models/statue/1/Venus_de_Milo.obj");
+    Model statue("data/models/statue/1/venus_milo_procedural.obj");
 
     // Textures
     Texture ground("data/images/floor_texture4.jpg");
@@ -331,11 +330,10 @@ void render4(Window& window) {
 
         // Plane
         render_plane(plane_shader, ratio, plane, ground);
-        //lights.send_data_to_shader(plane_shader, cam_pos);
 
         // obj
-        render_obj(marble_shader, ratio, statue, 0.3f, glm::vec3(8.0f, 1.0f, 1.0f));
-        lights.send_data_to_shader(marble_shader, cam_pos);
+        render_obj(obj_shader, ratio, statue, 0.3f, glm::vec3(0.0f, 0.0f, 0.0f));
+        lights.send_data_to_shader(obj_shader, cam_pos);
 
         // Skybox
         render_skybox(skybox_shader, ratio, skybox);
