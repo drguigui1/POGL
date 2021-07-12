@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Render loop
-    render3(window);
+    render4(window);
 
     glfwTerminate();
     return 0;

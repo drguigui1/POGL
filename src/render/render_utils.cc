@@ -17,6 +17,22 @@ void render_plane(Shader& shader, const float& ratio, Object& plane) {
     plane.draw();
 }
 
+void render_plane(Shader& shader, const float& ratio, Object& plane, Texture& texture) {
+    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+    glm::mat4 view = camera.get_matrix_view();
+    glm::mat4 model = glm::mat4(1.0f);
+
+    texture.use();
+    shader.use();
+
+    shader.set_projection_view_model(projection, view, model);
+    shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+    shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
+    shader.set_vec3("userPos", camera.get_position());
+
+    plane.draw();
+}
+
 void render_noised_plane(Shader& shader, const float& ratio, Object& plane) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
@@ -180,6 +196,13 @@ void render_tree(Shader& shader, const float& ratio, Model& tree, const float& s
     model = glm::translate(model, translate);
 
     render_model(shader, ratio, model, tree);
+}
+
+void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate) {
+    glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
+    model = glm::translate(model, translate);
+
+    render_model(shader, ratio, model, obj);
 }
 
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta) {

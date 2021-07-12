@@ -12,6 +12,7 @@
 
 /* Objects */
 void render_plane(Shader& shader, const float& ratio, Object& plane);
+void render_plane(Shader& shader, const float& ratio, Object& plane, Texture& texture);
 void render_noised_plane(Shader& shader, const float& ratio, Object& plane);
 void render_container_cube(Shader& shader, const float& ratio, Object& cube, Texture& texture);
 void render_global_cube(Shader& shader, const float& ratio, Object& cube);
@@ -28,7 +29,9 @@ void render_grid(Shader& shader, const float& ratio, Object& grid, const float& 
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);
 void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
+void render(Shader& shader, const float& ratio, Model& tree, const float& scale, const glm::vec3& translate);
 void render_tree(Shader& shader, const float& ratio, Model& tree, const float& scale, const glm::vec3& translate);
+void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate);
 void render_road_sign(Shader& shader, const float& ratio, Model& road_sign);
 void render_house(Shader& shader, const float& ratio, Model& house);
 

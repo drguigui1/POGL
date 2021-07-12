@@ -262,7 +262,7 @@ void render3(Window& window) {
         path.use(5);
 
         render_terrain(terrain_shader, ratio, terrain);
-        lights.send_data_to_shader(terrain_shader, camera.get_position());
+        lights.send_data_to_shader(terrain_shader, cam_pos);
 
         // Trees
         render_tree(tree_1_shader, ratio, tree_1, 0.3f, glm::vec3(8.0f, -15.0f, -15.0f));
@@ -294,5 +294,54 @@ void render3(Window& window) {
         glfwPollEvents();
 
         //std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
+    }
+}
+
+void render4(Window& window) {
+    // Variables
+    const float ratio = window.get_ratio();
+    float prev_frame = 0.0f;
+
+    // shaders
+    Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
+    Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
+    Shader obj_shader("shaders/obj.vs", "shaders/obj.fs");
+    Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
+
+    // Objects
+    Object plane = create_plane(5);
+    Skybox skybox("data/skybox/forest");
+    Model statue("data/models/statue/1/Venus_de_Milo.obj");
+
+    // Textures
+    Texture ground("data/images/floor_texture4.jpg");
+
+    Lights lights = init_lights();
+
+    plane_shader.use();
+    plane_shader.set_int("texture1", 0);
+
+    // Render loop
+    while (!window.should_close()) {
+        float curr_frame = glfwGetTime();
+        const glm::vec3 cam_pos = camera.get_position();
+
+        process_input(window, curr_frame - prev_frame);
+        gl_clear_update();
+
+        // Plane
+        render_plane(plane_shader, ratio, plane, ground);
+        //lights.send_data_to_shader(plane_shader, cam_pos);
+
+        // obj
+        render_obj(marble_shader, ratio, statue, 0.3f, glm::vec3(8.0f, 1.0f, 1.0f));
+        lights.send_data_to_shader(marble_shader, cam_pos);
+
+        // Skybox
+        render_skybox(skybox_shader, ratio, skybox);
+
+        prev_frame = curr_frame;
+        window.swap_buffers();
+        glfwPollEvents();
     }
 }
