@@ -254,8 +254,9 @@ void render3(Window& window) {
     Shader road_sign_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
 
     // Objects
+    Skybox skybox("data/skybox/fishpond");
+
     Object terrain = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
-    Skybox skybox("data/skybox/forest");
     Model tree_1("data/models/tree/1/tree.obj");
     Model tree_2("data/models/tree/2/tree.obj");
     Model tree_3("data/models/tree/3/tree.obj");
