@@ -75,3 +75,7 @@ Lights init_house_lights() {
 
     return lights;
 }
+
+Lights init_lights_museum() {
+    // TODO
+}
