@@ -306,6 +306,7 @@ void render4(Window& window) {
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
     Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
     Shader obj_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
+    Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
 
     // Objects
     Object plane = create_plane(5);
@@ -332,8 +333,8 @@ void render4(Window& window) {
         render_plane(plane_shader, ratio, plane, ground);
 
         // obj
-        render_obj(obj_shader, ratio, statue, 0.3f, glm::vec3(0.0f, 0.0f, 0.0f));
-        lights.send_data_to_shader(obj_shader, cam_pos);
+        render_obj(marble_shader, ratio, statue, 0.3f, glm::vec3(0.0f, -2.0f, 0.0f));
+        lights.send_data_to_shader(marble_shader, cam_pos);
 
         // Skybox
         render_skybox(skybox_shader, ratio, skybox);
