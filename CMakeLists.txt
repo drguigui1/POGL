@@ -3,27 +3,33 @@ set(OPT_FLAGS, "-Ofast")
 set(
     SRC_OPENGL
     src/camera/camera.cc
-    src/init/init.cc
-    src/init/init_obj.cc
-    src/noise/noise.cc
-    src/noise/noise2.cc
-    src/object/object.cc
-    src/shader/shader.cc
-    src/texture/texture.cc
-    src/material/material.cc
+    src/image/image.cc
     src/window/window.cc
     src/window/window_cb.cc
-    src/image/image.cc
-    src/render/render.cc
-    src/skybox/skybox.cc
+
+    src/init/init.cc
+    src/init/init_obj.cc
+    src/init/init_lights.cc
+
+    src/noise/noise.cc
+    src/noise/noise2.cc
+    src/texture/texture.cc
+    src/material/material.cc
+
+    src/object/object.cc
     src/loader/model.cc
     src/loader/mesh.cc
+    src/skybox/skybox.cc
+
     src/light/light.cc
     src/light/lights.cc
-    src/render/render_utils.cc
 
     src/particles/particle.cc
     src/particles/particles.cc
+
+    src/shader/shader.cc
+    src/render/render.cc
+    src/render/render_utils.cc
 )
 
 include_directories(

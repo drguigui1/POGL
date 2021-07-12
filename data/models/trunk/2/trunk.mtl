@@ -1,0 +1,10 @@
+# Blender MTL File: 'trunk2.blend'
+# Material Count: 1
+
+newmtl trunk
+Kd 0.207595 0.138513 0.055181
+Ns 256
+d 1
+illum 1
+Ka 0 0 0
+Ks 0 0 0

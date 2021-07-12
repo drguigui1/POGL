@@ -61,3 +61,12 @@ void Camera::update() {
     right = glm::normalize(glm::cross(front, vup));
     cup = glm::normalize(glm::cross(right, front));
 }
+
+void Camera::increase_speed() {
+    speed += 0.5f;
+}
+
+void Camera::decrease_speed() {
+    speed -= 0.5f;
+    speed = std::max(2.5f, speed);
+}
