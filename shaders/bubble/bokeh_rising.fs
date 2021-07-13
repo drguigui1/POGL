@@ -10,8 +10,11 @@ uniform float vTime;
 uniform float vWidth;
 uniform float vHeight;
 
-const vec4 color1 = vec4(0.3, 0.8, 0.5, 1.0);
+const vec4 color1 = vec4(1.0, 1.0, 1.0, 1.0);
 const vec4 color2 = vec4(0.0, 0.0, 1.0, 1.0);
+
+//const vec4 color1 = vec4(0.3, 0.8, 0.5, 1.0);
+//const vec4 color2 = vec4(0.0, 0.0, 1.0, 1.0);
 
 float random_float(vec2 p) {
     return fract(sin(dot(p.xy, vec2(12.9898, 78.233))) * 43758.5453);
@@ -27,7 +30,7 @@ float compute_time(vec2 uv) {
     uv = floor(uv);
     float lifeTime = uv.y + random_float(uv) * 4.0;
     lifeTime += vTime - 1.5;
-    lifeTime = 1.0 - lifeTime * 0.4;
+    lifeTime = 1.0 - lifeTime * 0.8;
 
     return clamp(lifeTime, 0.0, 1.0);
 }
@@ -57,11 +60,11 @@ void main() {
     vec2 uv = init_uv(5.0, 0.8);
 
     float lifeTime = compute_time(uv);
-    if (lifeTime == 0)
+    if (lifeTime <= 0)
         discard;
 
     vec4 color = mix(color2, color1, lifeTime);
-    vec4 dist = compute_circle_dist(uv, lifeTime);
+    color *= lifeTime * compute_circle_dist(uv, lifeTime);
 
-    FragColor = dist * color * lifeTime;
+    FragColor = vec4(color.rgb, color.a / 2.0);
 }

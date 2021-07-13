@@ -1,5 +1,6 @@
 # version 460 core
 
+/* Out */
 struct DirectionalLight {
     vec3 dir;
     vec3 lightColor;
@@ -15,29 +16,28 @@ struct PointLight {
 
 out vec4 FragColor;
 
+/* In */
 in vec3 normal;
 in vec2 texCoord;
 in vec3 fragPos;
 
-// lights
+/* Uniform */
+// Lights
 #define MAX_LIGHTS 128
 uniform int nbLights;
 uniform DirectionalLight dirLight;
 uniform PointLight pointLights[MAX_LIGHTS];
 
-// position of the user
+// Position of the user
 uniform vec3 userPos;
 
 // Object texture information
 uniform vec3 ambient;
-uniform vec3 diffuse;
-uniform vec3 specular;
-
 uniform sampler2D diffuse_map;
 uniform sampler2D specular_map;
 uniform sampler2D normal_map;
 
-vec3 computeDirLightContribution(DirectionalLight light, vec3 normal, vec3 userPos, vec3 fragPos)
+vec3 computeDirLightContribution(DirectionalLight light, vec3 normal, vec3 userPos, vec3 fragPos, vec3 diffuse, vec3 specular)
 {
     vec3 norm = normalize(normal);
 
@@ -60,7 +60,7 @@ vec3 computeDirLightContribution(DirectionalLight light, vec3 normal, vec3 userP
     return (ambiant + diff + spec);
 }
 
-vec3 computePLightContribution(PointLight light, vec3 normal, vec3 userPos, vec3 fragPos)
+vec3 computePLightContribution(PointLight light, vec3 normal, vec3 userPos, vec3 fragPos, vec3 diffuse, vec3 specular)
 {
     vec3 norm = normalize(normal);
     vec3 lightDir = normalize(light.pos - fragPos);
@@ -93,9 +93,13 @@ vec3 computePLightContribution(PointLight light, vec3 normal, vec3 userPos, vec3
 }
 
 void main() {
-    vec3 lightRes = computeDirLightContribution(dirLight, normal, userPos, fragPos);
+    vec3 diffuse = texture(diffuse_map, texCoord).rgb;
+    vec3 specular = texture(specular_map, texCoord).rgb;
+
+    vec3 lightRes = computeDirLightContribution(dirLight, normal, userPos, fragPos, diffuse, specular);
     for (int i = 0; i < nbLights && i < MAX_LIGHTS; ++i) {
-        lightRes += computePLightContribution(pointLights[i], normal, userPos, fragPos);
+        lightRes += computePLightContribution(pointLights[i], normal, userPos, fragPos, diffuse, specular);
     }
-    FragColor = texture(diffuse_map, texCoord) * vec4(lightRes, 1.0);
+
+    FragColor = vec4(lightRes, 1.0f);
 }

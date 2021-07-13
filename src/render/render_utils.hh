@@ -30,7 +30,6 @@ void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);
 void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
 void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate);
-void render_road_sign(Shader& shader, const float& ratio, Model& road_sign);
 
 /* Particles */
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta);
