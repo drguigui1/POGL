@@ -285,7 +285,7 @@ void render4(Window& window) {
     // shaders
     Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
     Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
-    Shader obj_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
+    Shader obj_shader1("shaders/obj_maps.vs", "shaders/obj_maps.fs");
     Shader marble_shader1("shaders/marble.vs", "shaders/marble.fs");
     Shader marble_shader2("shaders/marble.vs", "shaders/marble.fs");
 
@@ -294,6 +294,7 @@ void render4(Window& window) {
     Skybox skybox("data/skybox/forest");
     Model statue1("data/models/statue/1/venus_milo_procedural.obj");
     Model statue2("data/models/statue/2/Thai.obj");
+    Model statue3("data/models/statue/3/statue3.obj");
 
     // Textures
     Texture ground("data/images/floor_texture4.jpg");
@@ -318,8 +319,11 @@ void render4(Window& window) {
         render_obj(marble_shader1, ratio, statue1, 0.4f, glm::vec3(0.0f, -1.0f, 0.0f));
         lights->send_data_to_shader(marble_shader1, cam_pos);
 
-        render_obj(marble_shader2, ratio, statue2, 0.4f, glm::vec3(1.0f, 0.0f, 0.0f));
+        render_obj(marble_shader2, ratio, statue2, 0.4f, glm::vec3(1.5f, -1.0f, 0.0f));
         lights->send_data_to_shader(marble_shader2, cam_pos);
+
+        render_obj(obj_shader1, ratio, statue3, 0.15f, glm::vec3(-4.0f, -2.0f, 0.0f));
+        lights->send_data_to_shader(obj_shader1, cam_pos);
 
         // Skybox
         render_skybox(skybox_shader, ratio, skybox);

@@ -1,18 +1,11 @@
 # version 460 core
 
 /* Out */
-out vec4 FragColor;
-
-/* In */
-in vec3 normal;
-in vec2 texCoord;
-in vec3 fragPos;
-
-/* Uniform */
 struct DirectionalLight {
     vec3 dir;
     vec3 lightColor;
 };
+
 struct PointLight {
     vec3 pos;
     float kc; // constant
@@ -21,6 +14,14 @@ struct PointLight {
     vec3 lightColor;
 };
 
+out vec4 FragColor;
+
+/* In */
+in vec3 normal;
+in vec2 texCoord;
+in vec3 fragPos;
+
+/* Uniform */
 // Lights
 #define MAX_LIGHTS 128
 uniform int nbLights;
