@@ -1,0 +1,14 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl wire_177028149
+Ns 31.999996
+Ka 0.096491 0.096491 0.096491
+Kd 0.603816 0.568287 0.568287
+Ks 0.350000 0.350000 0.350000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Ka texture_statue.jpg
+map_Kd texture_statue.jpg
