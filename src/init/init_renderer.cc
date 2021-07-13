@@ -1,5 +1,6 @@
 #include "init_renderer.hh"
 #include "init_lights.hh"
+#include "init_obj.hh"
 
 Renderer init_renderer3(const float& ratio) {
     // Lights
@@ -158,6 +159,23 @@ Renderer init_renderer5(const float& ratio) {
     add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(1.24f, -0.5f, -4.05f));
     add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(5.71f, -0.5f, -2.63f));
     add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(0.74f, -0.5f, -5.52f));
+    add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(0.85f, -0.5f, 9.31f));
+
+    // Drop particles
+    shared_obj drop = std::make_shared<Model>("data/models/drop/drop.obj");
+    shared_particles drop_particles = create_particles(1000, drop,
+            glm::vec3(-17.0f, 0.0f, -11.25f), glm::vec3(0.0f, 7.0f, 11.25f),
+            0.05f, 0.10f);
+    shared_shader drop_particles_shader = std::make_shared<Shader>("shaders/particles.vs", "shaders/particles.fs");
+    renderer.add_particles(drop_particles_shader, drop_particles, lights);
+
+    // Snowflake particles
+    shared_obj snowflake = std::make_shared<Model>("data/models/snowflake/snowflake.obj");
+    shared_particles snowflake_particles = create_particles(1000, snowflake,
+            glm::vec3(-2.0f, 0.0f, -11.25f), glm::vec3(15.0f, 7.0f, 11.25f),
+            0.015f, 0.05f, -55.0f);
+    shared_shader snowflake_particles_shader = std::make_shared<Shader>("shaders/particles.vs", "shaders/particles.fs");
+    renderer.add_particles(snowflake_particles_shader, snowflake_particles, lights);
 
     return renderer;
 }

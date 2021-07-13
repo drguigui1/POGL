@@ -181,7 +181,6 @@ Object create_plane_from_heightmap(const char* path, float center_x, float cente
         }
     }
 
-    // TODO: refacto - remove it if useless (use a shader which does not need this attribute color)
     std::vector<float> vertices_colors = std::vector<float>();
     for (size_t i = 0; i < vertices.size(); i += 3) {
         // Image contains values between 0 and 255
@@ -203,7 +202,7 @@ Object create_plane_from_heightmap(const char* path, float center_x, float cente
     return Object(vertices_colors, true, false, false);
 }
 
-Particles create_particles(const float& nb_particles, shared_obj model, const glm::vec3& pos_min, const glm::vec3& pos_max, const float rotation) {
+shared_particles create_particles(const float& nb_particles, shared_obj model, const glm::vec3& pos_min, const glm::vec3& pos_max, const float& scale_min, const float& scale_max, const float rotation) {
     Particles particles(model);
 
     particles.set_position_min(pos_min);
@@ -212,15 +211,15 @@ Particles create_particles(const float& nb_particles, shared_obj model, const gl
     particles.set_velocity_min(glm::vec3(-0.5f, 0.5f, 0.0f));
     particles.set_velocity_max(glm::vec3(-0.25f, 0.8f, 0.0f));
 
-    particles.set_scale_min(0.015f);
-    particles.set_scale_max(0.05f);
+    particles.set_scale_min(scale_min);
+    particles.set_scale_max(scale_max);
 
     if (rotation != 0)
         particles.set_rotation(rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 
     particles.generate_particles(nb_particles);
 
-    return particles;
+    return std::make_shared<Particles>(particles);
 }
 
 Object create_signal_geom() {

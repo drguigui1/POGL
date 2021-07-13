@@ -55,3 +55,5 @@ private:
 
     std::vector<shared_particle> particles;
 };
+
+using shared_particles = std::shared_ptr<Particles>;

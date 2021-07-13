@@ -1,5 +1,20 @@
 # POGL
 
+## Usage
+
+## Keyboard shortcuts
+* W: move forward
+* S: move backward
+* A: move left
+* D: move right
+* Page up: increase movement speed
+* Page down: decrease movement speed
+* N: set wireframe mode to GL\_FILL
+* M: set wireframe mode to GL\_LINE
+* B: enable bubble effect
+* V: disable bubble effect
+* Espace / escape: close the window
+
 ## Links
 
 Water / Clouds:

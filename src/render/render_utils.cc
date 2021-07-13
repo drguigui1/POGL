@@ -61,18 +61,6 @@ void render_container_cube(Shader& shader, const float& ratio, Object& cube, Tex
     cube.draw();
 }
 
-void render_global_cube(Shader& shader, const float& ratio, Object& cube) {
-    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
-    glm::mat4 view = camera.get_matrix_view();
-    glm::mat4 model = glm::mat4(1.0f);
-
-    shader.use();
-    shader.set_projection_view_model(projection, view, model);
-    shader.set_float("iTime", glfwGetTime());
-
-    cube.draw();
-}
-
 void render_marble_cube(Shader& shader, const float& ratio, Object& cube) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
@@ -196,17 +184,6 @@ void render_obj(Shader& shader, const float& ratio, Model& obj, const float& sca
     model = glm::translate(model, translate);
 
     render_model(shader, ratio, model, obj);
-}
-
-void render_particles(shared_shader shader, shared_lights lights, const float& ratio, Particles& particles, float delta) {
-    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
-    glm::mat4 view = camera.get_matrix_view();
-
-    shader->use();
-
-    particles.draw(shader, lights, projection, view, camera.get_position());
-
-    particles.update(delta);
 }
 
 

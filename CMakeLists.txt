@@ -31,6 +31,8 @@ set(
     src/shader/shader.cc
     src/render/render.cc
     src/render/renderer.cc
+    src/render/renderer_object.cc
+    src/render/renderer_particles.cc
     src/render/render_utils.cc
 )
 

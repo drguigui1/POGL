@@ -18,4 +18,4 @@ Object create_cube();
 Object create_signal_geom();
 Object create_plane_geom();
 
-Particles create_particles(const float& nb_particles, shared_obj model, const glm::vec3& pos_min, const glm::vec3& pos_max, const float rotation = 0);
+shared_particles create_particles(const float& nb_particles, shared_obj model, const glm::vec3& pos_min, const glm::vec3& pos_max, const float& scale_min, const float& scale_max, const float rotation = 0.0f);
