@@ -16,7 +16,13 @@ void Particle::update(float delta) {
     this->lifetime -= delta;
 }
 
-bool Particle::is_alive() const {
+bool Particle::is_alive(const glm::vec3& pos_min, const glm::vec3& pos_max) const {
+    if (this->position.x < pos_min.x || this->position.x > pos_max.x)
+        return false;
+
+    if (this->position.z < pos_min.z || this->position.z > pos_max.z)
+        return false;
+
     return this->position.y > -0.5f;
 }
 

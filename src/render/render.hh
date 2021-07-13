@@ -6,3 +6,4 @@ void render(Window& window);
 void render2(Window& window);
 void render3(Window& window);
 void render4(Window& window);
+void render5(Window& window);

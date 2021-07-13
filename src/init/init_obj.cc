@@ -48,15 +48,15 @@ Object create_heightmap_plane(const glm::vec2& center, float width, float height
     return Object(vertices, false, false, true);
 }
 
-Object create_plane(float dist) {
+Object create_plane(float dist, const float x_center, const float z_factor) {
     std::vector<float> plane_vertices {
         // position          // colors         //normal          // texture
-        -dist, -0.5f, -dist, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-         dist, -0.5f, -dist, 1.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-         dist, -0.5f,  dist, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-         dist, -0.5f,  dist, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-        -dist, -0.5f,  dist, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        -dist, -0.5f, -dist, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+        -dist + x_center, -0.5f, -dist * z_factor, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+         dist + x_center, -0.5f, -dist * z_factor, 1.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+         dist + x_center, -0.5f,  dist * z_factor, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+         dist + x_center, -0.5f,  dist * z_factor, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        -dist + x_center, -0.5f,  dist * z_factor, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -dist + x_center, -0.5f, -dist * z_factor, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
     };
     return Object(plane_vertices, true, true, true);
 }
@@ -203,14 +203,11 @@ Object create_plane_from_heightmap(const char* path, float center_x, float cente
     return Object(vertices_colors, true, false, false);
 }
 
-Particles create_snowflake_particles() {
-    const std::string snowflake_path = "data/models/snowflake/snowflake.obj";
-    Model snowflake(snowflake_path);
+Particles create_particles(const float& nb_particles, shared_obj model, const glm::vec3& pos_min, const glm::vec3& pos_max, const float rotation) {
+    Particles particles(model);
 
-    Particles particles(std::make_shared<Model>(snowflake));
-
-    particles.set_position_min(glm::vec3(-2.0f, 0.0f, -1.5f));
-    particles.set_position_max(glm::vec3(2.0f, 2.0f, 1.5f));
+    particles.set_position_min(pos_min);
+    particles.set_position_max(pos_max);
 
     particles.set_velocity_min(glm::vec3(-0.5f, 0.5f, 0.0f));
     particles.set_velocity_max(glm::vec3(-0.25f, 0.8f, 0.0f));
@@ -218,9 +215,10 @@ Particles create_snowflake_particles() {
     particles.set_scale_min(0.015f);
     particles.set_scale_max(0.05f);
 
-    particles.set_rotation(-55.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    if (rotation != 0)
+        particles.set_rotation(rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    particles.generate_particles(500);
+    particles.generate_particles(nb_particles);
 
     return particles;
 }

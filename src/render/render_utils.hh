@@ -32,7 +32,7 @@ void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
 void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate);
 
 /* Particles */
-void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta);
+void render_particles(shared_shader shader, shared_lights lights, const float& ratio, Particles& particles, float delta);
 
 /* Skybox */
 void render_skybox(Shader& shader, const float& ratio, Skybox& skybox);

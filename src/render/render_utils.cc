@@ -198,17 +198,17 @@ void render_obj(Shader& shader, const float& ratio, Model& obj, const float& sca
     render_model(shader, ratio, model, obj);
 }
 
-void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta) {
+void render_particles(shared_shader shader, shared_lights lights, const float& ratio, Particles& particles, float delta) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
 
-    shader.use();
+    shader->use();
 
-    //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    particles.draw(shader, projection, view);
+    particles.draw(shader, lights, projection, view, camera.get_position());
 
     particles.update(delta);
 }
+
 
 void render_skybox(Shader& shader, const float& ratio, Skybox& skybox) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);

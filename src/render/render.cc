@@ -157,7 +157,7 @@ void render2(Window& window) {
     //const std::string ball_path = "data/models/soccer_ball/football_ball_OBJ.obj";
     //Model ball(ball_path);
 
-    Particles snowflake_particles = create_snowflake_particles();
+    //Particles snowflake_particles = create_snowflake_particles();
 
     const float window_ratio = window.get_ratio();
     // timing
@@ -188,7 +188,7 @@ void render2(Window& window) {
         lights.send_data_to_shader(marble_shader);
 
         // Particles
-        render_particles(particles_shader, window_ratio, snowflake_particles, curr_frame - prev_frame);
+        //render_particles(particles_shader, window_ratio, snowflake_particles, curr_frame - prev_frame);
 
         // Ball
         //render_ball(obj_shader, window_ratio, ball);
@@ -347,5 +347,74 @@ void render4(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
+    }
+}
+
+void render5(Window& window) {
+    // Variables
+    const float ratio = window.get_ratio();
+    float prev_frame = 0.0f;
+
+    Renderer renderer = init_renderer5(ratio);
+
+    // Lights
+    shared_lights lights = init_lights();
+
+    // Textures
+    Texture winter("data/images/winter.jpg");
+    Texture grass("data/images/grass.jpg");
+
+    // Plane
+    Object winter_plane = create_plane(7.5, 7.5f, 1.5f);
+    Shader winter_plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
+    winter_plane_shader.use();
+    winter_plane_shader.set_int("texture1", 0);
+
+    Object grass_plane = create_plane(7.5, -7.5f, 1.5f);
+    Shader grass_plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
+    grass_plane_shader.use();
+    grass_plane_shader.set_int("texture1", 0);
+
+    Model drop("data/models/drop/drop.obj");
+    Particles drop_particles = create_particles(1000, std::make_shared<Model>(drop),
+            glm::vec3(-17.0f, 0.0f, -15.0f), glm::vec3(0.0f, 7.0f, 15.0f));
+    shared_shader drop_particles_shader = std::make_shared<Shader>("shaders/particles.vs", "shaders/particles.fs");
+
+    Model snowflake("data/models/snowflake/snowflake.obj");
+    Particles snowflake_particles = create_particles(1000, std::make_shared<Model>(snowflake),
+            glm::vec3(-2.0f, 0.0f, -15.0f), glm::vec3(15.0f, 7.0f, 15.0f), -55.0f);
+    shared_shader snowflake_particles_shader = std::make_shared<Shader>("shaders/particles.vs", "shaders/particles.fs");
+
+    // Render loop
+    while (!window.should_close()) {
+        float curr_frame = glfwGetTime();
+        const glm::vec3 cam_pos = camera.get_position();
+
+        process_input(window, curr_frame - prev_frame);
+        gl_clear_update();
+
+        /* Render opaque objects */
+        // Right part
+        render_plane(winter_plane_shader, ratio, winter_plane, winter);
+        render_particles(snowflake_particles_shader, lights, ratio, snowflake_particles, curr_frame - prev_frame);
+
+        renderer.render_objs();
+
+        // Left part
+        render_plane(grass_plane_shader, ratio, grass_plane, grass);
+        render_particles(drop_particles_shader, lights, ratio, drop_particles, curr_frame - prev_frame);
+
+        // Skybox
+        renderer.render_skybox();
+
+        /* Render transparent objects */
+        glDepthMask(false); // disable z-testing
+        glDepthMask(true); // enable z-testing
+
+        prev_frame = curr_frame;
+        window.swap_buffers();
+        glfwPollEvents();
+
+        std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }

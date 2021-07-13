@@ -26,38 +26,15 @@ void Particles::add_particle(const Particle& particle) {
     this->particles.push_back(std::make_shared<Particle>(particle));
 }
 
-void Particles::draw(Shader& shader, const glm::mat4& projection, const glm::mat4& view) {
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-
+void Particles::draw(shared_shader shader, shared_lights lights, const glm::mat4& projection, const glm::mat4& view, const glm::vec3& cam_pos) {
     for (unsigned int i = 0; i < this->particles.size(); ++i) {
         const shared_particle particle = this->particles[i];
 
-        if (particle->is_alive()) {
+        if (particle->is_alive(this->position_min, this->position_max)) {
             glm::mat4 model = particle->get_model();
 
-            shader.set_mat4("projection", projection);
-            shader.set_mat4("view", view);
-            shader.set_mat4("model", model);
-
-            // FIXME: depends on the shader
-            // point light 1
-            shader.set_vec3("pointLights[0].lightColor", 1.0f, 1.0f, 1.0f);
-            shader.set_vec3("pointLights[0].pos", 3.0f, 3.0f, 0.0f);
-            shader.set_float("pointLights[0].kc", 1.0f);
-            shader.set_float("pointLights[0].kl", 0.09f);
-            shader.set_float("pointLights[0].kq", 0.032f);
-            // point light 2
-            shader.set_vec3("pointLights[1].lightColor", 1.0f, 1.0f, 1.0f);
-            shader.set_vec3("pointLights[1].pos", -3.0f, 3.0f, 0.0f);
-            shader.set_float("pointLights[1].kc", 1.0f);
-            shader.set_float("pointLights[1].kl", 0.09f);
-            shader.set_float("pointLights[1].kq", 0.032f);
-
-            shader.set_vec3("dirLight.lightColor", 1.0f, 1.0f, 1.0f);
-            shader.set_vec3("dirLight.dir", -5.0f, -5.0f, -5.0f);
-            shader.set_vec3("userPos", camera.get_position());
-
-            shader.set_int("nbLights", 2);
+            shader->set_projection_view_model(projection, view, model);
+            lights->send_data_to_shader(shader, cam_pos);
 
             this->obj->draw(shader);
         } else {

@@ -5,6 +5,7 @@
 
 #include "particle.hh"
 #include "object.hh"
+#include "lights.hh"
 
 class Particles {
 public:
@@ -15,7 +16,7 @@ public:
     void generate_particles(const unsigned int& nb);
     void add_particle(const Particle& particle);
 
-    void draw(Shader& shader, const glm::mat4& projection, const glm::mat4& view);
+    void draw(shared_shader shader, shared_lights lights, const glm::mat4& projection, const glm::mat4& view, const glm::vec3& cam_pos);
     void update(float delta);
 
     /* Setters */

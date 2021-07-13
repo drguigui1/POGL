@@ -79,3 +79,85 @@ Renderer init_renderer3(const float& ratio) {
 
     return renderer;
 }
+
+static void add_tree_symetric(Renderer& renderer, shared_obj tree1, shared_obj tree2, shared_lights lights, const glm::vec3& pos) {
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", tree1, lights, true, 1.0f, pos);
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", tree2, lights, true, 1.0f, glm::vec3(-pos.x, pos.y, pos.z));
+}
+
+Renderer init_renderer5(const float& ratio) {
+    // Lights
+    shared_lights lights = init_lights();
+
+    Renderer renderer(ratio);
+
+    // TODO
+    renderer.set_skybox(std::make_shared<Skybox>("data/skybox/fishpond"));
+    renderer.set_skybox_shader(std::make_shared<Shader>("shaders/skybox.vs", "shaders/skybox.fs"));
+
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", "data/models/snowman/snowman.obj", lights, true, 1.0f, glm::vec3(2.0f, -0.5f, 3.0f));
+
+    // Pine tree with/without snow
+    shared_obj pine_snow = std::make_shared<Model>("data/models/pine/pine_tree_snow.obj");
+    shared_obj pine = std::make_shared<Model>("data/models/pine/pine_tree.obj");
+
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(8.7f, -0.5f, -10.65f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(14.4f, -0.5f, -10.65f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(14.4f, -0.5f, 10.65f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(3.2f, -0.5f, 10.65f));
+
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(10.0f, -0.5f, 0.0f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(2.6f, -0.5f, -9.4f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(4.3f, -0.5f, -6.1f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(4.9f, -0.5f, -10.1f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(4.1f, -0.5f, -7.7f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(6.7f, -0.5f, -9.1f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(8.9f, -0.5f, -8.7f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(11.7f, -0.5f, -9.7f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(10.9f, -0.5f, -7.5f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(11.83f, -0.5f, -8.3f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(13.9f, -0.5f, -9.65f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(3.3f, -0.5f, -2.3f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(7.1f, -0.5f, -3.6f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(7.8f, -0.5f, -7.6f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(8.1f, -0.5f, -4.6f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(6.4f, -0.5f, -6.2f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(8.8f, -0.5f, -6.6f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(5.1f, -0.5f, -4.7f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(12.1f, -0.5f, -2.6f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(9.3f, -0.5f, -2.6f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(14.1f, -0.5f, -3.9f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(13.8f, -0.5f, -1.8f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(12.5f, -0.5f, -5.8f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(10.8f, -0.5f, -3.8f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(7.5f, -0.5f, -2.1f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(5.2f, -0.5f, 9.1f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(6.7f, -0.5f, 9.4f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(8.4f, -0.5f, 7.6f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(11.4f, -0.5f, 3.1f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(9.2f, -0.5f, 3.9f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(12.4f, -0.5f, -0.2f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(11.0f, -0.5f, 0.77f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(10.7f, -0.5f, 4.77f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(14.1f, -0.5f, 1.77f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(12.1f, -0.5f, 4.56f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(13.76f, -0.5f, 7.56f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(14.3f, -0.5f, 3.96f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(12.84f, -0.5f, 5.28f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(11.54f, -0.5f, 6.71f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(11.4f, -0.5f, 8.51f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(10.15f, -0.5f, 9.47f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(9.27f, -0.5f, 10.52f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(13.15f, -0.5f, 9.38f));
+    add_tree_symetric(renderer, pine_snow, pine, lights, glm::vec3(9.15f, -0.5f, 5.47f));
+
+    // Pine tree with some snow
+    shared_obj pine_half_snow = std::make_shared<Model>("data/models/pine/pine_tree_half_snow.obj");
+    add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(1.91f, -0.5f, -7.06f));
+    add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(0.68f, -0.5f, -8.51f));
+    add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(1.24f, -0.5f, -4.05f));
+    add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(5.71f, -0.5f, -2.63f));
+    add_tree_symetric(renderer, pine_half_snow, pine_half_snow, lights, glm::vec3(0.74f, -0.5f, -5.52f));
+
+    return renderer;
+}

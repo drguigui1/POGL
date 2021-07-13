@@ -14,7 +14,7 @@ public:
 
     /* Methods */
     void update(float delta);
-    bool is_alive() const;
+    bool is_alive(const glm::vec3& pos_min, const glm::vec3& pos_max) const;
     glm::mat4 get_model() const;
 
     /* Setters */

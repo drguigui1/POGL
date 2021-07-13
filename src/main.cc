@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
     // Render loop
     //render3(window);
-    render4(window);
+    render5(window);
 
     glfwTerminate();
     return 0;
