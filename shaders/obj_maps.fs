@@ -40,4 +40,5 @@ void main() {
     //FragColor = res;
 
     FragColor = texture(diffuse_map, texCoord);
+//    FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
