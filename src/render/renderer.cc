@@ -58,6 +58,21 @@ void Renderer::add_obj(shared_shader shader, shared_obj obj, shared_lights light
     this->objs.emplace_back(shader, obj, light, offset, scale, translate);
 }
 
+void Renderer::add_obj(const char* vertex_path, const char* fragment_path,
+        const char* model_path, shared_lights light, const bool& offset,
+        const float& scale, const glm::vec3& translate) {
+    shared_shader shader = std::make_shared<Shader>(vertex_path, fragment_path);
+    shared_obj obj = std::make_shared<Model>(model_path);
+    this->objs.emplace_back(shader, obj, light, offset, scale, translate);
+}
+
+void Renderer::add_obj(const char* vertex_path, const char* fragment_path,
+        shared_obj obj, shared_lights light, const bool& offset,
+        const float& scale, const glm::vec3& translate) {
+    shared_shader shader = std::make_shared<Shader>(vertex_path, fragment_path);
+    this->objs.emplace_back(shader, obj, light, offset, scale, translate);
+}
+
 void Renderer::add_obj(const RendererObject& obj) {
     this->objs.push_back(obj);
 }
