@@ -117,10 +117,10 @@ void render2(Window& window) {
     Shader particles_shader("shaders/particles.vs", "shaders/particles.fs");
     Shader marble_shader("shaders/marble.vs", "shaders/marble.fs");
     //Shader signal_shader("shaders/signal_shader.vs", "shaders/signal_shader.fs", "shaders/signal_shader.gs");
-    //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh.fs", "shaders/bubble/bubble.gs");
+    Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh.fs", "shaders/bubble/bubble.gs");
     //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh_rising.fs", "shaders/bubble/bubble.gs");
     //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/shines.fs", "shaders/bubble/bubble.gs");
-    //Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/rising.fs", "shaders/bubble/bubble.gs");
+    Shader bubble_shader2("shaders/bubble/bubble.vs", "shaders/bubble/rising.fs", "shaders/bubble/bubble.gs");
     Shader grid_shader("shaders/grid/grid.vs", "shaders/grid/grid.fs", "shaders/grid/grid.gs");
 
     // Objects
@@ -129,7 +129,8 @@ void render2(Window& window) {
     Skybox skybox("data/skybox/forest");
     //Skybox skybox("data/skybox/hornstulls");
     //Object signal = create_signal_geom();
-    //Object bubble = create_plane_geom();
+    Object bubble = create_plane_geom();
+    Object bubble2 = create_plane_geom();
     Object grid = create_plane_geom();
 
     // Lights
@@ -197,8 +198,9 @@ void render2(Window& window) {
 
         /* Render transparent objects */
         glDepthMask(false); // disable z-testing
-        //render_bubble(bubble_shader, window_ratio, bubble, curr_frame, window.get_width(), window.get_height());
-        render_grid(grid_shader, window_ratio, grid, curr_frame, window.get_width(), window.get_height());
+        render_bubble(bubble_shader, window_ratio, bubble, curr_frame, window.get_width(), window.get_height());
+        render_bubble(bubble_shader2, window_ratio, bubble2, curr_frame, window.get_width(), window.get_height());
+        //render_grid(grid_shader, window_ratio, grid, curr_frame, window.get_width(), window.get_height());
         glDepthMask(true); // enable z-testing
 
         prev_frame = curr_frame;
@@ -229,7 +231,7 @@ void render3(Window& window) {
     Shader terrain_shader("shaders/terrain/terrain.vs", "shaders/terrain/terrain.fs");
     Object terrain = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
 
-    // Set textures to shader
+    // Set textures to terrain shader
     terrain_shader.use();
     terrain_shader.set_int("heightmap", 0);
     terrain_shader.set_int("snow", 1);
@@ -237,6 +239,10 @@ void render3(Window& window) {
     terrain_shader.set_int("grass", 3);
     terrain_shader.set_int("dirt", 4);
     terrain_shader.set_int("path", 5);
+
+    // Bubble
+    Shader bubble_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh_rising.fs", "shaders/bubble/bubble.gs");
+    Object bubble = create_plane_geom();
 
     // Render loop
     while (!window.should_close()) {
@@ -247,7 +253,6 @@ void render3(Window& window) {
         gl_clear_update();
 
         /* Render opaque objects */
-
         // Terrain
         tex_heightmap.use(0);
         tex_snow.use(1);
@@ -267,6 +272,7 @@ void render3(Window& window) {
 
         /* Render transparent objects */
         glDepthMask(false); // disable z-testing
+        render_bubble(bubble_shader, ratio, bubble, curr_frame, window.get_width(), window.get_height());
         glDepthMask(true); // enable z-testing
 
         prev_frame = curr_frame;
