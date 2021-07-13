@@ -50,3 +50,24 @@ shared_lights init_trunk_lights() {
 
     return std::make_shared<Lights>(lights);
 }
+
+shared_lights init_museum_lights() {
+    glm::vec3 l_color(1.0, 1.0, 1.0);
+
+    DirectionalLight dir_light(glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 0.0f, -5.0f));
+    PointLight p_light1(l_color, glm::vec3(-2.0f, 2.0f, 1.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light2(l_color, glm::vec3(-6.0f, 2.0f, 3.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light3(l_color, glm::vec3(-4.0f, 3.0f, 4.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light4(l_color, glm::vec3(-1.0f, 2.0f, 1.0f), 1.0f, 0.09f, 0.032f);
+    PointLight p_light5(l_color, glm::vec3(1.0f, 0.7f, 1.0f), 1.0f, 0.19f, 0.132f);
+
+    Lights lights;
+    lights.set_directional_light(std::make_shared<DirectionalLight>(dir_light));
+    lights.add_point_light(std::make_shared<PointLight>(p_light1));
+    lights.add_point_light(std::make_shared<PointLight>(p_light2));
+    lights.add_point_light(std::make_shared<PointLight>(p_light3));
+    lights.add_point_light(std::make_shared<PointLight>(p_light4));
+    lights.add_point_light(std::make_shared<PointLight>(p_light5));
+
+    return std::make_shared<Lights>(lights);
+}
