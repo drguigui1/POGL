@@ -20,6 +20,7 @@ public:
     /* Methods */
     virtual void draw(GLenum type=GL_TRIANGLES);
     virtual void draw(Shader& shader, GLenum type=GL_TRIANGLES);
+    virtual void draw(shared_shader shader, GLenum type=GL_TRIANGLES);
 
     /* Getters */
     float get_y_max() const { return y_max; }

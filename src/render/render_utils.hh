@@ -33,10 +33,10 @@ void render(Shader& shader, const float& ratio, Model& tree, const float& scale,
 void render_tree(Shader& shader, const float& ratio, Model& tree, const float& scale, const glm::vec3& translate);
 void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate);
 void render_road_sign(Shader& shader, const float& ratio, Model& road_sign);
-void render_house(Shader& shader, const float& ratio, Model& house);
 
 /* Particles */
 void render_particles(Shader& shader, const float& ratio, Particles& particles, float delta);
 
 /* Skybox */
 void render_skybox(Shader& shader, const float& ratio, Skybox& skybox);
+void render_skybox(shared_shader shader, const float& ratio, shared_skybox skybox);

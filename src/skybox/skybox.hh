@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -23,3 +24,5 @@ private:
     unsigned int nb_vertices;
     unsigned int texture_id;
 };
+
+using shared_skybox = std::shared_ptr<Skybox>;

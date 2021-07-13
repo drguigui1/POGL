@@ -2,6 +2,6 @@
 
 #include "lights.hh"
 
-Lights init_lights();
-Lights init_house_lights();
-Lights init_trunk_lights();
+shared_lights init_lights();
+shared_lights init_house_lights();
+shared_lights init_trunk_lights();

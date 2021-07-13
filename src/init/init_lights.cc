@@ -1,6 +1,6 @@
 #include "init_lights.hh"
 
-Lights init_lights() {
+shared_lights init_lights() {
     glm::vec3 l_color(1.0, 1.0, 1.0);
 
     DirectionalLight dir_light(glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(-5.0f, -5.0f, -5.0f));
@@ -9,15 +9,15 @@ Lights init_lights() {
     PointLight p_light3(l_color, glm::vec3(0.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
 
     Lights lights;
-    lights.add_directional_light(dir_light);
-    lights.add_point_light(p_light1);
-    lights.add_point_light(p_light2);
-    lights.add_point_light(p_light3);
+    lights.set_directional_light(std::make_shared<DirectionalLight>(dir_light));
+    lights.add_point_light(std::make_shared<PointLight>(p_light1));
+    lights.add_point_light(std::make_shared<PointLight>(p_light2));
+    lights.add_point_light(std::make_shared<PointLight>(p_light3));
 
-    return lights;
+    return std::make_shared<Lights>(lights);
 }
 
-Lights init_house_lights() {
+shared_lights init_house_lights() {
     glm::vec3 l_color(1.0, 1.0, 1.0);
 
     DirectionalLight dir_light(glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(-5.0f, -5.0f, -5.0f));
@@ -26,15 +26,15 @@ Lights init_house_lights() {
     PointLight p_light3(l_color, glm::vec3(5.0f, 2.0f, 20.0f), 1.0f, 0.09f, 0.032f);
 
     Lights lights;
-    lights.add_directional_light(dir_light);
-    lights.add_point_light(p_light1);
-    lights.add_point_light(p_light2);
-    lights.add_point_light(p_light3);
+    lights.set_directional_light(std::make_shared<DirectionalLight>(dir_light));
+    lights.add_point_light(std::make_shared<PointLight>(p_light1));
+    lights.add_point_light(std::make_shared<PointLight>(p_light2));
+    lights.add_point_light(std::make_shared<PointLight>(p_light3));
 
-    return lights;
+    return std::make_shared<Lights>(lights);
 }
 
-Lights init_trunk_lights() {
+shared_lights init_trunk_lights() {
     glm::vec3 l_color(1.0, 1.0, 1.0);
 
     DirectionalLight dir_light(glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(-5.0f, -5.0f, -5.0f));
@@ -43,10 +43,10 @@ Lights init_trunk_lights() {
     PointLight p_light3(l_color, glm::vec3(-4.0f, 3.0f, 40.0f), 1.0f, 0.09f, 0.032f);
 
     Lights lights;
-    lights.add_directional_light(dir_light);
-    lights.add_point_light(p_light1);
-    lights.add_point_light(p_light2);
-    lights.add_point_light(p_light3);
+    lights.set_directional_light(std::make_shared<DirectionalLight>(dir_light));
+    lights.add_point_light(std::make_shared<PointLight>(p_light1));
+    lights.add_point_light(std::make_shared<PointLight>(p_light2));
+    lights.add_point_light(std::make_shared<PointLight>(p_light3));
 
-    return lights;
+    return std::make_shared<Lights>(lights);
 }

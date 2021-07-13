@@ -18,6 +18,7 @@ class Model : public Object {
         Model(const std::string& path);
 
         virtual void draw(Shader& shader, GLenum type=GL_TRIANGLES);
+        virtual void draw(shared_shader shader, GLenum type=GL_TRIANGLES);
 
     private:
         void load_mesh(aiNode* root, const aiScene* scene);

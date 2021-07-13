@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <glm/glm.hpp>
 
@@ -39,3 +40,5 @@ private:
     /* Attributes */
     unsigned int id;
 };
+
+using shared_shader = std::shared_ptr<Shader>;

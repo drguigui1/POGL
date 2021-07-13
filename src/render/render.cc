@@ -10,6 +10,7 @@
 #include "init_obj.hh"
 
 #include "render.hh"
+#include "renderer.hh"
 #include "render_utils.hh"
 
 #include "camera.hh"
@@ -136,10 +137,10 @@ void render2(Window& window) {
     PointLight p_light1(l_color, glm::vec3(3.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
     PointLight p_light2(l_color, glm::vec3(-3.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
     PointLight p_light3(l_color, glm::vec3(0.0f, 3.0f, 0.0f), 1.0f, 0.09f, 0.032f);
-    lights.add_directional_light(dir_light);
-    lights.add_point_light(p_light1);
-    lights.add_point_light(p_light2);
-    lights.add_point_light(p_light3);
+    lights.set_directional_light(std::make_shared<DirectionalLight>(dir_light));
+    lights.add_point_light(std::make_shared<PointLight>(p_light1));
+    lights.add_point_light(std::make_shared<PointLight>(p_light2));
+    lights.add_point_light(std::make_shared<PointLight>(p_light3));
 
     const std::string cuctus1_path = "data/models/cuctus/1/cuctus1.obj";
     auto cuctus1 = Model(cuctus1_path);
@@ -206,11 +207,15 @@ void render2(Window& window) {
 
 void render3(Window& window) {
     // Variables
+    Renderer renderer(window.get_ratio());
+
+    renderer.set_skybox(std::make_shared<Skybox>("data/skybox/fishpond"));
+    renderer.set_skybox_shader(std::make_shared<Shader>("shaders/skybox.vs", "shaders/skybox.fs"));
+
     const float ratio = window.get_ratio();
     float prev_frame = 0.0f;
 
     // Shaders
-    Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
     Shader terrain_shader("shaders/terrain/terrain.vs", "shaders/terrain/terrain.fs");
     Shader tree_1_shader("shaders/obj.vs", "shaders/obj.fs");
     Shader tree_2_shader("shaders/obj.vs", "shaders/obj.fs");
@@ -254,8 +259,6 @@ void render3(Window& window) {
     Shader road_sign_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
 
     // Objects
-    Skybox skybox("data/skybox/fishpond");
-
     Object terrain = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
     Model tree_1("data/models/tree/1/tree.obj");
     Model tree_2("data/models/tree/2/tree.obj");
@@ -283,9 +286,9 @@ void render3(Window& window) {
     Texture tex_path("data/images/path.jpg");
 
     // Lights
-    Lights lights = init_lights();
-    Lights house_lights = init_house_lights();
-    Lights trunk_lights = init_trunk_lights();
+    shared_lights lights = init_lights();
+    shared_lights house_lights = init_house_lights();
+    shared_lights trunk_lights = init_trunk_lights();
 
     // Set textures to shader
     terrain_shader.use();
@@ -295,6 +298,12 @@ void render3(Window& window) {
     terrain_shader.set_int("grass", 3);
     terrain_shader.set_int("dirt", 4);
     terrain_shader.set_int("path", 5);
+
+
+    auto shared_house_shader = std::make_shared<Shader>(house_shader);
+    auto shared_house = std::make_shared<Model>(house);
+
+    renderer.add_obj(shared_house_shader, shared_house, house_lights, false, 0.15f, glm::vec3(80.0f, -9.5f, 200.0f));
 
     // Render loop
     while (!window.should_close()) {
@@ -315,141 +324,141 @@ void render3(Window& window) {
         tex_path.use(5);
 
         render_terrain(terrain_shader, ratio, terrain);
-        lights.send_data_to_shader(terrain_shader, cam_pos);
+        lights->send_data_to_shader(terrain_shader, cam_pos);
+
+        // Objs: House
+        renderer.render_objs();
 
         // Trees
         render_obj(tree_1_shader, ratio, tree_1, 1.0f, glm::vec3(3.0f, -5.0f, -5.0f));
-        lights.send_data_to_shader(tree_1_shader, cam_pos);
+        lights->send_data_to_shader(tree_1_shader, cam_pos);
 
         render_obj(tree_2_shader, ratio, tree_1, 1.0f, glm::vec3(-0.5f, -5.0f, -12.0f));
-        lights.send_data_to_shader(tree_2_shader, cam_pos);
+        lights->send_data_to_shader(tree_2_shader, cam_pos);
 
         render_obj(tree_3_shader, ratio, tree_3, 1.0f, glm::vec3(-10.0f, -5.0f, -1.7f));
-        lights.send_data_to_shader(tree_3_shader, cam_pos);
+        lights->send_data_to_shader(tree_3_shader, cam_pos);
 
         render_obj(tree_4_shader, ratio, tree_2, 1.0f, glm::vec3(-8.5f, -5.0f, -20.0f));
-        lights.send_data_to_shader(tree_4_shader, cam_pos);
+        lights->send_data_to_shader(tree_4_shader, cam_pos);
 
         render_obj(tree_5_shader, ratio, tree_2, 1.0f, glm::vec3(-1.6f, -5.0f, 30.0f));
-        lights.send_data_to_shader(tree_5_shader, cam_pos);
+        lights->send_data_to_shader(tree_5_shader, cam_pos);
 
         render_obj(tree_6_shader, ratio, tree_1, 1.0f, glm::vec3(25.0f, -4.25f, 33.0f));
-        lights.send_data_to_shader(tree_6_shader, cam_pos);
+        lights->send_data_to_shader(tree_6_shader, cam_pos);
 
         render_obj(tree_7_shader, ratio, tree_3, 1.0f, glm::vec3(-11.5f, -5.0f, -31.0f));
-        lights.send_data_to_shader(tree_7_shader, cam_pos);
+        lights->send_data_to_shader(tree_7_shader, cam_pos);
 
         render_obj(tree_8_shader, ratio, tree_2, 1.0f, glm::vec3(-8.1f, -5.0f, -29.0f));
-        lights.send_data_to_shader(tree_8_shader, cam_pos);
+        lights->send_data_to_shader(tree_8_shader, cam_pos);
 
         render_obj(tree_9_shader, ratio, tree_2, 1.0f, glm::vec3(-38.1f, -4.8f, -13.0f));
-        lights.send_data_to_shader(tree_9_shader, cam_pos);
+        lights->send_data_to_shader(tree_9_shader, cam_pos);
 
         render_obj(tree_10_shader, ratio, tree_3, 1.0f, glm::vec3(-41.0f, -5.0f, -15.0f));
-        lights.send_data_to_shader(tree_10_shader, cam_pos);
+        lights->send_data_to_shader(tree_10_shader, cam_pos);
 
         render_obj(tree_11_shader, ratio, tree_3, 1.0f, glm::vec3(-37.0f, -4.8f, -3.5f));
-        lights.send_data_to_shader(tree_11_shader, cam_pos);
+        lights->send_data_to_shader(tree_11_shader, cam_pos);
 
         render_obj(tree_12_shader, ratio, tree_1, 1.0f, glm::vec3(-30.0f, -4.5f, 2.5f));
-        lights.send_data_to_shader(tree_12_shader, cam_pos);
+        lights->send_data_to_shader(tree_12_shader, cam_pos);
 
         render_obj(tree_13_shader, ratio, tree_1, 1.0f, glm::vec3(-37.0f, -4.0f, 4.0f));
-        lights.send_data_to_shader(tree_13_shader, cam_pos);
+        lights->send_data_to_shader(tree_13_shader, cam_pos);
 
         render_obj(tree_14_shader, ratio, tree_2, 1.0f, glm::vec3(-30.0f, -4.5f, -8.0f));
-        lights.send_data_to_shader(tree_14_shader, cam_pos);
+        lights->send_data_to_shader(tree_14_shader, cam_pos);
 
         render_obj(tree_15_shader, ratio, tree_2, 1.0f, glm::vec3(-32.7f, -4.5f, -44.7f));
-        lights.send_data_to_shader(tree_15_shader, cam_pos);
+        lights->send_data_to_shader(tree_15_shader, cam_pos);
 
         render_obj(tree_16_shader, ratio, tree_3, 1.0f, glm::vec3(13.2f, -4.5f, -25.2f));
-        lights.send_data_to_shader(tree_16_shader, cam_pos);
+        lights->send_data_to_shader(tree_16_shader, cam_pos);
 
         render_obj(tree_17_shader, ratio, tree_3, 1.0f, glm::vec3(-40.0f, -3.0f, -28.0f));
-        lights.send_data_to_shader(tree_17_shader, cam_pos);
+        lights->send_data_to_shader(tree_17_shader, cam_pos);
 
         render_obj(tree_18_shader, ratio, tree_1, 1.0f, glm::vec3(16.0f, -5.0f, -8.0f));
-        lights.send_data_to_shader(tree_18_shader, cam_pos);
+        lights->send_data_to_shader(tree_18_shader, cam_pos);
 
         render_obj(tree_19_shader, ratio, tree_2, 1.0f, glm::vec3(34.0f, -5.0f, 39.0f));
-        lights.send_data_to_shader(tree_19_shader, cam_pos);
+        lights->send_data_to_shader(tree_19_shader, cam_pos);
 
         render_obj(tree_20_shader, ratio, tree_3, 1.0f, glm::vec3(28.0f, -5.0f, 43.0f));
-        lights.send_data_to_shader(tree_20_shader, cam_pos);
+        lights->send_data_to_shader(tree_20_shader, cam_pos);
 
         render_obj(tree_21_shader, ratio, tree_3, 1.0f, glm::vec3(37.0f, -5.0f, 10.0f));
-        lights.send_data_to_shader(tree_21_shader, cam_pos);
+        lights->send_data_to_shader(tree_21_shader, cam_pos);
 
-        // House
-        render_house(house_shader, ratio, house);
-        house_lights.send_data_to_shader(house_shader);
 
         // Road sign
         render_road_sign(road_sign_shader, ratio, road_sign);
 
         // Trunks
         render_obj(trunk_1_shader, ratio, trunk_1, 0.3f, glm::vec3(15.0f, -15.0f, 120.0f));
-        trunk_lights.send_data_to_shader(trunk_1_shader);
+        trunk_lights->send_data_to_shader(trunk_1_shader);
 
         render_obj(trunk_2_shader, ratio, trunk_2, 1.0f, glm::vec3(26.0f, -4.5f, 3.0f));
-        trunk_lights.send_data_to_shader(trunk_2_shader);
+        trunk_lights->send_data_to_shader(trunk_2_shader);
 
         render_obj(trunk_3_shader, ratio, trunk_2, 1.0f, glm::vec3(-16.0f, -4.0f, -12.0f));
-        trunk_lights.send_data_to_shader(trunk_3_shader);
+        trunk_lights->send_data_to_shader(trunk_3_shader);
 
         // Grass
         render_obj(grass_shader, ratio, grass, 1.0f, glm::vec3(5.0f, -4.0f, 30.0f));
-        lights.send_data_to_shader(grass_shader, cam_pos);
+        lights->send_data_to_shader(grass_shader, cam_pos);
 
         render_obj(grass_2_shader, ratio, grass, 1.0f, glm::vec3(-20.0f, -4.5f, -15.0f));
-        lights.send_data_to_shader(grass_2_shader, cam_pos);
+        lights->send_data_to_shader(grass_2_shader, cam_pos);
 
         render_obj(grass_3_shader, ratio, grass, 1.0f, glm::vec3(26.0f, -4.0f, -7.0f));
-        lights.send_data_to_shader(grass_3_shader, cam_pos);
+        lights->send_data_to_shader(grass_3_shader, cam_pos);
 
         render_obj(grass_4_shader, ratio, grass, 1.0f, glm::vec3(5.0f, -4.0f, -27.0f));
-        lights.send_data_to_shader(grass_4_shader, cam_pos);
+        lights->send_data_to_shader(grass_4_shader, cam_pos);
 
         // Fire
         render_obj(fire_shader, ratio, fire, 1.0f, glm::vec3(-4.0f, -4.35f, 16.0f));
-        lights.send_data_to_shader(fire_shader, cam_pos);
+        lights->send_data_to_shader(fire_shader, cam_pos);
 
         render_obj(firecamp_shader, ratio, firecamp, 1.0f, glm::vec3(15.0f, -4.35f, 5.0f));
-        lights.send_data_to_shader(firecamp_shader, cam_pos);
+        lights->send_data_to_shader(firecamp_shader, cam_pos);
 
         // Fox
         render_obj(fox_shader, ratio, fox, 1.0f, glm::vec3(-18.0f, -1.5f, 13.0f));
-        lights.send_data_to_shader(fox_shader, cam_pos);
+        lights->send_data_to_shader(fox_shader, cam_pos);
 
         // Deer
         render_obj(deer_shader, ratio, deer, 1.0f, glm::vec3(-30.0f, -4.0f, 45.0f));
-        lights.send_data_to_shader(deer_shader, cam_pos);
+        lights->send_data_to_shader(deer_shader, cam_pos);
 
         // Wood
         render_obj(wood_shader, ratio, wood, 1.0f, glm::vec3(-19.0f, -4.9f, -20.0f));
-        lights.send_data_to_shader(wood_shader, cam_pos);
+        lights->send_data_to_shader(wood_shader, cam_pos);
 
         // Well
         render_obj(well_shader, ratio, well, 1.0f, glm::vec3(-39.2f, -4.5f, 23.6f));
-        lights.send_data_to_shader(well_shader, cam_pos);
+        lights->send_data_to_shader(well_shader, cam_pos);
 
         // Rock
         render_obj(rock_shader, ratio, rock, 1.0f, glm::vec3(39.2f, -4.25f, -33.6f));
-        lights.send_data_to_shader(rock_shader, cam_pos);
+        lights->send_data_to_shader(rock_shader, cam_pos);
 
         render_obj(rock_2_shader, ratio, rock, 1.0f, glm::vec3(14.2f, -4.25f, -13.6f));
-        lights.send_data_to_shader(rock_2_shader, cam_pos);
+        lights->send_data_to_shader(rock_2_shader, cam_pos);
 
         // Flower
         render_obj(flower_shader, ratio, flower, 1.0f, glm::vec3(-17.0f, -2.25f, 5.0f));
-        lights.send_data_to_shader(flower_shader, cam_pos);
+        lights->send_data_to_shader(flower_shader, cam_pos);
 
         render_obj(flower_2_shader, ratio, flower, 1.0f, glm::vec3(-23.4f, -1.0f, 10.5f));
-        lights.send_data_to_shader(flower_2_shader, cam_pos);
+        lights->send_data_to_shader(flower_2_shader, cam_pos);
 
         // Skybox
-        render_skybox(skybox_shader, ratio, skybox);
+        renderer.render_skybox();
 
         /* Render transparent objects */
         glDepthMask(false); // disable z-testing
@@ -482,7 +491,7 @@ void render4(Window& window) {
     // Textures
     Texture ground("data/images/floor_texture4.jpg");
 
-    Lights lights = init_lights();
+    shared_lights lights = init_lights();
 
     plane_shader.use();
     plane_shader.set_int("texture1", 0);
@@ -500,7 +509,7 @@ void render4(Window& window) {
 
         // obj
         render_obj(marble_shader, ratio, statue, 0.3f, glm::vec3(0.0f, -2.0f, 0.0f));
-        lights.send_data_to_shader(marble_shader, cam_pos);
+        lights->send_data_to_shader(marble_shader, cam_pos);
 
         // Skybox
         render_skybox(skybox_shader, ratio, skybox);

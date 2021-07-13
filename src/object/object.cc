@@ -104,6 +104,10 @@ void Object::draw(Shader&, GLenum type) {
     this->draw(type);
 }
 
+void Object::draw(shared_shader, GLenum type) {
+    this->draw(type);
+}
+
 void Object::draw(GLenum type) {
     if (this->texture)
         this->texture->use();

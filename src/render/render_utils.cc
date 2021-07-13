@@ -230,6 +230,19 @@ void render_skybox(Shader& shader, const float& ratio, Skybox& skybox) {
     skybox.draw();
 }
 
+void render_skybox(shared_shader shader, const float& ratio, shared_skybox skybox) {
+    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+    glm::mat4 view = glm::mat4(glm::mat3(camera.get_matrix_view()));
+    glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 50.0f));
+
+    shader->use();
+
+    shader->set_projection_view_model(projection, view, model);
+    shader->set_vec3("userPos", camera.get_position());
+
+    skybox->draw();
+}
+
 void render_terrain(Shader& shader, const float& ratio, Object& terrain) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
@@ -257,11 +270,4 @@ void render_road_sign(Shader& shader, const float& ratio, Model& road_sign) {
     shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
     shader.set_vec3("lightPos", 0.0f, 5.0f, 0.0f);
     shader.set_vec3("userPos", camera.get_position());
-}
-
-void render_house(Shader& shader, const float& ratio, Model& house) {
-    glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(0.15f));
-    model = glm::translate(model, glm::vec3(80.0f, -9.5f, 200.0f));
-
-    render_model(shader, ratio, model, house);
 }

@@ -29,6 +29,7 @@ set(
 
     src/shader/shader.cc
     src/render/render.cc
+    src/render/renderer.cc
     src/render/render_utils.cc
 )
 
