@@ -214,13 +214,8 @@ void render3(Window& window) {
 
     Renderer renderer = init_renderer3(ratio);
 
-    // Shaders
-    Shader terrain_shader("shaders/terrain/terrain.vs", "shaders/terrain/terrain.fs");
-    Shader road_sign_shader("shaders/obj_maps.vs", "shaders/obj_maps.fs");
-
-    // Objects
-    Object terrain = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
-    Model road_sign("data/models/road_sign/WoodRoadSign.obj");
+    // Lights
+    shared_lights lights = init_lights();
 
     // Textures
     Texture tex_heightmap("data/images/heightmap.jpg");
@@ -230,8 +225,9 @@ void render3(Window& window) {
     Texture tex_dirt("data/images/dirt.jpg");
     Texture tex_path("data/images/path.jpg");
 
-    // Lights
-    shared_lights lights = init_lights();
+    // Terrain
+    Shader terrain_shader("shaders/terrain/terrain.vs", "shaders/terrain/terrain.fs");
+    Object terrain = create_heightmap_plane(glm::vec2(0.0), 96, 96, 0.25, 0.25);
 
     // Set textures to shader
     terrain_shader.use();
@@ -265,9 +261,6 @@ void render3(Window& window) {
 
         // Objs
         renderer.render_objs();
-
-        // Road sign
-        render_road_sign(road_sign_shader, ratio, road_sign);
 
         // Skybox
         renderer.render_skybox();

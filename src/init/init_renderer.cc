@@ -19,6 +19,8 @@ Renderer init_renderer3(const float& ratio) {
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", "data/models/well/well.obj", lights, true, 1.0f, glm::vec3(-39.2f, -4.5f, 23.6f));
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", "data/models/fire/fire.obj", lights, true, 1.0f, glm::vec3(-4.0f, -4.35f, 16.0f));
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", "data/models/fire/firecamp.obj", lights, true, 1.0f, glm::vec3(15.0f, -4.35f, 5.0f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", "data/models/road_sign/WoodRoadSign.obj", lights, true, 0.6f, glm::vec3(-7.0f, -7.35f, -26.0f));
+
 
     // Grass
     shared_obj grass = std::make_shared<Model>("data/models/grass/grass_flower.obj");
