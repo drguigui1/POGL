@@ -10,6 +10,7 @@ set(
     src/init/init.cc
     src/init/init_obj.cc
     src/init/init_lights.cc
+    src/init/init_renderer.cc
 
     src/noise/noise.cc
     src/noise/noise2.cc

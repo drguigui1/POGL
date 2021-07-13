@@ -191,13 +191,6 @@ void render_cuctus(Shader& shader, const float& ratio, Model& cuctus) {
     shader.set_vec3("userPos", camera.get_position());
 }
 
-void render_tree(Shader& shader, const float& ratio, Model& tree, const float& scale, const glm::vec3& translate) {
-    glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
-    model = glm::translate(model, translate);
-
-    render_model(shader, ratio, model, tree);
-}
-
 void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate) {
     glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
     model = glm::translate(model, translate);
@@ -252,7 +245,6 @@ void render_terrain(Shader& shader, const float& ratio, Object& terrain) {
 
     shader.set_projection_view_model(projection, view, model);
     shader.set_float("amplitude", 5);
-    terrain.draw();
 
     terrain.draw();
 }

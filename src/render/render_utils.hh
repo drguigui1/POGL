@@ -29,8 +29,6 @@ void render_grid(Shader& shader, const float& ratio, Object& grid, const float& 
 void render_backpack(Shader& shader, const float& ratio, Model& backpack);
 void render_ball(Shader& shader, const float& ratio, Model& ball);
 void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
-void render(Shader& shader, const float& ratio, Model& tree, const float& scale, const glm::vec3& translate);
-void render_tree(Shader& shader, const float& ratio, Model& tree, const float& scale, const glm::vec3& translate);
 void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate);
 void render_road_sign(Shader& shader, const float& ratio, Model& road_sign);
 

@@ -1,6 +1,3 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <cstdlib>
 
@@ -40,4 +37,14 @@ Window init_window(unsigned int width, unsigned int height, const char* title) {
     //window.set_input_mode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     return window;
+}
+
+RendererObject create_renderer_obj(const char* vertex_path,
+        const char* fragment_path, const char* model_path, shared_lights lights,
+        const bool& cam, const float& scale, const glm::vec3& translate) {
+
+    shared_shader shader = std::make_shared<Shader>(vertex_path, fragment_path);
+    shared_obj model = std::make_shared<Model>(model_path);
+
+    return RendererObject(shader, model, lights, cam, scale, translate);
 }
