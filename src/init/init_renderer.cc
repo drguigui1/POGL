@@ -92,24 +92,26 @@ Renderer init_renderer_museum(const float& ratio) {
 
     // venus de milo
     shared_obj statue1 = std::make_shared<Model>("data/models/statue/1/venus_milo_procedural.obj");
-    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue1, lights, true, 0.6f, glm::vec3(0.0f, -0.8f, -5.0f));
+    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue1, lights, true, 0.6f, glm::vec3(7.0f, -0.8f, 0.3f));
 
     // thai statue
     shared_obj statue2 = std::make_shared<Model>("data/models/statue/2/Thai.obj");
-    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue2, lights, true, 1.0f, glm::vec3(5.5f, -0.8f, -5.0f));
+    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue2, lights, true, 1.0f, glm::vec3(8.5f, -0.5f, 0.0f));
 
     // ile the pacque 1
     shared_obj statue3 = std::make_shared<Model>("data/models/statue/3/statue3.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue3, lights, true, 0.4f, glm::vec3(-4.0f, -2.0f, -5.0f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue3, lights, true, 0.6f, glm::vec3(1.0f, -1.0f, -15.0f));
 
+    // other statue
     shared_obj statue4 = std::make_shared<Model>("data/models/statue/4/statue.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue4, lights, true, 0.4f, glm::vec3(-4.0f, -1.0f, 0.0f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue4, lights, true, 0.7f, glm::vec3(9.0f, -1.0f, 5.0f));
 
+    // ile de pacque 2
     shared_obj statue5 = std::make_shared<Model>("data/models/statue/5/untitled.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue5, lights, true, 1.0f, glm::vec3(-5.0f, -1.0f, 0.0f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue5, lights, true, 1.0f, glm::vec3(12.0f, -1.0f, -7.0f));
 
     shared_obj painting = std::make_shared<Model>("data/models/painting/painting.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", painting, lights, true, 1.7f, glm::vec3(2.0f, 0.0f, -3.3f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", painting, lights, true, 1.7f, glm::vec3(1.0f, 0.0f, -3.3f));
 
     shared_obj museum = std::make_shared<Model>("data/models/museum/museum.obj");
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", museum, lights, true, 2.5f, glm::vec3(0.0f, 0.0f, 0.0f));
