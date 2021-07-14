@@ -302,7 +302,7 @@ void render_museum(Window& window) {
     shared_lights lights = init_museum_lights();
 
     // Plane
-    Object plane = create_plane(5);
+    Object plane = create_plane(50);
     Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
     Texture ground("data/images/floor_texture4.jpg");
 
