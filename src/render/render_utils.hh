@@ -13,7 +13,6 @@
 /* Objects */
 void render_plane(Shader& shader, const float& ratio, Object& plane);
 void render_plane(Shader& shader, const float& ratio, Object& plane, Texture& texture);
-void render_noised_plane(Shader& shader, const float& ratio, Object& plane);
 void render_container_cube(Shader& shader, const float& ratio, Object& cube, Texture& texture);
 void render_marble_cube(Shader& shader, const float& ratio, Object& cube);
 void render_heightmap_plane(Shader& shader, const float& ratio, Object& plane);

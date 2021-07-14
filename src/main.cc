@@ -26,10 +26,16 @@ int main(int argc, char** argv) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Render loop
-    //render3(window);
+    // Default render with all scenes
+    render(window);
+
+    // Render forest scene
+    //render_forest(window);
+
+    // Render scene with rain and snow
+    //render_rain_snow(window);
+
     //render4(window);
-    render5(window);
 
     glfwTerminate();
     return 0;

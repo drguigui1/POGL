@@ -2,7 +2,7 @@
 #include "init_lights.hh"
 #include "init_obj.hh"
 
-Renderer init_renderer3(const float& ratio) {
+Renderer init_renderer1(const float& ratio) {
     // Lights
     shared_lights lights = init_lights();
     shared_lights house_lights = init_house_lights();
@@ -86,7 +86,7 @@ static void add_tree_symetric(Renderer& renderer, shared_obj tree1, shared_obj t
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", tree2, lights, true, 1.0f, glm::vec3(-pos.x, pos.y, pos.z));
 }
 
-Renderer init_renderer5(const float& ratio) {
+Renderer init_renderer3(const float& ratio) {
     // Lights
     shared_lights lights = init_lights();
 
