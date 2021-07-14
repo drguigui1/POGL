@@ -21,17 +21,17 @@ void render_plane(Shader& shader, const float& ratio, Object& plane, Texture& te
     plane.draw();
 }
 
-void render_marble_cube(Shader& shader, const float& ratio, Object& cube) {
+void render_terrain(shared_shader shader, const float& ratio, Object& terrain) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();
-    glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(1.5f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+    glm::mat4 model = glm::mat4(1.0f);
 
-    shader.use();
-    shader.set_projection_view_model(projection, view, model);
-    shader.set_vec3("userPos", camera.get_position());
+    shader->use();
 
-    cube.draw(shader);
+    shader->set_projection_view_model(projection, view, model);
+    shader->set_float("amplitude", 5);
+
+    terrain.draw();
 }
 
 void render_signal(Shader& shader, const float& ratio, Object& signal, const float& time) {
@@ -81,30 +81,4 @@ void render_grid(Shader& shader, const float& ratio, Object& grid, const float& 
     shader.set_float("vHeight", height);
 
     grid.draw(GL_POINTS);
-}
-
-void render_cuctus(Shader& shader, const float& ratio, Model& cuctus) {
-    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
-    glm::mat4 view = camera.get_matrix_view();
-    glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(0.0f, 0.5f, 0.0f));
-    model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
-
-    cuctus.draw(shader);
-
-    shader.set_projection_view_model(projection, view, model);
-
-    shader.set_vec3("userPos", camera.get_position());
-}
-
-void render_terrain(Shader& shader, const float& ratio, Object& terrain) {
-    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
-    glm::mat4 view = camera.get_matrix_view();
-    glm::mat4 model = glm::mat4(1.0f);
-
-    shader.use();
-
-    shader.set_projection_view_model(projection, view, model);
-    shader.set_float("amplitude", 5);
-
-    terrain.draw();
 }

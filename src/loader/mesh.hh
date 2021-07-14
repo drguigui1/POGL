@@ -11,7 +11,6 @@ class Mesh {
     public:
         Mesh(std::vector<Vertex> v, std::vector<unsigned int> i, std::vector<Texture> t);
 
-        void draw(Shader& shader) const;
         void draw(shared_shader shader) const;
 
     private:

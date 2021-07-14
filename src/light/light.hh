@@ -11,7 +11,6 @@ public:
     Light(const glm::vec3& c);
 
     /* Methods */
-    virtual void to_shader(Shader& shader, const int& i, const glm::vec3 offset = glm::vec3(0.0f)) const = 0; // DO NOT USE IT - TO REMOVE
     virtual void to_shader(shared_shader shader, const int& i, const glm::vec3 offset = glm::vec3(0.0f)) const = 0;
 
 protected:
@@ -30,7 +29,6 @@ public:
                float l_kq);
 
     /* Methods */
-    virtual void to_shader(Shader& shader, const int& i, const glm::vec3 offset = glm::vec3(0.0f)) const override;
     virtual void to_shader(shared_shader shader, const int& i, const glm::vec3 offset = glm::vec3(0.0f)) const override;
 
 private:
@@ -47,7 +45,6 @@ public:
     DirectionalLight(const glm::vec3& l_color, const glm::vec3& l_dir);
 
     /* Methods */
-    virtual void to_shader(Shader& shader, const int& i, const glm::vec3 offset = glm::vec3(0.0f)) const override;
     virtual void to_shader(shared_shader shader, const int& i, const glm::vec3 offset = glm::vec3(0.0f)) const override;
 
 private:

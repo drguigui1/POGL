@@ -74,55 +74,6 @@ Object create_vertical_plane(float dist) {
     return Object(plane_vertices, true, true, true);
 }
 
-Object create_cube() {
-    std::vector<float> cube_vertices = {
-        // position          // colors         //normal             // texture
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f, 0.0f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f
-    };
-
-    return Object(cube_vertices, true, true, true);
-}
-
 static void add_quad(std::vector<float>& vec, const glm::vec3& p0, const glm::vec3& p1,
         const glm::vec3& p2, const glm::vec3& p3) {
     variadic::push_all(vec, 3, p0.x, p0.y, p0.z);
@@ -220,18 +171,6 @@ shared_particles create_particles(const float& nb_particles, shared_obj model, c
     particles.generate_particles(nb_particles);
 
     return std::make_shared<Particles>(particles);
-}
-
-Object create_signal_geom() {
-    std::vector<float> vertices = {
-        // position         // color
-        -0.50f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -0.25f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-         0.00f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-         0.25f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f
-    };
-
-    return Object(vertices, true, false, false);
 }
 
 Object create_plane_geom() {

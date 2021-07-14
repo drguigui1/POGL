@@ -11,7 +11,6 @@ public:
 
     /* Methods */
     void add_point_light(shared_light light);
-    void send_data_to_shader(Shader& shader, const glm::vec3& offset = glm::vec3(0.0f)) const;
     void send_data_to_shader(shared_shader shader, const glm::vec3& offset = glm::vec3(0.0f)) const;
 
     /* Setters */

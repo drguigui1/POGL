@@ -129,20 +129,6 @@ void Model::load_mesh(aiNode* root, const aiScene* scene) {
         load_mesh(root->mChildren[i], scene);
 }
 
-
-void Model::draw(Shader& shader, GLenum) {
-    for (unsigned int i = 0; i < meshes.size(); ++i) {
-        shader.use();
-
-        const auto material = materials[i];
-        shader.set_vec3("ambient", material.get_ka());
-        shader.set_vec3("diffuse", material.get_kd());
-        shader.set_vec3("specular", material.get_ks());
-
-        meshes[i].draw(shader);
-    }
-}
-
 void Model::draw(shared_shader shader, GLenum) {
     for (unsigned int i = 0; i < meshes.size(); ++i) {
         shader->use();

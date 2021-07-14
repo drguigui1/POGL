@@ -100,10 +100,6 @@ void Object::add_vertex_attrib(int& i, int nb, unsigned int size, int& cum_size)
     i += 1;
 }
 
-void Object::draw(Shader&, GLenum type) {
-    this->draw(type);
-}
-
 void Object::draw(shared_shader, GLenum type) {
     this->draw(type);
 }

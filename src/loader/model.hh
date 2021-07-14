@@ -17,7 +17,6 @@ class Model : public Object {
     public:
         Model(const std::string& path);
 
-        virtual void draw(Shader& shader, GLenum type=GL_TRIANGLES);
         virtual void draw(shared_shader shader, GLenum type=GL_TRIANGLES);
 
     private:

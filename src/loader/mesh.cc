@@ -49,26 +49,6 @@ static std::string TextureType_to_string(TextureType type) {
     }
 }
 
-void Mesh::draw(Shader& shader) const {
-    // activate and bind all textures before drawing
-    for (unsigned int i = 0; i < textures.size(); ++i) {
-        glActiveTexture(GL_TEXTURE0 + i);
-
-        std::string name = TextureType_to_string(textures[i].get_type());
-        //shader.set_int(name + "_map", i + 1);
-        glUniform1i(glGetUniformLocation(shader.get_id(), name.c_str()), i);
-        glBindTexture(GL_TEXTURE_2D, textures[i].get_id());
-    }
-
-    glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-
-    glBindVertexArray(0);
-
-    // set everything back to normal
-    glActiveTexture(GL_TEXTURE0);
-}
-
 void Mesh::draw(shared_shader shader) const {
     // activate and bind all textures before drawing
     for (unsigned int i = 0; i < textures.size(); ++i) {
