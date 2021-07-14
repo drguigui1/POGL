@@ -92,11 +92,14 @@ Renderer init_renderer5(const float& ratio) {
 
     Renderer renderer(ratio);
 
-    // TODO
-    renderer.set_skybox(std::make_shared<Skybox>("data/skybox/fishpond"));
+    renderer.set_skybox(std::make_shared<Skybox>("data/skybox/mix_forest_meadow"));
     renderer.set_skybox_shader(std::make_shared<Shader>("shaders/skybox.vs", "shaders/skybox.fs"));
 
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", "data/models/snowman/snowman.obj", lights, true, 1.0f, glm::vec3(2.0f, -0.5f, 3.0f));
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", "data/models/hut/hut.obj", lights, true, 1.0f, glm::vec3(7.1f, -0.5f, 1.5f));
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", "data/models/bear/bear.obj", lights, true, 1.0f, glm::vec3(3.8f, -0.5f, 7.11f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", "data/models/picnic_table/picnic_table.obj", lights, true, 1.0f, glm::vec3(-3.1f, -0.5f, 2.5f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", "data/models/camp/camp.obj", lights, true, 1.0f, glm::vec3(-7.1f, 0.0f, 2.5f));
 
     // Pine tree with/without snow
     shared_obj pine_snow = std::make_shared<Model>("data/models/pine/pine_tree_snow.obj");

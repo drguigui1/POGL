@@ -399,7 +399,7 @@ void render5(Window& window) {
         window.swap_buffers();
         glfwPollEvents();
 
-        //const glm::vec3 cam_pos = camera.get_position();
-        //std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
+        const glm::vec3 cam_pos = camera.get_position();
+        std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }

@@ -1,6 +1,14 @@
 # POGL
 
+Project realized by Pierre Guillaume and Sabine Hu.
+
 ## Usage
+```shell
+./cmakebuild.sh
+./build/opengl [width] [height]
+```
+
+Default window size is 800x600
 
 ## Keyboard shortcuts
 * W: move forward
