@@ -11,9 +11,7 @@
 // And remove + rename duplicate functions
 
 /* Objects */
-void render_plane(Shader& shader, const float& ratio, Object& plane);
 void render_plane(Shader& shader, const float& ratio, Object& plane, Texture& texture);
-void render_container_cube(Shader& shader, const float& ratio, Object& cube, Texture& texture);
 void render_marble_cube(Shader& shader, const float& ratio, Object& cube);
 void render_heightmap_plane(Shader& shader, const float& ratio, Object& plane);
 void render_terrain(Shader& shader, const float& ratio, Object& terrain);
@@ -24,11 +22,4 @@ void render_bubble(Shader& shader, const float& ratio, Object& bubble, const flo
 void render_grid(Shader& shader, const float& ratio, Object& grid, const float& time, const unsigned int& width, const unsigned int& height);
 
 /* Models */
-void render_backpack(Shader& shader, const float& ratio, Model& backpack);
-void render_ball(Shader& shader, const float& ratio, Model& ball);
 void render_cuctus(Shader& shader, const float& ratio, Model& cuctus);
-void render_obj(Shader& shader, const float& ratio, Model& obj, const float& scale, const glm::vec3& translate);
-
-/* Skybox */
-void render_skybox(Shader& shader, const float& ratio, Skybox& skybox);
-void render_skybox(shared_shader shader, const float& ratio, shared_skybox skybox);

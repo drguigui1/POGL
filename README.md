@@ -21,7 +21,7 @@ Default window size is 800x600
 * M: set wireframe mode to GL\_LINE
 * B: enable bubble effect
 * V: disable bubble effect
-* Espace / escape: close the window
+* Space / escape: close the window
 
 ## Links
 

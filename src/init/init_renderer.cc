@@ -2,7 +2,7 @@
 #include "init_lights.hh"
 #include "init_obj.hh"
 
-Renderer init_renderer1(const float& ratio) {
+Renderer init_renderer_forest(const float& ratio) {
     // Lights
     shared_lights lights = init_lights();
     shared_lights house_lights = init_house_lights();
@@ -81,12 +81,39 @@ Renderer init_renderer1(const float& ratio) {
     return renderer;
 }
 
+Renderer init_renderer_museum(const float& ratio) {
+    // Lights
+    shared_lights lights = init_museum_lights();
+
+    Renderer renderer(ratio);
+
+    renderer.set_skybox(std::make_shared<Skybox>("data/skybox/mix_forest_meadow"));
+    renderer.set_skybox_shader(std::make_shared<Shader>("shaders/skybox.vs", "shaders/skybox.fs"));
+
+    shared_obj statue1 = std::make_shared<Model>("data/models/statue/1/venus_milo_procedural.obj");
+    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue1, lights, true, 0.4f, glm::vec3(0.0f, -1.0f, 0.0f));
+
+    shared_obj statue2 = std::make_shared<Model>("data/models/statue/2/Thai.obj");
+    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue2, lights, true, 0.4f, glm::vec3(1.5f, -1.0f, 0.0f));
+
+    shared_obj statue3 = std::make_shared<Model>("data/models/statue/3/statue3.obj");
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue3, lights, true, 0.15f, glm::vec3(-4.0f, -2.0f, 0.0f));
+
+    shared_obj statue4 = std::make_shared<Model>("data/models/statue/4/statue.obj");
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue4, lights, true, 0.4f, glm::vec3(-4.0f, -1.0f, 0.0f));
+
+    shared_obj statue5 = std::make_shared<Model>("data/models/statue/5/untitled.obj");
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue5, lights, true, 1.0f, glm::vec3(-5.0f, -1.0f, 0.0f));
+
+    return renderer;
+}
+
 static void add_tree_symetric(Renderer& renderer, shared_obj tree1, shared_obj tree2, shared_lights lights, const glm::vec3& pos) {
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", tree1, lights, true, 1.0f, pos);
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", tree2, lights, true, 1.0f, glm::vec3(-pos.x, pos.y, pos.z));
 }
 
-Renderer init_renderer3(const float& ratio) {
+Renderer init_renderer_particles(const float& ratio) {
     // Lights
     shared_lights lights = init_lights();
 

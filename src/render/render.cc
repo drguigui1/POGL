@@ -103,7 +103,7 @@ void render(Window& window) {
     Object bubble = create_plane_geom();
 
     /* Scene 1 */
-    Renderer renderer1 = init_renderer1(ratio);
+    Renderer renderer1 = init_renderer_forest(ratio);
 
     // Textures
     Texture tex_heightmap("data/images/heightmap.jpg");
@@ -133,7 +133,7 @@ void render(Window& window) {
     // TODO
 
     /* Scene 3 */
-    Renderer renderer3 = init_renderer3(ratio);
+    Renderer renderer3 = init_renderer_particles(ratio);
 
     // Winter plane
     Texture winter("data/images/winter.jpg");
@@ -259,9 +259,6 @@ void render2(Window& window) {
     const std::string cube_path = "data/models/cube/cube.obj";
     auto marble_cube = Model(cube_path);
 
-    //const std::string ball_path = "data/models/soccer_ball/football_ball_OBJ.obj";
-    //Model ball(ball_path);
-
     const float window_ratio = window.get_ratio();
     bool enable_bubbles = true;
     bool switch_scene = false;
@@ -278,12 +275,6 @@ void render2(Window& window) {
         // Signal
         //render_signal(signal_shader, window_ratio, signal, curr_frame);
 
-        // Plane
-        render_plane(plane_shader, window_ratio, plane);
-
-        // Backpack
-        //render_backpack(obj_shader_map, window_ratio, backpack);
-
         // Cuctus
         render_cuctus(obj_shader, window_ratio, cuctus1);
         lights.send_data_to_shader(obj_shader);
@@ -292,11 +283,7 @@ void render2(Window& window) {
         render_marble_cube(marble_shader, window_ratio, marble_cube);
         lights.send_data_to_shader(marble_shader);
 
-        // Ball
-        //render_ball(obj_shader, window_ratio, ball);
-
         // Skybox
-        render_skybox(skybox_shader, window_ratio, skybox);
 
         /* Render transparent objects */
         glDepthMask(false); // disable z-testing
@@ -322,7 +309,7 @@ void render_forest(Window& window) {
     shared_lights lights = init_lights();
     Object bubble = create_plane_geom();
 
-    Renderer renderer1 = init_renderer1(ratio);
+    Renderer renderer1 = init_renderer_forest(ratio);
 
     // Textures
     Texture tex_heightmap("data/images/heightmap.jpg");
@@ -387,35 +374,22 @@ void render_forest(Window& window) {
 
 }
 
-void render4(Window& window) {
+void render_museum(Window& window) {
     // Variables
     const float ratio = window.get_ratio();
     bool enable_bubbles = true;
     bool switch_scene = false;
     float prev_frame = 0.0f;
 
-    // shaders
-    Shader skybox_shader("shaders/skybox.vs", "shaders/skybox.fs");
-    Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
-    Shader obj_shader1("shaders/obj_maps.vs", "shaders/obj_maps.fs");
-    Shader obj_shader2("shaders/obj_maps.vs", "shaders/obj_maps.fs");
-    Shader obj_shader3("shaders/obj_maps.vs", "shaders/obj_maps.fs");
-    Shader marble_shader1("shaders/marble.vs", "shaders/marble.fs");
-    Shader marble_shader2("shaders/marble.vs", "shaders/marble.fs");
+    Renderer renderer2 = init_renderer_museum(ratio);
 
-    // Objects
-    Object plane = create_plane(5);
-    Skybox skybox("data/skybox/forest");
-    Model statue1("data/models/statue/1/venus_milo_procedural.obj");
-    Model statue2("data/models/statue/2/Thai.obj");
-    Model statue3("data/models/statue/3/statue3.obj");
-    Model statue4("data/models/statue/4/statue.obj");
-    Model statue5("data/models/statue/5/untitled.obj");
-
-    // Textures
-    Texture ground("data/images/floor_texture4.jpg");
-
+    // Lights
     shared_lights lights = init_museum_lights();
+
+    // Plane
+    Object plane = create_plane(5);
+    Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
+    Texture ground("data/images/floor_texture4.jpg");
 
     plane_shader.use();
     plane_shader.set_int("texture1", 0);
@@ -423,7 +397,7 @@ void render4(Window& window) {
     // Render loop
     while (!window.should_close()) {
         float curr_frame = glfwGetTime();
-        const glm::vec3 cam_pos = camera.get_position();
+        //const glm::vec3 cam_pos = camera.get_position();
 
         process_input(window, curr_frame - prev_frame, enable_bubbles, switch_scene);
         gl_clear_update();
@@ -431,24 +405,11 @@ void render4(Window& window) {
         // Plane
         render_plane(plane_shader, ratio, plane, ground);
 
-        // obj
-        render_obj(marble_shader1, ratio, statue1, 0.4f, glm::vec3(0.0f, -1.0f, 0.0f));
-        lights->send_data_to_shader(marble_shader1, cam_pos);
-
-        render_obj(marble_shader2, ratio, statue2, 0.4f, glm::vec3(1.5f, -1.0f, 0.0f));
-        lights->send_data_to_shader(marble_shader2, cam_pos);
-
-        render_obj(obj_shader1, ratio, statue3, 0.15f, glm::vec3(-4.0f, -2.0f, 0.0f));
-        lights->send_data_to_shader(obj_shader1, cam_pos);
-
-        render_obj(obj_shader2, ratio, statue4, 0.4, glm::vec3(-4.0f, -1.0f, 0.0f));
-        lights->send_data_to_shader(obj_shader2, cam_pos);
-
-        render_obj(obj_shader3, ratio, statue5, 1.0, glm::vec3(-5.0f, -1.0f, 0.0f));
-        lights->send_data_to_shader(obj_shader3, cam_pos);
+        renderer2.render_objs();
 
         // Skybox
-        render_skybox(skybox_shader, ratio, skybox);
+        // TODO: change / remove skybox
+        renderer2.render_skybox();
 
         prev_frame = curr_frame;
         window.swap_buffers();
@@ -463,11 +424,10 @@ void render_rain_snow(Window& window) {
     bool switch_scene = false;
     float prev_frame = 0.0f;
 
-    Renderer renderer3 = init_renderer3(ratio);
+    Renderer renderer3 = init_renderer_particles(ratio);
 
     // Lights
     shared_lights lights = init_lights();
-
 
     // Winter plane
     Texture winter("data/images/winter.jpg");
