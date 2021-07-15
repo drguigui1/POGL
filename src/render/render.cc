@@ -314,6 +314,9 @@ void render_museum(Window& window) {
     Shader bubble_bokeh_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh.fs", "shaders/bubble/bubble.gs");
     Shader bubble_rising_shader("shaders/bubble/bubble.vs", "shaders/bubble/rising.fs", "shaders/bubble/bubble.gs");
 
+    Object vertical_plane = create_vertical_plane(9, 4.5, glm::vec3(18.0f, 4.0f, -5.25f));
+    Shader vertical_plane_shader("shaders/wall/plane.vs", "shaders/wall/plane.fs");
+
     // Render loop
     while (!window.should_close()) {
         float curr_frame = glfwGetTime();
@@ -324,11 +327,11 @@ void render_museum(Window& window) {
 
         // Plane
         render_plane(plane_shader, ratio, plane, ground);
+        render_vertical_plane(vertical_plane_shader, ratio, vertical_plane, curr_frame);
 
         renderer2.render_objs();
 
         // Skybox
-        // TODO: change / remove skybox
         renderer2.render_skybox();
 
         /* Render transparent objects */
@@ -343,8 +346,8 @@ void render_museum(Window& window) {
         window.swap_buffers();
         glfwPollEvents();
 
-        const glm::vec3 cam_pos = camera.get_position();
-        std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
+        //const glm::vec3 cam_pos = camera.get_position();
+        //std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }
 

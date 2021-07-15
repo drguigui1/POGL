@@ -9,6 +9,7 @@
 
 /* Plane / Terrain */
 void render_plane(Shader& shader, const float& ratio, Object& plane, Texture& texture);
+void render_vertical_plane(Shader& shader, const float& ratio, Object& plane, const float& time);
 void render_terrain(shared_shader shader, const float& ratio, Object& terrain);
 
 /* For geometric shader */

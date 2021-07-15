@@ -21,6 +21,19 @@ void render_plane(Shader& shader, const float& ratio, Object& plane, Texture& te
     plane.draw();
 }
 
+void render_vertical_plane(Shader& shader, const float& ratio, Object& plane, const float& time) {
+    glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
+    glm::mat4 view = camera.get_matrix_view();
+    glm::mat4 model = glm::mat4(1.0f);
+
+    shader.use();
+
+    shader.set_projection_view_model(projection, view, model);
+    shader.set_float("vTime", time);
+
+    plane.draw();
+}
+
 void render_terrain(shared_shader shader, const float& ratio, Object& terrain) {
     glm::mat4 projection = glm::perspective(glm::radians(camera.get_zoom()), ratio, 0.1f, 100.0f);
     glm::mat4 view = camera.get_matrix_view();

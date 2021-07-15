@@ -19,21 +19,21 @@ void main(void) {
     vec2 ruv = fTexCoord * SIZE;
     vec2 id = ceil(ruv);
 
-    ruv.y -= vTime*2. * (rand(vec2(id.x))*0.5+.5); // move up
-    ruv.y += ceil(mod(id.x, 2.))*0.3 * vTime; // every 2nd column always move faster
-    vec2 guv = fract(ruv) - 0.5; // ceneterize guv
+    ruv.y -= vTime * 2. * (rand(vec2(id.x))*0.5+.5);
+    ruv.y += ceil(mod(id.x, 2.))*0.3 * vTime;
+    vec2 guv = fract(ruv) - 0.5;
 
     ruv = ceil(ruv);
     float g = length(guv);
 
-    float v = rand(ruv) * 0.5; // random bubble size
-    v *= step(0.7, 1 - v); // remove too small bubbles
+    float v = rand(ruv) * 0.5;
+    v *= step(0.7, 1 - v);
 
     float m = smoothstep(v, v - smooth_factor, g);
-    v*=.8; // bubble inner empty space
+    v*=.8;
     m -= smoothstep(v, v - smooth_factor, g);
 
-    vec3 col = vec3(m); // final color
+    vec3 col = vec3(m);
 
     if (col.r < 0.2 && col.g < 0.2 && col.b < 0.2)
         discard;

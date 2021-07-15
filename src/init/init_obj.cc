@@ -71,7 +71,20 @@ Object create_vertical_plane(float dist) {
         -dist,  dist, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
         -dist, -dist, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
     };
-    return Object(plane_vertices, true, true, true);
+    return Object(plane_vertices, false, false, true);
+}
+
+Object create_vertical_plane(const float& dist_z, const float& dist_y, const glm::vec3& center) {
+    std::vector<float> plane_vertices {
+        // position                                       // texture
+        center.x, -dist_y + center.y, -dist_z + center.z, 0.0f, 0.0f,
+        center.x, -dist_y + center.y,  dist_z + center.z, 1.0f, 0.0f,
+        center.x,  dist_y + center.y,  dist_z + center.z, 1.0f, 1.0f,
+        center.x,  dist_y + center.y,  dist_z + center.z, 1.0f, 1.0f,
+        center.x,  dist_y + center.y, -dist_z + center.z, 0.0f, 1.0f,
+        center.x, -dist_y + center.y, -dist_z + center.z, 0.0f, 0.0f,
+    };
+    return Object(plane_vertices, false, false, true);
 }
 
 static void add_quad(std::vector<float>& vec, const glm::vec3& p0, const glm::vec3& p1,
