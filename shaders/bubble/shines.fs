@@ -42,7 +42,7 @@ void main() {
 
     float shine = 0.2;
     for (float i = 0; i < nb_layer; i++)
-        shine += compute_shine(1.5 * uv * i + i);
+        shine += compute_shine((1.5 * uv + 1.0f) * i);
 
     float r = get_color_component(shine, 0.9, 0.25);
     float g = get_color_component(shine, 0.4, 0.20);

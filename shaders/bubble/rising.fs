@@ -7,36 +7,40 @@ in vec2 fTexCoord;
 
 uniform float vTime;
 
-#define SIZE 50.
+const float smooth_factor = 0.05f;
 
-const float smooth_factor = 0.05;
+float random_float(vec2 p) {
+    return fract(sin(dot(p.xy , vec2(12.9898f, 78.233f))) * 43758.5453f);
+}
 
-float rand(vec2 p) {
-    return fract(sin(dot(p.xy , vec2(12.9898, 78.233))) * 43758.5453);
+vec2 compute_uv(const float a) {
+    vec2 uv = fTexCoord * 50.0f;
+    vec2 x = vec2(ceil(uv.x));
+
+    uv.y -= vTime * a * random_float(x);
+
+    return uv;
+}
+
+vec3 compute_color(const vec2 uv, const float a, const float b) {
+    float len = length(fract(uv) - a);
+
+    float rand = random_float(ceil(uv)) * a;
+    rand *= step(0.7, 1 - rand);
+
+    float res = smoothstep(rand, rand - smooth_factor, len)
+        - smoothstep(rand * b, rand * b - smooth_factor, len);
+
+    return vec3(res);
 }
 
 void main(void) {
-    vec2 ruv = fTexCoord * SIZE;
-    vec2 id = ceil(ruv);
+    vec2 uv = compute_uv(2.0f);
 
-    ruv.y -= vTime * 2. * (rand(vec2(id.x))*0.5+.5);
-    ruv.y += ceil(mod(id.x, 2.))*0.3 * vTime;
-    vec2 guv = fract(ruv) - 0.5;
+    vec3 res = compute_color(uv, 0.5f, 0.6f);
 
-    ruv = ceil(ruv);
-    float g = length(guv);
-
-    float v = rand(ruv) * 0.5;
-    v *= step(0.7, 1 - v);
-
-    float m = smoothstep(v, v - smooth_factor, g);
-    v*=.8;
-    m -= smoothstep(v, v - smooth_factor, g);
-
-    vec3 col = vec3(m);
-
-    if (col.r < 0.2 && col.g < 0.2 && col.b < 0.2)
+    if (res.r < 0.2 && res.g < 0.2 && res.b < 0.2)
         discard;
 
-    FragColor = vec4(col, 0.5);
+    FragColor = vec4(res, 0.5);
 }

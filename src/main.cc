@@ -27,13 +27,13 @@ int main(int argc, char** argv) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Default render with all scenes
-    //render(window);
+    render(window);
 
     // Render forest scene
     //render_forest(window);
 
     // Render museum scene
-    render_museum(window);
+    //render_museum(window);
 
     // Render scene with rain and snow
     //render_rain_snow(window);

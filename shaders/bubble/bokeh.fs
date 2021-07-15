@@ -59,6 +59,18 @@ void main() {
     uv = compute_uv(8.0, 1.3, 0.4);
     float b = get_color_component(uv, 0.3, 1.05);
 
+    uv = compute_uv(10.0, 1.4, 0.3);
+    float x = get_color_component(uv, 0.25, 0.85);
+    b += x * 0.4;
+    r += x * 0.4;
+    g += x * 0.4;
+
+    uv = compute_uv(12.0, 1.5, 0.2);
+    x = get_color_component(uv, 0.2, 0.75);
+    b += x * 0.4;
+    r += x * 0.4;
+    g += x * 0.4;
+
     if (r == 0 && g == 0 && b == 0)
         discard;
 
