@@ -37,7 +37,7 @@ vec3 compute_color(const float nb_particles, const float radius) {
     for (float i = 0.0f; i < 1.0f; i += 1.0f / nb_particles)
         res += color * intensity(uv, radius * i, compute_position(i));
 
-    color = 0.5f * sin(gTime + uv.xyx + vec3(0.0f, 2.0f, 4.0f));
+    color = 0.5f * sin(gTime + uv.xyx + vec3(0.0f, 2.0f, 4.0f)) * cos(gTime + uv.xyx + vec3(0.0f, 2.0f, 4.0f));
     return mix(color, res, 0.75f);
 }
 

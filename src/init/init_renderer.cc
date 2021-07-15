@@ -145,6 +145,12 @@ Renderer init_renderer_museum(const float& ratio) {
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", pillar, lights, true, 1.0f, glm::vec3(1.0f, -0.35f, 13.0f));
     renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", pillar, lights, true, 1.0f, glm::vec3(17.0f, -0.35f, 13.0f));
 
+    // Bench
+    shared_obj bench = std::make_shared<Model>("data/models/bench/bench.obj");
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", bench, lights, true, 1.0f, glm::vec3(-5.0f, -0.5f, 12.65f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", bench, lights, true, 1.0f, glm::vec3( 5.0f, -0.5f, 12.65f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", bench, lights, true, 1.0f, glm::vec3( 11.0f, -0.5f, 12.65f));
+
     return renderer;
 }
 
