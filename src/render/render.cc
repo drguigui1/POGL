@@ -302,7 +302,7 @@ void render_museum(Window& window) {
     shared_lights lights = init_museum_lights();
 
     // Plane
-    Object plane = create_plane(50);
+    Object plane = create_plane(20.0f, 0.0f, 0.75f);
     Shader plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
     Texture ground("data/images/floor_texture4.jpg");
 
@@ -342,6 +342,9 @@ void render_museum(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
+
+        const glm::vec3 cam_pos = camera.get_position();
+        std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }
 

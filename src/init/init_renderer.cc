@@ -84,37 +84,66 @@ Renderer init_renderer_forest(const float& ratio) {
 Renderer init_renderer_museum(const float& ratio) {
     // Lights
     shared_lights lights = init_museum_lights();
+    shared_lights entrance_lights = init_museum_entrance_lights();
+    shared_lights wall_lights1 = init_museum_wall_lights(glm::vec3(0.0f));
+    shared_lights wall_lights2 = init_museum_wall_lights(glm::vec3(19.0f, 0.0f, -12.5f));
 
     Renderer renderer(ratio);
 
-    renderer.set_skybox(std::make_shared<Skybox>("data/skybox/mix_forest_meadow"));
+    renderer.set_skybox(std::make_shared<Skybox>("data/skybox/lazarus"));
     renderer.set_skybox_shader(std::make_shared<Shader>("shaders/skybox.vs", "shaders/skybox.fs"));
-
-    // venus de milo
-    shared_obj statue1 = std::make_shared<Model>("data/models/statue/1/venus_milo_procedural.obj");
-    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue1, lights, true, 0.6f, glm::vec3(7.0f, -0.8f, 0.3f));
-
-    // thai statue
-    shared_obj statue2 = std::make_shared<Model>("data/models/statue/2/Thai.obj");
-    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue2, lights, true, 1.0f, glm::vec3(8.5f, -0.5f, 0.0f));
 
     // ile the pacque 1
     shared_obj statue3 = std::make_shared<Model>("data/models/statue/3/statue3.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue3, lights, true, 0.6f, glm::vec3(1.0f, -1.0f, -15.0f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue3, lights, true, 1.0f, glm::vec3(-17.5f, -0.5f, -12.0f));
+
+    // venus de milo
+    shared_obj statue1 = std::make_shared<Model>("data/models/statue/1/venus_milo_procedural.obj");
+    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue1, lights, true, 1.0f, glm::vec3(-13.5f, -0.35f, -12.0f));
 
     // other statue
     shared_obj statue4 = std::make_shared<Model>("data/models/statue/4/statue.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue4, lights, true, 0.7f, glm::vec3(9.0f, -1.0f, 5.0f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue4, lights, true, 1.0f, glm::vec3(-9.0f, -0.4f, -12.0f));
+
+    // thai statue
+    shared_obj statue2 = std::make_shared<Model>("data/models/statue/2/Thai.obj");
+    renderer.add_obj("shaders/marble.vs", "shaders/marble.fs", statue2, lights, true, 1.0f, glm::vec3(-5.0f, -0.5f, -12.0f));
 
     // ile de pacque 2
     shared_obj statue5 = std::make_shared<Model>("data/models/statue/5/untitled.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue5, lights, true, 1.0f, glm::vec3(12.0f, -1.0f, -7.0f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", statue5, lights, true, 1.0f, glm::vec3(-2.0f, -1.0f, -12.0f));
 
+    // painting
     shared_obj painting = std::make_shared<Model>("data/models/painting/painting.obj");
-    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", painting, lights, true, 1.7f, glm::vec3(1.0f, 0.0f, -3.3f));
+    renderer.add_obj("shaders/obj_maps.vs", "shaders/obj_maps.fs", painting, lights, true, 1.0f, glm::vec3(-10.7f, 2.0f, 6.0f));
 
-    shared_obj museum = std::make_shared<Model>("data/models/museum/museum.obj");
-    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", museum, lights, true, 2.5f, glm::vec3(0.0f, 0.0f, 0.0f));
+    //shared_obj museum = std::make_shared<Model>("data/models/museum/museum.obj");
+    //renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", museum, lights, true, 2.5f, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    // Entrance
+    shared_obj entrance = std::make_shared<Model>("data/models/entrance/entrance.obj");
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", entrance, entrance_lights, false, 1.0f, glm::vec3(-10.0f, -0.45f, 14.0f));
+
+    // Wall 1
+    shared_obj wall = std::make_shared<Model>("data/models/entrance/entrance2.obj");
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", wall, wall_lights1, false, 1.0f, glm::vec3(0.0f, -0.45f, 0.0f));
+
+    // Wall 2
+    shared_obj wall2 = std::make_shared<Model>("data/models/entrance/entrance3.obj");
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", wall2, wall_lights2, false, 1.0f, glm::vec3(18.325f, -0.45f, 12.5f));
+
+    // Barrier
+    shared_obj barrier = std::make_shared<Model>("data/models/barrier/barrier.obj");
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", barrier, lights, true, 1.0f, glm::vec3(-17.0f, -0.35f, -9.5f));
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", barrier, lights, true, 1.0f, glm::vec3(-11.0f, -0.35f, -9.5f));
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", barrier, lights, true, 1.0f, glm::vec3( -5.0f, -0.35f, -9.5f));
+
+    // Pillar
+    shared_obj pillar = std::make_shared<Model>("data/models/pillar/pillar.obj");
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", pillar, lights, true, 1.0f, glm::vec3(-1.0f, -0.35f, 13.0f));
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", pillar, lights, true, 1.0f, glm::vec3(-17.0f, -0.35f, 13.0f));
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", pillar, lights, true, 1.0f, glm::vec3(1.0f, -0.35f, 13.0f));
+    renderer.add_obj("shaders/obj.vs", "shaders/obj.fs", pillar, lights, true, 1.0f, glm::vec3(17.0f, -0.35f, 13.0f));
 
     return renderer;
 }
