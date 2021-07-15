@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
     // Init glfw / window / glew
     init_glfw();
-    Window window = init_window(width, height, "Title");
+    Window window = init_window(width, height, "Bubbles");
     init_glew();
 
     // Enable z-buffer

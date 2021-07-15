@@ -56,8 +56,6 @@ shared_particle Particles::create_particle(float y) const {
     float z = randm::random_float(this->position_min.z, this->position_max.z);
     particle.set_position(glm::vec3(x, y, z));
 
-    std::cout << x << ' ' << y << ' ' << z << std::endl;
-
     // Velocity
     x = randm::random_float(this->velocity_min.x, this->velocity_max.x);
     y = randm::random_float(this->velocity_min.y, this->velocity_max.y);

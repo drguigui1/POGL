@@ -243,8 +243,6 @@ void render(Window& window) {
 
         if (switch_scene)
             switch_renderer(cam_pos, scene, offset1, offset2);
-
-        std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }
 
@@ -318,8 +316,6 @@ void render_forest(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
-
-        //std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 
 }
@@ -355,7 +351,6 @@ void render_museum(Window& window) {
     // Render loop
     while (!window.should_close()) {
         float curr_frame = glfwGetTime();
-        //const glm::vec3 cam_pos = camera.get_position();
 
         process_input(window, curr_frame - prev_frame, enable_bubbles, switch_scene);
         gl_clear_update();
@@ -380,9 +375,6 @@ void render_museum(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
-
-        //const glm::vec3 cam_pos = camera.get_position();
-        //std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }
 
@@ -441,7 +433,5 @@ void render_rain_snow(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
-        const glm::vec3 cam_pos = camera.get_position();
-        std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }
