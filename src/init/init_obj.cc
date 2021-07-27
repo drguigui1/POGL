@@ -48,15 +48,15 @@ Object create_heightmap_plane(const glm::vec2& center, float width, float height
     return Object(vertices, false, false, true);
 }
 
-Object create_plane(float dist, const float x_center, const float z_factor) {
+Object create_plane(float dist, const float x_center, const float z_factor, const glm::vec3 offset) {
     std::vector<float> plane_vertices {
         // position          // colors         //normal          // texture
-        -dist + x_center, -0.5f, -dist * z_factor, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-         dist + x_center, -0.5f, -dist * z_factor, 1.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-         dist + x_center, -0.5f,  dist * z_factor, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-         dist + x_center, -0.5f,  dist * z_factor, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-        -dist + x_center, -0.5f,  dist * z_factor, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        -dist + x_center, -0.5f, -dist * z_factor, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+        -dist + x_center + offset.x, -0.5f + offset.y, -dist * z_factor + offset.z, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+         dist + x_center + offset.x, -0.5f + offset.y, -dist * z_factor + offset.z, 1.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+         dist + x_center + offset.x, -0.5f + offset.y,  dist * z_factor + offset.z, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+         dist + x_center + offset.x, -0.5f + offset.y,  dist * z_factor + offset.z, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        -dist + x_center + offset.x, -0.5f + offset.y,  dist * z_factor + offset.z, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -dist + x_center + offset.x, -0.5f + offset.y, -dist * z_factor + offset.z, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
     };
     return Object(plane_vertices, true, true, true);
 }

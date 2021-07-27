@@ -23,7 +23,7 @@ bool Particle::is_alive(const glm::vec3& pos_min, const glm::vec3& pos_max) cons
     if (this->position.z < pos_min.z || this->position.z > pos_max.z)
         return false;
 
-    return this->position.y > -0.5f;
+    return this->position.y > pos_min.y - 0.5f;
 }
 
 glm::mat4 Particle::get_model() const {

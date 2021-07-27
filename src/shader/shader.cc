@@ -76,7 +76,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
     glAttachShader(this->id, vertex);
     glAttachShader(this->id, fragment);
 
-    unsigned int geometry;
+    unsigned int geometry = 255;
     if (geometryPath != nullptr) {
         std::string geometryCode = file::get_file_content(geometryPath);
         const char * geometry_shader_code = geometryCode.c_str();

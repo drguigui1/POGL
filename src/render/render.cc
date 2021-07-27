@@ -69,17 +69,19 @@ static void process_input(Window& window, float time, bool& enable_bubbles, bool
         switch_scene = false;
 }
 
-static void switch_renderer(const glm::vec3& cam_pos, SceneType& scene) {
+static void switch_renderer(const glm::vec3& cam_pos, SceneType& scene, const glm::vec3& offset1, const glm::vec3& offset2) {
     if (scene == FOREST
             && cam_pos.x >= 10.15f && cam_pos.x <= 15.72f
-            && cam_pos.z >= 25.42f && cam_pos.z <= 34.13f) {
-        scene = RAIN_SNOW; // FIXME: MUSEUM
-    }
+            && cam_pos.z >= 25.42f && cam_pos.z <= 34.13f)
+        scene = MUSEUM;
 
-    if (scene == MUSEUM && cam_pos.x == 15.0f) // FIXME: condition to change scene
+    if (scene == MUSEUM
+            && cam_pos.x >= 18.2f + offset1.x
+            && cam_pos.z >= 4.1f + offset1.z && cam_pos.z <= 7.4f + offset1.z)
         scene = RAIN_SNOW;
 
-    if (scene == RAIN_SNOW && cam_pos.x <= -15.0f)
+    if (scene == RAIN_SNOW
+            && cam_pos.x <= -15.0f + offset2.x)
         scene = FOREST;
 }
 
@@ -98,8 +100,9 @@ void render(Window& window) {
     float prev_frame = 0.0f;
     SceneType scene = FOREST;
 
-    // Shared lights / objects
+    // Lights / objects
     shared_lights lights = init_lights();
+    shared_lights museum_lights = init_museum_lights();
     Object bubble = create_plane_geom();
 
     /* Scene 1 */
@@ -130,21 +133,38 @@ void render(Window& window) {
     Shader bubble_rise_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh_rising.fs", "shaders/bubble/bubble.gs");
 
     /* Scene 2 */
-    // TODO
+    glm::vec3 offset1 = glm::vec3(15.0f, -8.0f, 2.0f);
+    Renderer renderer2 = init_renderer_museum(ratio, offset1);
+
+    // Plane
+    Object museum_plane = create_plane(20.0f, 0.0f, 0.75f, offset1);
+    Shader museum_plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
+    Texture museum_ground("data/images/floor_texture4.jpg");
+
+    museum_plane_shader.use();
+    museum_plane_shader.set_int("texture1", 0);
+
+    // Bubble
+    Shader bubble_bokeh_shader("shaders/bubble/bubble.vs", "shaders/bubble/bokeh.fs", "shaders/bubble/bubble.gs");
+    Shader bubble_rising_shader("shaders/bubble/bubble.vs", "shaders/bubble/rising.fs", "shaders/bubble/bubble.gs");
+
+    Object vertical_plane = create_vertical_plane(9, 4.5, glm::vec3(18.0f, 4.0f, -5.25f) + offset1);
+    Shader vertical_plane_shader("shaders/wall/plane.vs", "shaders/wall/plane.fs");
 
     /* Scene 3 */
-    Renderer renderer3 = init_renderer_particles(ratio);
+    glm::vec3 offset2 = glm::vec3(25.0f, -8.0f, -5.0f);
+    Renderer renderer3 = init_renderer_particles(ratio, offset2);
 
     // Winter plane
     Texture winter("data/images/winter.jpg");
-    Object winter_plane = create_plane(7.5, 7.5f, 1.5f);
+    Object winter_plane = create_plane(7.5, 7.5f, 1.5f, offset2);
     Shader winter_plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
     winter_plane_shader.use();
     winter_plane_shader.set_int("texture1", 0);
 
     // Grass plane
     Texture grass("data/images/grass.jpg");
-    Object grass_plane = create_plane(7.5, -7.5f, 1.5f);
+    Object grass_plane = create_plane(7.5, -7.5f, 1.5f, offset2);
     Shader grass_plane_shader("shaders/ground/plane.vs", "shaders/ground/plane.fs");
     grass_plane_shader.use();
     grass_plane_shader.set_int("texture1", 0);
@@ -179,6 +199,15 @@ void render(Window& window) {
             renderer1.render_skybox();
             break;
 
+        case MUSEUM:
+            render_plane(museum_plane_shader, ratio, museum_plane, museum_ground);
+
+            // Objs & Skybox
+            render_vertical_plane(vertical_plane_shader, ratio, vertical_plane, curr_frame);
+            renderer2.render_objs();
+            renderer2.render_skybox();
+            break;
+
         default:
             render_plane(winter_plane_shader, ratio, winter_plane, winter);
             render_plane(grass_plane_shader, ratio, grass_plane, grass);
@@ -197,6 +226,10 @@ void render(Window& window) {
             case FOREST:
                 render_bubble(bubble_rise_shader, ratio, bubble, curr_frame, window.get_width(), window.get_height());
                 break;
+            case MUSEUM:
+                render_bubble(bubble_bokeh_shader, ratio, bubble, curr_frame, window.get_width(), window.get_height());
+                render_bubble(bubble_rising_shader, ratio, bubble, curr_frame, window.get_width(), window.get_height());
+                break;
             default:
                 render_bubble(bubble_shines_shader, ratio, bubble, curr_frame, window.get_width(), window.get_height());
                 break;
@@ -209,7 +242,7 @@ void render(Window& window) {
         glfwPollEvents();
 
         if (switch_scene)
-            switch_renderer(cam_pos, scene);
+            switch_renderer(cam_pos, scene, offset1, offset2);
     }
 }
 
@@ -283,8 +316,6 @@ void render_forest(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
-
-        std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 
 }
@@ -292,7 +323,7 @@ void render_forest(Window& window) {
 void render_museum(Window& window) {
     // Variables
     const float ratio = window.get_ratio();
-    bool enable_bubbles = false;
+    bool enable_bubbles = true;
     bool switch_scene = false;
     float prev_frame = 0.0f;
 
@@ -320,7 +351,6 @@ void render_museum(Window& window) {
     // Render loop
     while (!window.should_close()) {
         float curr_frame = glfwGetTime();
-        //const glm::vec3 cam_pos = camera.get_position();
 
         process_input(window, curr_frame - prev_frame, enable_bubbles, switch_scene);
         gl_clear_update();
@@ -345,9 +375,6 @@ void render_museum(Window& window) {
         prev_frame = curr_frame;
         window.swap_buffers();
         glfwPollEvents();
-
-        //const glm::vec3 cam_pos = camera.get_position();
-        //std::cout << "Cam position: " << cam_pos.x << ' ' << cam_pos.y << ' ' << cam_pos.z << std::endl;
     }
 }
 
