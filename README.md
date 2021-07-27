@@ -1,6 +1,14 @@
 # POGL
 
-Project realized by Pierre Guillaume and Sabine Hu.
+Project realized by Sabine Hu and Pierre Guillaume.
+
+## Results
+
+![plot](results/env_opengl.png)
+
+![plot](results/forest_opengl.png)
+
+![plot](results/opengl_venus.png)
 
 ## Usage
 ```shell
