@@ -11,6 +11,7 @@ Project realized by Sabine Hu and Pierre Guillaume.
 ![plot](results/opengl_venus.png)
 
 ## Usage
+
 ```shell
 ./cmakebuild.sh
 ./build/opengl [width] [height]
@@ -19,6 +20,7 @@ Project realized by Sabine Hu and Pierre Guillaume.
 Default window size is 800x600
 
 ## Keyboard shortcuts
+
 * W: move forward
 * S: move backward
 * A: move left
@@ -32,5 +34,6 @@ Default window size is 800x600
 * Space / escape: close the window
 
 ## Links
-* Technique: https://youtu.be/-4xZov_LaPM
+
+* Technique: https://youtu.be/-4xZov\_LaPM
 * Demo: https://youtu.be/hB8OFUmi0TE
